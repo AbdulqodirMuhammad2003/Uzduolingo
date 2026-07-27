@@ -20,6 +20,7 @@ import {
   UserCheck, ArrowUpRight, Scale, RefreshCw,
   Gift, Type, Thermometer, ShieldCheck, Megaphone, HandHelping, CircleUserRound, Move3d, ArrowUpNarrowWide, BookHeart,
   Award, Printer, Loader2, GraduationCap, LogOut,
+  Menu, ChevronDown, ChevronRight, Unlock, VolumeX, Crown, Snowflake,
 } from 'lucide-react';
 
 const LEVELS = [
@@ -1613,6 +1614,249 @@ const LEVELS = [
       },
     ],
   },
+  {
+    id: 'LG',
+    label: "Lug'at boyligi",
+    units: [
+      {
+        title: "1-bo'lim: Odamlar",
+        lessons: [
+          {
+            id: 1001, title: '1-qism', icon: Users,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'odam', options: ['младший брат', 'человек', 'пророк', 'начальник, руководитель'], answer: 'человек' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'люди', options: ['qo’shni', 'qaynopa', 'sovchi', 'odamlar'], answer: 'odamlar' },
+              { type: 'listening', audioText: 'родители', question: "Bu so'z qanday tarjima qilinadi?", options: ['ota-ona', 'tovlamachi', 'asir', 'payg’ambar'], answer: 'ota-ona' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'отец', options: ['pochcha, kuyov', 'yo’lboshchi', 'payg’ambar', 'ota'], answer: 'ota' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'ona', options: ['мать', 'младенец, малыш', 'гость', 'танцор, танцовщица'], answer: 'мать' },
+              { type: 'match', pairs: [{ ru: 'человек', uz: 'odam' }, { ru: 'люди', uz: 'odamlar' }, { ru: 'родители', uz: 'ota-ona' }, { ru: 'отец', uz: 'ota' }, { ru: 'мать', uz: 'ona' }, { ru: 'папа', uz: 'dada' }] },
+            ],
+          },
+          {
+            id: 1002, title: '2-qism', icon: UserCircle,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'oyi', options: ['представитель, агент', 'мама', 'жених', 'лжец, врун, лгун(ья)'], answer: 'мама' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'брат', options: ['aka, uka', 'qotil', 'shifokor', 'kelin (to’yda)'], answer: 'aka, uka' },
+              { type: 'listening', audioText: 'сестра', question: "Bu so'z qanday tarjima qilinadi?", options: ['ajdodlar', 'tovlamachi', 'opa, singil', 'qaynopa'], answer: 'opa, singil' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'старший брат', options: ['aka', 'qiz bola', 'buvi', 'ota-ona'], answer: 'aka' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'uka', options: ['шурин (брат жены)', 'младший брат', 'родители', 'наследник, наследница'], answer: 'младший брат' },
+              { type: 'match', pairs: [{ ru: 'мама', uz: 'oyi' }, { ru: 'брат', uz: 'aka, uka' }, { ru: 'сестра', uz: 'opa, singil' }, { ru: 'старший брат', uz: 'aka' }, { ru: 'младший брат', uz: 'uka' }, { ru: 'бабушка', uz: 'buvi' }] },
+            ],
+          },
+          {
+            id: 1003, title: '3-qism', icon: Contact,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'bobo', options: ['взрослый', 'предки', 'дедушка', 'хвастун'], answer: 'дедушка' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'сирота', options: ['kampir', 'ish', 'xotin', 'yetim'], answer: 'yetim' },
+              { type: 'listening', audioText: 'дядя', question: "Bu so'z qanday tarjima qilinadi?", options: ['amaki, tog’a', 'turmush o’rtog’', 'o’qish (tahsil)', 'murda'], answer: 'amaki, tog’a' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'тетя', options: ['maqtanchoq', 'egizaklar', 'amma, xola', 'bolalik'], answer: 'amma, xola' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'bola', options: ['ребенок', 'переводчик(ца)', 'целитель, лекарь', 'лжец, врун, лгун(ья)'], answer: 'ребенок' },
+              { type: 'match', pairs: [{ ru: 'дедушка', uz: 'bobo' }, { ru: 'сирота', uz: 'yetim' }, { ru: 'дядя', uz: 'amaki, tog’a' }, { ru: 'тетя', uz: 'amma, xola' }, { ru: 'ребенок', uz: 'bola' }, { ru: 'дети', uz: 'bolalar' }] },
+            ],
+          },
+          {
+            id: 1004, title: '4-qism', icon: SquareUser,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’g’il farzand', options: ['посол', 'брат', 'сирота', 'сын'], answer: 'сын' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'дочь', options: ['qiz bola', 'oyi', 'qiz farzand', 'maqtanchoq'], answer: 'qiz farzand' },
+              { type: 'listening', audioText: 'жена', question: "Bu so'z qanday tarjima qilinadi?", options: ['janob, xonim', 'xotin', 'xalq', 'fazogir'], answer: 'xotin' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'муж', options: ['o’yinchi', 'er', 'ona', 'navbatchi'], answer: 'er' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'turmush o’rtog’', options: ['враг', 'супруг(а)', 'деверь (брат мужа)', 'родители'], answer: 'супруг(а)' },
+              { type: 'match', pairs: [{ ru: 'сын', uz: 'o’g’il farzand' }, { ru: 'дочь', uz: 'qiz farzand' }, { ru: 'жена', uz: 'xotin' }, { ru: 'муж', uz: 'er' }, { ru: 'супруг(а)', uz: 'turmush o’rtog’' }, { ru: 'свекровь, теща', uz: 'qaynona' }] },
+            ],
+          },
+          {
+            id: 1005, title: '5-qism', icon: UsersRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'qaynota', options: ['игрок', 'виновник', 'старый человек', 'свекор, тесть'], answer: 'свекор, тесть' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'свояченица (сестра жены)', options: ['ayol kishi', 'xodim', 'qaynopa', 'taniqli'], answer: 'qaynopa' },
+              { type: 'listening', audioText: 'шурин (брат жены)', question: "Bu so'z qanday tarjima qilinadi?", options: ['qaynaka', 'egizaklar', 'ota', 'uchuvchi'], answer: 'qaynaka' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'золовка (сестра мужа)', options: ['qaynopa', 'chaqaloq, go\'dak', 'amma, xola', 'voyaga yetgan'], answer: 'qaynopa' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qaynaka', options: ['деверь (брат мужа)', 'целитель, лекарь', 'племянник', 'детство'], answer: 'деверь (брат мужа)' },
+              { type: 'match', pairs: [{ ru: 'свекор, тесть', uz: 'qaynota' }, { ru: 'свояченица (сестра жены)', uz: 'qaynopa' }, { ru: 'шурин (брат жены)', uz: 'qaynaka' }, { ru: 'зять', uz: 'pochcha, kuyov' }] },
+            ],
+          },
+          {
+            id: 1006, title: '6-qism', icon: CircleUserRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’gayona', options: ['дядя', 'больной, пациент', 'наследник, наследница', 'мачеха'], answer: 'мачеха' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'отчим', options: ['tikuvchi', 'tish duxtur', 'ona', 'o’gayota'], answer: 'o’gayota' },
+              { type: 'listening', audioText: 'родственник', question: "Bu so'z qanday tarjima qilinadi?", options: ['jinoyatchi', 'qaynota', 'qarindosh', 'shifokor'], answer: 'qarindosh' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'племянник', options: ['o’g’il jiyan', 'janob, xonim', 'o’smir', 'elchi'], answer: 'o’g’il jiyan' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qiz jiyan', options: ['традиция', 'любовник', 'племянница', 'деверь (брат мужа)'], answer: 'племянница' },
+              { type: 'match', pairs: [{ ru: 'мачеха', uz: 'o’gayona' }, { ru: 'отчим', uz: 'o’gayota' }, { ru: 'родственник', uz: 'qarindosh' }, { ru: 'племянник', uz: 'o’g’il jiyan' }, { ru: 'племянница', uz: 'qiz jiyan' }, { ru: 'близнецы, двойняшки', uz: 'egizaklar' }] },
+            ],
+          },
+          {
+            id: 1007, title: '7-qism', icon: Fingerprint,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'mehmon', options: ['больной, пациент', 'гость', 'обычай', 'целитель, лекарь'], answer: 'гость' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'сосед(ка)', options: ['urf-odat', 'yordamchi', 'qo’shni', 'bemor'], answer: 'qo’shni' },
+              { type: 'listening', audioText: 'невестка', question: "Bu so'z qanday tarjima qilinadi?", options: ['urf-odat', 'kelin', 'opa, singil', 'egizaklar'], answer: 'kelin' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'невеста', options: ['kelin (to’yda)', 'asir', 'yarador', 'aka, uka'], answer: 'kelin (to’yda)' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'kuyov (to’yda)', options: ['художник', 'старший брат', 'жених', 'друг'], answer: 'жених' },
+              { type: 'match', pairs: [{ ru: 'гость', uz: 'mehmon' }, { ru: 'сосед(ка)', uz: 'qo’shni' }, { ru: 'невестка', uz: 'kelin' }, { ru: 'невеста', uz: 'kelin (to’yda)' }, { ru: 'жених', uz: 'kuyov (to’yda)' }, { ru: 'мужчина', uz: 'erkak kishi' }] },
+            ],
+          },
+          {
+            id: 1008, title: '8-qism', icon: UserCheck,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'ayol kishi', options: ['пилот, летчик', 'учник, ученица', 'господин, госпожа', 'женщина'], answer: 'женщина' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'мальчик', options: ['o’g’il bola', 'taniqli', 'aka', 'yolg’onchi'], answer: 'o’g’il bola' },
+              { type: 'listening', audioText: 'девушка', question: "Bu so'z qanday tarjima qilinadi?", options: ['sovchi', 'yoshlar', 'qiz bola', 'o’quvchi'], answer: 'qiz bola' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'младенец, малыш', options: ['chaqaloq, go\'dak', 'o’g’il jiyan', 'qo’shni', 'opa, singil'], answer: 'chaqaloq, go\'dak' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'insoniyat', options: ['работа, дело', 'человечество', 'моряк, матрос', 'спонсор'], answer: 'человечество' },
+              { type: 'match', pairs: [{ ru: 'женщина', uz: 'ayol kishi' }, { ru: 'мальчик', uz: 'o’g’il bola' }, { ru: 'девушка', uz: 'qiz bola' }, { ru: 'младенец, малыш', uz: 'chaqaloq, go\'dak' }, { ru: 'человечество', uz: 'insoniyat' }, { ru: 'народ', uz: 'xalq' }] },
+            ],
+          },
+          {
+            id: 1009, title: '9-qism', icon: Users,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'bolalik', options: ['старуха', 'мать', 'больной, пациент', 'детство'], answer: 'детство' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'молодость, юность', options: ['yo’lboshchi', 'yoshlik', 'o’qituvchi', 'qo’shiqchi'], answer: 'yoshlik' },
+              { type: 'listening', audioText: 'молодежь', question: "Bu so'z qanday tarjima qilinadi?", options: ['aka, uka', 'amma, xola', 'aybdor', 'yoshlar'], answer: 'yoshlar' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'старый человек', options: ['fazogir', 'ish', 'voyaga yetmagan', 'qari odam'], answer: 'qari odam' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'chol', options: ['мясник', 'старик', 'любовница', 'господин, госпожа'], answer: 'старик' },
+              { type: 'match', pairs: [{ ru: 'детство', uz: 'bolalik' }, { ru: 'молодость, юность', uz: 'yoshlik' }, { ru: 'молодежь', uz: 'yoshlar' }, { ru: 'старый человек', uz: 'qari odam' }, { ru: 'старик', uz: 'chol' }, { ru: 'старуха', uz: 'kampir' }] },
+            ],
+          },
+          {
+            id: 1010, title: '10-qism', icon: UserCircle,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’smir', options: ['учеба', 'подросток', 'лидер, вождь', 'убийца'], answer: 'подросток' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'взрослый', options: ['voyaga yetgan', 'jinoyatchi', 'opa, singil', 'odam'], answer: 'voyaga yetgan' },
+              { type: 'listening', audioText: 'несовершеннолетний', question: "Bu so'z qanday tarjima qilinadi?", options: ['qo’shiqchi', 'qo’shni', 'voyaga yetmagan', 'ish'], answer: 'voyaga yetmagan' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'друг', options: ['qaynaka', 'fazogir', 'maqtanchoq', 'do’st'], answer: 'do’st' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'dushman', options: ['молодежь', 'сын', 'продавец, продавщица', 'враг'], answer: 'враг' },
+              { type: 'match', pairs: [{ ru: 'подросток', uz: 'o’smir' }, { ru: 'взрослый', uz: 'voyaga yetgan' }, { ru: 'несовершеннолетний', uz: 'voyaga yetmagan' }, { ru: 'друг', uz: 'do’st' }, { ru: 'враг', uz: 'dushman' }, { ru: 'пол', uz: 'jins' }] },
+            ],
+          },
+          {
+            id: 1011, title: '11-qism', icon: Contact,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'til', options: ['обычай', 'старуха', 'язык', 'женщина'], answer: 'язык' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'обычай', options: ['xotin', 'urf-odat', 'qo’shni', 'yoshlik'], answer: 'urf-odat' },
+              { type: 'listening', audioText: 'традиция', question: "Bu so'z qanday tarjima qilinadi?", options: ['janob, xonim', 'o’g’il jiyan', 'qassob', 'an’ana'], answer: 'an’ana' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'работа, дело', options: ['o’qish (tahsil)', 'ish', 'amma, xola', 'janob, xonim'], answer: 'ish' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’qish (tahsil)', options: ['дедушка', 'сотрудник(ница)', 'учеба', 'старый человек'], answer: 'учеба' },
+              { type: 'match', pairs: [{ ru: 'язык', uz: 'til' }, { ru: 'обычай', uz: 'urf-odat' }, { ru: 'традиция', uz: 'an’ana' }, { ru: 'работа, дело', uz: 'ish' }, { ru: 'учеба', uz: 'o’qish (tahsil)' }, { ru: 'рабочий', uz: 'ishchi' }] },
+            ],
+          },
+          {
+            id: 1012, title: '12-qism', icon: SquareUser,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'xodim', options: ['подросток', 'моряк, матрос', 'мошенник', 'сотрудник(ница)'], answer: 'сотрудник(ница)' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'водитель', options: ['qaynopa', 'odam', 'kampir', 'haydovchi'], answer: 'haydovchi' },
+              { type: 'listening', audioText: 'врач, доктор, лекарь', question: "Bu so'z qanday tarjima qilinadi?", options: ['o’g’il jiyan', 'shifokor', 'uka', 'ziyoratchi'], answer: 'shifokor' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'целитель, лекарь', options: ['erkak kishi', 'voyaga yetmagan', 'qaynopa', 'tabib'], answer: 'tabib' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’quvchi', options: ['отчим', 'портной', 'свояченица (сестра жены)', 'учник, ученица'], answer: 'учник, ученица' },
+              { type: 'match', pairs: [{ ru: 'сотрудник(ница)', uz: 'xodim' }, { ru: 'водитель', uz: 'haydovchi' }, { ru: 'врач, доктор, лекарь', uz: 'shifokor' }, { ru: 'целитель, лекарь', uz: 'tabib' }, { ru: 'учник, ученица', uz: 'o’quvchi' }, { ru: 'переводчик(ца)', uz: 'tarjimon' }] },
+            ],
+          },
+          {
+            id: 1013, title: '13-qism', icon: UsersRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'muhandis', options: ['раб, рабыня', 'сын', 'инженер', 'жених'], answer: 'инженер' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'учитель(ница)', options: ['o’qituvchi', 'asir', 'maqtanchoq', 'qari odam'], answer: 'o’qituvchi' },
+              { type: 'listening', audioText: 'строитель', question: "Bu so'z qanday tarjima qilinadi?", options: ['bemor', 'bobo', 'quruvchi', 'qaynona'], answer: 'quruvchi' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'бухгалтер', options: ['dushman', 'kelin', 'mehmon', 'hisobchi'], answer: 'hisobchi' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'uchuvchi', options: ['охотник', 'пилот, летчик', 'наследник, наследница', 'учник, ученица'], answer: 'пилот, летчик' },
+              { type: 'match', pairs: [{ ru: 'инженер', uz: 'muhandis' }, { ru: 'учитель(ница)', uz: 'o’qituvchi' }, { ru: 'строитель', uz: 'quruvchi' }, { ru: 'бухгалтер', uz: 'hisobchi' }, { ru: 'пилот, летчик', uz: 'uchuvchi' }, { ru: 'мясник', uz: 'qassob' }] },
+            ],
+          },
+          {
+            id: 1014, title: '14-qism', icon: CircleUserRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'sotuvchi', options: ['свекор, тесть', 'сирота', 'продавец, продавщица', 'брат'], answer: 'продавец, продавщица' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'торговец', options: ['savdogar', 'ayol kishi', 'chol', 'qiz farzand'], answer: 'savdogar' },
+              { type: 'listening', audioText: 'игрок', question: "Bu so'z qanday tarjima qilinadi?", options: ['dada', 'erkak kishi', 'bemor', 'o’yinchi'], answer: 'o’yinchi' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'танцор, танцовщица', options: ['elchi', 'odam', 'buvi', 'raqqos(a)'], answer: 'raqqos(a)' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qo’shiqchi', options: ['певец', 'молодость, юность', 'сваха', 'человек'], answer: 'певец' },
+              { type: 'match', pairs: [{ ru: 'продавец, продавщица', uz: 'sotuvchi' }, { ru: 'торговец', uz: 'savdogar' }, { ru: 'игрок', uz: 'o’yinchi' }, { ru: 'танцор, танцовщица', uz: 'raqqos(a)' }, { ru: 'певец', uz: 'qo’shiqchi' }, { ru: 'художник', uz: 'rassom' }] },
+            ],
+          },
+          {
+            id: 1015, title: '15-qism', icon: Fingerprint,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'bemor', options: ['учеба', 'продавец, продавщица', 'больной, пациент', 'рабочий'], answer: 'больной, пациент' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'виновник', options: ['xodim', 'janob, xonim', 'aybdor', 'qul'], answer: 'aybdor' },
+              { type: 'listening', audioText: 'преступник', question: "Bu so'z qanday tarjima qilinadi?", options: ['tovlamachi', 'o’g’il bola', 'jinoyatchi', 'bola'], answer: 'jinoyatchi' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'грешник', options: ['gunohkor', 'ziyoratchi', 'opa, singil', 'o’gayona'], answer: 'gunohkor' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'dengizchi', options: ['жена', 'обманщик', 'ребенок', 'моряк, матрос'], answer: 'моряк, матрос' },
+              { type: 'match', pairs: [{ ru: 'больной, пациент', uz: 'bemor' }, { ru: 'виновник', uz: 'aybdor' }, { ru: 'преступник', uz: 'jinoyatchi' }, { ru: 'грешник', uz: 'gunohkor' }, { ru: 'моряк, матрос', uz: 'dengizchi' }, { ru: 'портной', uz: 'tikuvchi' }] },
+            ],
+          },
+          {
+            id: 1016, title: '16-qism', icon: UserCheck,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'yo’lboshchi', options: ['пол', 'бабушка', 'хвастун', 'лидер, вождь'], answer: 'лидер, вождь' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'начальник, руководитель', options: ['sovchi', 'boshliq, rahbar', 'qari odam', 'ovchi'], answer: 'boshliq, rahbar' },
+              { type: 'listening', audioText: 'любовник', question: "Bu so'z qanday tarjima qilinadi?", options: ['oshiq', 'o’yinchi', 'voyaga yetgan', 'savdogar'], answer: 'oshiq' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'любовница', options: ['murda', 'chaqaloq, go\'dak', 'aybdor', 'ma’shuqa'], answer: 'ma’shuqa' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qo’riqchi', options: ['охранник', 'мачеха', 'строитель', 'папа'], answer: 'охранник' },
+              { type: 'match', pairs: [{ ru: 'лидер, вождь', uz: 'yo’lboshchi' }, { ru: 'начальник, руководитель', uz: 'boshliq, rahbar' }, { ru: 'любовник', uz: 'oshiq' }, { ru: 'любовница', uz: 'ma’shuqa' }, { ru: 'охранник', uz: 'qo’riqchi' }, { ru: 'сторож', uz: 'qorovul' }] },
+            ],
+          },
+          {
+            id: 1017, title: '17-qism', icon: Users,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'elchi', options: ['посол', 'любовница', 'представитель, агент', 'заложник'], answer: 'посол' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'раб, рабыня', options: ['janob, xonim', 'qul', 'chol', 'xalq'], answer: 'qul' },
+              { type: 'listening', audioText: 'слуга, служитель', question: "Bu so'z qanday tarjima qilinadi?", options: ['xizmatchi', 'insoniyat', 'amma, xola', 'murda'], answer: 'xizmatchi' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'горничная, служанка', options: ['insoniyat', 'oqsoch', 'o’gayona', 'qiz jiyan'], answer: 'oqsoch' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'ajdodlar', options: ['рабочий', 'предки', 'сторож', 'мясник'], answer: 'предки' },
+              { type: 'match', pairs: [{ ru: 'посол', uz: 'elchi' }, { ru: 'раб, рабыня', uz: 'qul' }, { ru: 'слуга, служитель', uz: 'xizmatchi' }, { ru: 'горничная, служанка', uz: 'oqsoch' }, { ru: 'предки', uz: 'ajdodlar' }, { ru: 'пророк', uz: 'payg’ambar' }] },
+            ],
+          },
+          {
+            id: 1018, title: '18-qism', icon: UserCircle,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'ziyoratchi', options: ['человечество', 'дежурный', 'племянник', 'паломник'], answer: 'паломник' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'раненый', options: ['ota-ona', 'aldovchi', 'yarador', 'qul'], answer: 'yarador' },
+              { type: 'listening', audioText: 'господин, госпожа', question: "Bu so'z qanday tarjima qilinadi?", options: ['ayol kishi', 'janob, xonim', 'amma, xola', 'bola'], answer: 'janob, xonim' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'труп', options: ['yoshlar', 'murda', 'kampir', 'ona'], answer: 'murda' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'aldovchi', options: ['обманщик', 'племянница', 'раб, рабыня', 'учеба'], answer: 'обманщик' },
+              { type: 'match', pairs: [{ ru: 'паломник', uz: 'ziyoratchi' }, { ru: 'раненый', uz: 'yarador' }, { ru: 'господин, госпожа', uz: 'janob, xonim' }, { ru: 'труп', uz: 'murda' }, { ru: 'обманщик', uz: 'aldovchi' }, { ru: 'лжец, врун, лгун(ья)', uz: 'yolg’onchi' }] },
+            ],
+          },
+          {
+            id: 1019, title: '19-qism', icon: Contact,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'tovlamachi', options: ['пророк', 'раб, рабыня', 'мошенник', 'жених'], answer: 'мошенник' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'карлик, лилипут', options: ['oshiq', 'pakana', 'ayol kishi', 'pochcha, kuyov'], answer: 'pakana' },
+              { type: 'listening', audioText: 'убийца', question: "Bu so'z qanday tarjima qilinadi?", options: ['qaynaka', 'xotin', 'ona', 'qotil'], answer: 'qotil' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'известный', options: ['ota', 'fazogir', 'taniqli', 'qo’riqchi'], answer: 'taniqli' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'mashhur', options: ['моряк, матрос', 'невеста', 'знаменитый', 'хвастун'], answer: 'знаменитый' },
+              { type: 'match', pairs: [{ ru: 'мошенник', uz: 'tovlamachi' }, { ru: 'карлик, лилипут', uz: 'pakana' }, { ru: 'убийца', uz: 'qotil' }, { ru: 'известный', uz: 'taniqli' }, { ru: 'знаменитый', uz: 'mashhur' }, { ru: 'подхалим, подлиза', uz: 'laganbardor' }] },
+            ],
+          },
+          {
+            id: 1020, title: '20-qism', icon: SquareUser,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'homiy', options: ['традиция', 'карлик, лилипут', 'спонсор', 'космонавт'], answer: 'спонсор' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'поручитель', options: ['ovchi', 'oshiq', 'kafil', 'odamlar'], answer: 'kafil' },
+              { type: 'listening', audioText: 'повар, повариха, кухарка', question: "Bu so'z qanday tarjima qilinadi?", options: ['turmush o’rtog’', 'oshpaz', 'opa, singil', 'ish'], answer: 'oshpaz' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'космонавт', options: ['qari odam', 'bemor', 'jinoyatchi', 'fazogir'], answer: 'fazogir' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'tish duxtur', options: ['игрок', 'повар, повариха, кухарка', 'зубной врач, стоматолог', 'паломник'], answer: 'зубной врач, стоматолог' },
+              { type: 'match', pairs: [{ ru: 'спонсор', uz: 'homiy' }, { ru: 'поручитель', uz: 'kafil' }, { ru: 'повар, повариха, кухарка', uz: 'oshpaz' }, { ru: 'космонавт', uz: 'fazogir' }, { ru: 'зубной врач, стоматолог', uz: 'tish duxtur' }, { ru: 'охотник', uz: 'ovchi' }] },
+            ],
+          },
+          {
+            id: 1021, title: '21-qism', icon: UsersRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'yordamchi', options: ['молодость, юность', 'помощник(ца)', 'зять', 'свояченица (сестра жены)'], answer: 'помощник(ца)' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'дежурный', options: ['navbatchi', 'qaynona', 'sovchi', 'jins'], answer: 'navbatchi' },
+              { type: 'listening', audioText: 'хвастун', question: "Bu so'z qanday tarjima qilinadi?", options: ['maqtanchoq', 'taniqli', 'janob, xonim', 'haydovchi'], answer: 'maqtanchoq' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'заложник', options: ['qaynaka', 'xodim', 'asir', 'oqsoch'], answer: 'asir' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'merosxo’r', options: ['папа', 'народ', 'наследник, наследница', 'человек'], answer: 'наследник, наследница' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'представитель, агент', options: ['yoshlar', 'vakil', 'ma’shuqa', 'qiz jiyan'], answer: 'vakil' },
+              { type: 'match', pairs: [{ ru: 'помощник(ца)', uz: 'yordamchi' }, { ru: 'дежурный', uz: 'navbatchi' }, { ru: 'хвастун', uz: 'maqtanchoq' }, { ru: 'заложник', uz: 'asir' }, { ru: 'наследник, наследница', uz: 'merosxo’r' }, { ru: 'представитель, агент', uz: 'vakil' }, { ru: 'сваха', uz: 'sovchi' }] },
+            ],
+          }
+        ],
+      },
+    ],
+  },
 ];
 
 const X_PATTERN = [0, -72, 0, 72];
@@ -1639,6 +1883,63 @@ function shuffle(arr) {
   return a;
 }
 
+// ---- Sana/seriya (streak) yordamchilari ----
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+function daysBetween(a, b) {
+  return Math.round((new Date(`${b}T00:00:00Z`) - new Date(`${a}T00:00:00Z`)) / 86400000);
+}
+
+// ---- Supabase mavjud bo'lmagan ustunlar uchun brauzerda zaxira saqlash ----
+// (Supabase jadvalida hali gems/streak ustunlari yo'q bo'lsa ham ishlashda davom etadi)
+function loadLocalProgress(userId) {
+  try {
+    const raw = localStorage.getItem(`uzd_progress_${userId || 'guest'}`);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+function loadExtra(userId) {
+  return loadLocalProgress(userId);
+}
+function saveExtra(userId, patch) {
+  const merged = { ...loadLocalProgress(userId), ...patch };
+  saveLocalProgress(userId, merged);
+  return merged;
+}
+// Ilova ochilganda/kirilganda seriyani sana farqiga qarab hisoblaydi.
+// Agar foydalanuvchi bitta kunni o'tkazib yuborsa-yu, "seriya muzlatgichi" bo'lsa, u sarflanadi va seriya saqlanadi.
+function computeStreakOnLoad(extra) {
+  if (!extra.lastActive) return { streak: 0, freezes: extra.streakFreezes || 0, freezeUsed: false };
+  const gap = daysBetween(extra.lastActive, todayStr());
+  if (gap <= 1) return { streak: extra.streak || 0, freezes: extra.streakFreezes || 0, freezeUsed: false };
+  if (gap === 2 && (extra.streakFreezes || 0) > 0) {
+    return { streak: extra.streak || 0, freezes: (extra.streakFreezes || 0) - 1, freezeUsed: true };
+  }
+  return { streak: 0, freezes: extra.streakFreezes || 0, freezeUsed: false };
+}
+function saveLocalProgress(userId, data) {
+  try {
+    localStorage.setItem(`uzd_progress_${userId || 'guest'}`, JSON.stringify(data));
+  } catch (e) {
+    // localStorage mavjud emas — jim o'tkazamiz
+  }
+}
+
+// ---- Daraja aniqlash (placement) uchun tezkor test savollari ----
+// Har bir darajadan (A1..C1) bittadan 'choice' turidagi savol tanlanadi.
+function getPlacementQuestions() {
+  return LEVELS.filter((lvl) => lvl.id !== 'LG').map((lvl, i) => {
+    const lesson = lvl.units?.[0]?.lessons?.[0];
+    if (!lesson) return null;
+    const q = lesson.questions.find((qq) => qq.type === 'choice') || lesson.questions[0];
+    if (!q) return null;
+    return { levelIdx: i, levelLabel: lvl.label, q };
+  }).filter(Boolean);
+}
+
 function starPoints(cx, cy, points, outerR, innerR) {
   const pts = [];
   for (let i = 0; i < points * 2; i++) {
@@ -1650,6 +1951,7 @@ function starPoints(cx, cy, points, outerR, innerR) {
 }
 
 function speakRussian(text) {
+  if (!SOUND_ENABLED) return;
   if (typeof window === 'undefined' || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
@@ -1755,12 +2057,78 @@ async function supaSaveProgress(accessToken, userId, progressData) {
   });
 }
 
-function PandaMascot({ size = 96 }) {
+const AVATARS = [
+  { id: 'panda', name: 'Panda', cost: 0 },
+  { id: 'owl', name: "Boyo'g'li", cost: 600 },
+  { id: 'fox', name: 'Tulki', cost: 800 },
+  { id: 'lion', name: 'Arslon', cost: 1500 },
+  { id: 'leopard', name: 'Leopard', cost: 5000 },
+];
+
+const ACCESSORIES = [
+  { id: 'scarf', name: 'Sharf', cost: 150 },
+  { id: 'glasses', name: "Ko'zoynak", cost: 200 },
+  { id: 'cap', name: 'Kepka', cost: 300 },
+];
+
+const AVATAR_STYLES = {
+  panda: { face: '#FFFFFF', ear: '#16181D', earShape: 'round' },
+  owl: { face: '#E7D8BE', ear: '#B99B6B', earShape: 'tuft' },
+  fox: { face: '#F7DFC0', ear: '#D2803D', earShape: 'pointy' },
+  lion: { face: '#F3C25E', ear: '#D69A2D', earShape: 'mane' },
+  leopard: { face: '#E9C687', ear: '#C99A52', earShape: 'round', spots: true },
+};
+
+function Mascot({ variant = 'panda', accessories = [], size = 96 }) {
+  const st = AVATAR_STYLES[variant] || AVATAR_STYLES.panda;
   return (
     <svg width={size} height={size} viewBox="0 0 120 120" style={{ display: 'block' }}>
-      <circle cx="28" cy="26" r="17" fill="#16181D" />
-      <circle cx="92" cy="26" r="17" fill="#16181D" />
-      <circle cx="60" cy="64" r="46" fill="#FFFFFF" stroke="#16181D" strokeWidth="3" />
+      {st.earShape === 'mane' && (
+        <g>
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => {
+            const rad = (a * Math.PI) / 180;
+            const cx = 60 + 50 * Math.cos(rad);
+            const cy = 64 + 50 * Math.sin(rad);
+            return <circle key={a} cx={cx} cy={cy} r={20} fill={st.ear} />;
+          })}
+        </g>
+      )}
+      {st.earShape === 'round' && (
+        <>
+          <circle cx="28" cy="26" r="17" fill={st.ear} />
+          <circle cx="92" cy="26" r="17" fill={st.ear} />
+        </>
+      )}
+      {st.earShape === 'pointy' && (
+        <>
+          <polygon points="14,38 34,4 46,34" fill={st.ear} />
+          <polygon points="106,38 86,4 74,34" fill={st.ear} />
+          <polygon points="20,34 34,14 40,32" fill="#FFF6EC" />
+          <polygon points="100,34 86,14 80,32" fill="#FFF6EC" />
+        </>
+      )}
+      {st.earShape === 'tuft' && (
+        <>
+          <polygon points="24,20 34,2 40,26" fill={st.ear} />
+          <polygon points="96,20 86,2 80,26" fill={st.ear} />
+        </>
+      )}
+
+      <circle cx="60" cy="64" r="46" fill={st.face} stroke="#16181D" strokeWidth="3" />
+
+      {st.spots && (
+        <>
+          <ellipse cx="34" cy="40" rx="4.5" ry="3.5" fill="#8A5A26" />
+          <ellipse cx="52" cy="28" rx="4" ry="3" fill="#8A5A26" />
+          <ellipse cx="86" cy="40" rx="4.5" ry="3.5" fill="#8A5A26" />
+          <ellipse cx="68" cy="26" rx="4" ry="3" fill="#8A5A26" />
+          <ellipse cx="24" cy="70" rx="4" ry="3" fill="#8A5A26" />
+          <ellipse cx="96" cy="70" rx="4" ry="3" fill="#8A5A26" />
+          <ellipse cx="38" cy="98" rx="3.5" ry="2.8" fill="#8A5A26" />
+          <ellipse cx="82" cy="98" rx="3.5" ry="2.8" fill="#8A5A26" />
+        </>
+      )}
+
       <ellipse cx="39" cy="62" rx="13" ry="17" fill="#16181D" transform="rotate(-14 39 62)" />
       <ellipse cx="81" cy="62" rx="13" ry="17" fill="#16181D" transform="rotate(14 81 62)" />
       <circle cx="40" cy="63" r="5" fill="#fff" />
@@ -1772,9 +2140,65 @@ function PandaMascot({ size = 96 }) {
       <path d="M50 92 Q60 99 70 92" stroke="#16181D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
       <circle cx="32" cy="82" r="6.5" fill="#F6B4A0" opacity="0.65" />
       <circle cx="88" cy="82" r="6.5" fill="#F6B4A0" opacity="0.65" />
+
+      {accessories.includes('scarf') && (
+        <g>
+          <path d="M24 96 Q60 112 96 96 L96 104 Q60 120 24 104 Z" fill="#C1502E" />
+          <path d="M52 108 L52 122 L64 118 L58 108 Z" fill="#A83F20" />
+        </g>
+      )}
+      {accessories.includes('glasses') && (
+        <g stroke="#16181D" strokeWidth="3" fill="none">
+          <circle cx="40" cy="63" r="12" fill="rgba(255,255,255,0.15)" />
+          <circle cx="80" cy="63" r="12" fill="rgba(255,255,255,0.15)" />
+          <path d="M52 60 L68 60" />
+        </g>
+      )}
+      {accessories.includes('cap') && (
+        <g>
+          <path d="M16 30 Q60 -14 104 30 L98 40 Q60 6 22 40 Z" fill="#2FA89C" />
+          <path d="M60 8 Q92 8 98 40 L82 36 Q70 14 60 8 Z" fill="#1F7A73" />
+        </g>
+      )}
     </svg>
   );
 }
+
+// Har bir daraja uchun madaniy tanaffus: haqiqiy, rasmiy YouTube manbalaridan olingan
+// qo'shiq va multfilm (faqat havola sifatida — matn/qo'shiq so'zlari hech qayerda
+// nusxalanmagan, mualliflik huquqini hurmat qilish uchun).
+const MEDIA_BREAKS = {
+  A1: {
+    songTitle: "«Пусть бегут неуклюже» — Krokodil Gena qo'shig'i",
+    songId: 't9g0HBEU30M',
+    cartoonTitle: '«Крокодил Гена» (1969) — qisqa multfilm',
+    cartoonId: 'HOmHqfOL2lA',
+  },
+  A2: {
+    songTitle: '«Голубой вагон» — Cheburashka qo\'shig\'i',
+    songId: 'eG8RG12QmwI',
+    cartoonTitle: '«Чебурашка» (1971) — multfilm',
+    cartoonId: 'rdfS_eJC6T0',
+  },
+  B1: {
+    songTitle: "«Учат в школе» — bolalar qo'shig'i",
+    songId: 'SC89Ddq53LY',
+    cartoonTitle: '«Бременские музыканты» (1969) — musiqiy multfilm',
+    cartoonId: 'SrMZlMb3wig',
+  },
+  C1: {
+    songTitle: "«Учат в школе» — bolalar qo'shig'i",
+    songId: 'SC89Ddq53LY',
+    cartoonTitle: "«Простоквашино» — multfilm to'plami",
+    cartoonId: 'w8T_2oJ6OFQ',
+  },
+  LG: {
+    songTitle: '«Голубой вагон» — Cheburashka qo\'shig\'i',
+    songId: 'eG8RG12QmwI',
+    cartoonTitle: "«Простоквашино» — multfilm to'plami",
+    cartoonId: 'w8T_2oJ6OFQ',
+  },
+};
 
 const CONFETTI_CONFIG = [
   { tx: '-70px', ty: '-92px', delay: '0s', color: '#E3B23C' },
@@ -1792,6 +2216,7 @@ const CONFETTI_CONFIG = [
 ];
 
 // ---- Ovozli signallar (Web Audio API orqali sintez qilingan, tashqi fayl kerak emas) ----
+let SOUND_ENABLED = true;
 let __audioCtx = null;
 function getAudioCtx() {
   const AC = typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext);
@@ -1801,6 +2226,7 @@ function getAudioCtx() {
   return __audioCtx;
 }
 function beep(freq, delay, duration, type = 'sine', volume = 0.2) {
+  if (!SOUND_ENABLED) return;
   const ctx = getAudioCtx();
   if (!ctx) return;
   const t = ctx.currentTime + delay;
@@ -1848,8 +2274,20 @@ function playHeartsOutSound() {
 export default function App() {
   const [screen, setScreen] = useState('home');
   const [selectedLevel, setSelectedLevel] = useState('A1');
-  const [xp, setXp] = useState(60);
-  const [streak] = useState(4);
+  const [xp, setXp] = useState(100);
+  const [streak, setStreak] = useState(0);
+  const [streakFreezes, setStreakFreezes] = useState(0);
+  const [hasBadge, setHasBadge] = useState(false);
+  const [hints, setHints] = useState(0);
+  const [ownedAvatars, setOwnedAvatars] = useState(['panda']);
+  const [activeAvatar, setActiveAvatar] = useState('panda');
+  const [ownedAccessories, setOwnedAccessories] = useState([]);
+  const [equippedAccessories, setEquippedAccessories] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
+  const [placementIdx, setPlacementIdx] = useState(0);
+  const [placementSelected, setPlacementSelected] = useState(null);
+  const [placementChecked, setPlacementChecked] = useState(false);
   const [completed, setCompleted] = useState([]);
   const [ratings, setRatings] = useState({});
   const [activeLevelId, setActiveLevelId] = useState(null);
@@ -1884,6 +2322,10 @@ export default function App() {
   const [signupDone, setSignupDone] = useState(false);
   const [session, setSession] = useState(null);
   const [certLevelId, setCertLevelId] = useState(null);
+  const [examMode, setExamMode] = useState(false);
+  const [examLevelId, setExamLevelId] = useState(null);
+  const [examQuestions, setExamQuestions] = useState([]);
+  const [examPassedLevels, setExamPassedLevels] = useState([]);
 
   const currentLevel = LEVELS.find((l) => l.id === selectedLevel);
   const activeUnit = activeLevelId != null && activeUnitIdx != null ? LEVELS.find((l) => l.id === activeLevelId).units[activeUnitIdx] : null;
@@ -1893,8 +2335,9 @@ export default function App() {
     return null;
   }
 
-  const activeLesson = activeLessonId != null ? findLesson(activeLessonId) : null;
+  const activeLesson = examMode ? { id: 'exam', title: "Yakuniy imtihon", questions: examQuestions } : (activeLessonId != null ? findLesson(activeLessonId) : null);
   const activeQuestion = activeLesson ? activeLesson.questions[qIndex] : null;
+  const hintEligible = !!(activeQuestion && activeQuestion.type !== 'order' && activeQuestion.type !== 'match' && !checked);
 
   // Ilova ochilganda saqlangan sessiyani window.storage'dan tiklashga harakat qilish
   useEffect(() => {
@@ -1929,10 +2372,29 @@ export default function App() {
             setProfile(prof);
             setSession({ access_token: accessToken, user_id: userId });
             const prog = await supaGetProgress(accessToken, userId);
+            const hasProgress = !!(prog && Array.isArray(prog.completed) && prog.completed.length > 0);
             if (prog) {
               if (Array.isArray(prog.completed)) setCompleted(prog.completed);
               if (prog.ratings) setRatings(prog.ratings);
-              if (typeof prog.xp === 'number') setXp(prog.xp);
+              if (typeof prog.xp === 'number' && (prog.xp > 0 || hasProgress)) setXp(prog.xp);
+              else setXp(100);
+            } else {
+              setXp(100);
+            }
+            const extra = loadExtra(userId);
+            const sc = computeStreakOnLoad(extra);
+            setStreak(sc.streak);
+            setStreakFreezes(sc.freezes);
+            if (sc.freezeUsed) saveExtra(userId, { streakFreezes: sc.freezes });
+            setHasBadge(!!extra.hasBadge);
+            setHints(extra.hints || 0);
+            setOwnedAvatars(extra.ownedAvatars && extra.ownedAvatars.length ? extra.ownedAvatars : ['panda']);
+            setActiveAvatar(extra.activeAvatar || 'panda');
+            setOwnedAccessories(extra.ownedAccessories || []);
+            setEquippedAccessories(extra.equippedAccessories || []);
+            setExamPassedLevels(extra.examPassedLevels || []);
+            if (!extra.placementDone && !hasProgress) {
+              setScreen('placement-intro');
             }
           } else {
             await localSession.delete('session', false).catch(() => {});
@@ -1940,6 +2402,12 @@ export default function App() {
         }
       } catch (e) {
         // saqlangan sessiya yo'q — kirish ekrani ko'rsatiladi
+      }
+      try {
+        const v = localStorage.getItem('uzd_sound');
+        if (v === '0') { setSoundOn(false); SOUND_ENABLED = false; }
+      } catch (e) {
+        // localStorage mavjud emas
       }
       setProfileLoading(false);
     })();
@@ -1968,6 +2436,8 @@ export default function App() {
           await localSession.set('session', JSON.stringify({ access_token: data.access_token, refresh_token: data.refresh_token, user_id: data.user.id }), false);
           setSession({ access_token: data.access_token, user_id: data.user.id });
           setProfile({ name, email });
+          setXp(100);
+          setScreen('placement-intro');
         } else {
           setSignupDone(true);
         }
@@ -1978,10 +2448,29 @@ export default function App() {
         const prof = await supaGetProfile(data.access_token, data.user.id);
         setProfile(prof || { name: '', email });
         const prog = await supaGetProgress(data.access_token, data.user.id);
+        const hasProgress = !!(prog && Array.isArray(prog.completed) && prog.completed.length > 0);
         if (prog) {
           if (Array.isArray(prog.completed)) setCompleted(prog.completed);
           if (prog.ratings) setRatings(prog.ratings);
-          if (typeof prog.xp === 'number') setXp(prog.xp);
+          if (typeof prog.xp === 'number' && (prog.xp > 0 || hasProgress)) setXp(prog.xp);
+          else setXp(100);
+        } else {
+          setXp(100);
+        }
+        const extra = loadExtra(data.user.id);
+        const sc = computeStreakOnLoad(extra);
+        setStreak(sc.streak);
+        setStreakFreezes(sc.freezes);
+        if (sc.freezeUsed) saveExtra(data.user.id, { streakFreezes: sc.freezes });
+        setHasBadge(!!extra.hasBadge);
+        setHints(extra.hints || 0);
+        setOwnedAvatars(extra.ownedAvatars && extra.ownedAvatars.length ? extra.ownedAvatars : ['panda']);
+        setActiveAvatar(extra.activeAvatar || 'panda');
+        setOwnedAccessories(extra.ownedAccessories || []);
+        setEquippedAccessories(extra.equippedAccessories || []);
+        setExamPassedLevels(extra.examPassedLevels || []);
+        if (!extra.placementDone && !hasProgress) {
+          setScreen('placement-intro');
         }
       }
     } catch (e) {
@@ -1997,6 +2486,17 @@ export default function App() {
     setCompleted([]);
     setRatings({});
     setXp(0);
+    setStreak(0);
+    setStreakFreezes(0);
+    setHasBadge(false);
+    setHints(0);
+    setOwnedAvatars(['panda']);
+    setActiveAvatar('panda');
+    setOwnedAccessories([]);
+    setEquippedAccessories([]);
+    setExamPassedLevels([]);
+    setExamMode(false);
+    setMenuOpen(false);
     setScreen('home');
   }
 
@@ -2006,7 +2506,15 @@ export default function App() {
     return total > 0 && done === total;
   }
 
+  function isLevelUnlocked(levelId) {
+    if (levelId === 'LG') return true;
+    const idx = LEVELS.findIndex((l) => l.id === levelId);
+    if (idx <= 0) return true;
+    return isLevelComplete(LEVELS[idx - 1]);
+  }
+
   function isUnitLocked(levelId, unitIdx) {
+    if (!isLevelUnlocked(levelId)) return true;
     if (unitIdx === 0) return false;
     const level = LEVELS.find((l) => l.id === levelId);
     const prevUnit = level.units[unitIdx - 1];
@@ -2086,6 +2594,24 @@ export default function App() {
     setScreen('lesson');
   }
 
+  function startExam(levelId) {
+    const level = LEVELS.find((l) => l.id === levelId);
+    const pool = [];
+    level.units.forEach((u) => u.lessons.forEach((ls) => ls.questions.forEach((q) => pool.push(q))));
+    const sampled = shuffle(pool).slice(0, Math.min(30, pool.length));
+    setExamQuestions(sampled);
+    setExamMode(true);
+    setExamLevelId(levelId);
+    setActiveLessonId(null);
+    setQIndex(0);
+    setHearts(10);
+    setCorrectCount(0);
+    setSessionXp(0);
+    setFailedRun(false);
+    initQuestion({ questions: sampled }, 0);
+    setScreen('lesson');
+  }
+
   function selectChoice(i) {
     if (checked) return;
     setSelected(options[i]);
@@ -2141,6 +2667,178 @@ export default function App() {
     }
   }
 
+  function bumpStreakForToday() {
+    const userId = session ? session.user_id : 'guest';
+    const extra = loadExtra(userId);
+    const today = todayStr();
+    let newStreak;
+    if (extra.lastActive === today) {
+      newStreak = extra.streak || streak || 1;
+    } else if (extra.lastActive && daysBetween(extra.lastActive, today) === 1) {
+      newStreak = (extra.streak || streak || 0) + 1;
+    } else {
+      newStreak = 1;
+    }
+    saveExtra(userId, { streak: newStreak, lastActive: today });
+    setStreak(newStreak);
+  }
+
+  function buyAvatar(id) {
+    const av = AVATARS.find((a) => a.id === id);
+    if (!av || ownedAvatars.includes(id) || xp < av.cost) return;
+    const userId = session ? session.user_id : 'guest';
+    const newOwned = [...ownedAvatars, id];
+    setXp((x) => x - av.cost);
+    setOwnedAvatars(newOwned);
+    setActiveAvatar(id);
+    saveExtra(userId, { ownedAvatars: newOwned, activeAvatar: id });
+  }
+
+  function selectAvatar(id) {
+    if (!ownedAvatars.includes(id)) return;
+    const userId = session ? session.user_id : 'guest';
+    setActiveAvatar(id);
+    saveExtra(userId, { activeAvatar: id });
+  }
+
+  function buyAccessory(id) {
+    const ac = ACCESSORIES.find((a) => a.id === id);
+    if (!ac || ownedAccessories.includes(id) || xp < ac.cost) return;
+    const userId = session ? session.user_id : 'guest';
+    const newOwned = [...ownedAccessories, id];
+    const newEquipped = [...equippedAccessories, id];
+    setXp((x) => x - ac.cost);
+    setOwnedAccessories(newOwned);
+    setEquippedAccessories(newEquipped);
+    saveExtra(userId, { ownedAccessories: newOwned, equippedAccessories: newEquipped });
+  }
+
+  function toggleAccessory(id) {
+    if (!ownedAccessories.includes(id)) return;
+    const userId = session ? session.user_id : 'guest';
+    const newEquipped = equippedAccessories.includes(id) ? equippedAccessories.filter((a) => a !== id) : [...equippedAccessories, id];
+    setEquippedAccessories(newEquipped);
+    saveExtra(userId, { equippedAccessories: newEquipped });
+  }
+
+  function buyStreakFreeze() {
+    if (streakFreezes >= 2 || xp < 60) return;
+    const userId = session ? session.user_id : 'guest';
+    const nf = streakFreezes + 1;
+    setXp((x) => x - 60);
+    setStreakFreezes(nf);
+    saveExtra(userId, { streakFreezes: nf });
+  }
+
+  function buyBadge() {
+    if (hasBadge || xp < 150) return;
+    const userId = session ? session.user_id : 'guest';
+    setXp((x) => x - 150);
+    setHasBadge(true);
+    saveExtra(userId, { hasBadge: true });
+  }
+
+  function buyHints() {
+    if (xp < 30) return;
+    const userId = session ? session.user_id : 'guest';
+    const nh = hints + 3;
+    setXp((x) => x - 30);
+    setHints(nh);
+    saveExtra(userId, { hints: nh });
+  }
+
+  function useHint() {
+    if (hints <= 0 || checked || !activeQuestion) return;
+    if (activeQuestion.type === 'order' || activeQuestion.type === 'match') return;
+    const correct = activeQuestion.answer;
+    const wrongs = options.filter((o) => o !== correct);
+    if (wrongs.length <= 1) return;
+    const keepWrong = wrongs[Math.floor(Math.random() * wrongs.length)];
+    const userId = session ? session.user_id : 'guest';
+    const nh = hints - 1;
+    setOptions(shuffle([correct, keepWrong]));
+    setHints(nh);
+    saveExtra(userId, { hints: nh });
+  }
+
+  function reviveWithGems() {
+    if (xp < 15 || !activeLesson) return;
+    setXp((x) => x - 15);
+    setHearts(2);
+    setFailedRun(false);
+    initQuestion(activeLesson, qIndex);
+    setScreen('lesson');
+  }
+
+  function toggleSound() {
+    const v = !soundOn;
+    setSoundOn(v);
+    SOUND_ENABLED = v;
+    try {
+      localStorage.setItem('uzd_sound', v ? '1' : '0');
+    } catch (e) {
+      // localStorage mavjud emas
+    }
+  }
+
+  function answerPlacement(opt) {
+    if (placementChecked) return;
+    const qs = getPlacementQuestions();
+    const cur = qs[placementIdx];
+    if (!cur) return;
+    const correct = opt === cur.q.answer;
+    setPlacementSelected(opt);
+    setPlacementChecked(true);
+    if (correct) playCorrectSound();
+    else playWrongSound();
+    setTimeout(() => {
+      if (!correct) {
+        finishPlacement(placementIdx - 1, qs);
+        return;
+      }
+      if (placementIdx + 1 >= qs.length) {
+        finishPlacement(placementIdx, qs);
+        return;
+      }
+      setPlacementIdx(placementIdx + 1);
+      setPlacementSelected(null);
+      setPlacementChecked(false);
+    }, 550);
+  }
+
+  function skipPlacement() {
+    const userId = session ? session.user_id : 'guest';
+    saveExtra(userId, { placementDone: true });
+    setSelectedLevel(LEVELS[0].id);
+    setScreen('home');
+  }
+
+  function finishPlacement(correctUpToIdx, qs) {
+    const userId = session ? session.user_id : 'guest';
+    if (correctUpToIdx >= 0) {
+      const idsToComplete = [];
+      for (let i = 0; i <= correctUpToIdx; i++) {
+        const lvl = LEVELS[qs[i].levelIdx];
+        lvl.units.forEach((u) => u.lessons.forEach((ls) => idsToComplete.push(ls.id)));
+      }
+      setCompleted((c) => Array.from(new Set([...c, ...idsToComplete])));
+      setRatings((r) => {
+        const nr = { ...r };
+        idsToComplete.forEach((id) => {
+          if (!nr[id]) nr[id] = 2;
+        });
+        return nr;
+      });
+      const nextIdx = Math.min(qs[correctUpToIdx].levelIdx + 1, LEVELS.length - 1);
+      setSelectedLevel(LEVELS[nextIdx].id);
+      setXp((x) => x + 30);
+    } else {
+      setSelectedLevel(LEVELS[0].id);
+    }
+    saveExtra(userId, { placementDone: true });
+    setScreen('home');
+  }
+
   function checkAnswer() {
     const q = activeQuestion;
     if (q.type === 'match') return;
@@ -2178,6 +2876,20 @@ export default function App() {
       const passed = accuracy >= 0.7;
       const bonus = perfect ? 20 : 0;
       setXp((x) => x + sessionXp + bonus);
+      bumpStreakForToday();
+      if (examMode) {
+        if (passed) {
+          const userId = session ? session.user_id : 'guest';
+          const newPassed = examPassedLevels.includes(examLevelId) ? examPassedLevels : [...examPassedLevels, examLevelId];
+          setExamPassedLevels(newPassed);
+          saveExtra(userId, { examPassedLevels: newPassed });
+        }
+        setFailedRun(false);
+        if (passed) playLessonPassSound();
+        else playLessonRetrySound();
+        setScreen('summary');
+        return;
+      }
       if (passed) {
         setCompleted((c) => (c.includes(activeLesson.id) ? c : [...c, activeLesson.id]));
       }
@@ -2195,11 +2907,17 @@ export default function App() {
   }
 
   function retryLesson() {
-    startLesson(activeLessonId);
+    if (examMode) startExam(examLevelId);
+    else startLesson(activeLessonId);
   }
 
   function exitToPath() {
-    setScreen('path');
+    if (examMode) {
+      setExamMode(false);
+      setScreen('home');
+    } else {
+      setScreen('path');
+    }
   }
 
   const pathD = activeUnit ? buildPathD(activeUnit.lessons.length) : '';
@@ -2345,48 +3063,93 @@ export default function App() {
       {screen === 'home' && (
         <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 30 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 22px 14px' }}>
-            <div>
-              <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 18, color: '#fff' }}>Rus tili</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', marginTop: 2, fontFamily: UZ_FONT }}>
-                {profile ? `Salom, ${profile.name.split(' ')[0]}!` : "O'zbek tilida o'rganish"}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+              <button
+                onClick={() => setMenuOpen(true)}
+                style={{ border: 'none', background: 'rgba(255,255,255,0.12)', borderRadius: 12, width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
+                aria-label="Menyu"
+              >
+                <Menu size={19} color="#fff" />
+              </button>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 18, color: '#fff', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  Rus tili {hasBadge && <Crown size={14} color="#E3B23C" fill="#E3B23C" />}
+                </div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', marginTop: 2, fontFamily: UZ_FONT, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {profile ? `Salom, ${profile.name.split(' ')[0]}!` : "O'zbek tilida o'rganish"}
+                </div>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
+            <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
               <div style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 999, padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 5, color: '#fff', fontWeight: 700, fontSize: 14, fontFamily: UZ_FONT }}>
                 <Flame size={16} fill="#E3B23C" stroke="#E3B23C" /> {streak}
               </div>
-              <div style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 999, padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 5, color: '#fff', fontWeight: 700, fontSize: 14, fontFamily: UZ_FONT }}>
+              <div
+                onClick={() => setScreen('shop')}
+                style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 999, padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 5, color: '#fff', fontWeight: 700, fontSize: 14, fontFamily: UZ_FONT, cursor: 'pointer' }}
+              >
                 <Gem size={16} fill="#2FA89C" stroke="#2FA89C" /> {xp}
               </div>
-              <button
-                onClick={signOut}
-                style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 999, border: 'none', padding: '6px 10px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                title="Chiqish"
-              >
-                <LogOut size={16} color="#fff" />
-              </button>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 8, padding: '0 20px 18px', overflowX: 'auto' }}>
-            {LEVELS.map((lv) => {
-              const totalLessons = lv.units.reduce((s, u) => s + u.lessons.length, 0);
-              const doneLessons = lv.units.reduce((s, u) => s + u.lessons.filter((ls) => completed.includes(ls.id)).length, 0);
-              const isSel = selectedLevel === lv.id;
-              return (
-                <button
-                  key={lv.id}
-                  className="level-tab"
-                  onClick={() => setSelectedLevel(lv.id)}
-                  style={{ padding: '9px 14px', borderRadius: 999, border: 'none', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 12.5, whiteSpace: 'nowrap', cursor: 'pointer', background: isSel ? '#E3B23C' : 'rgba(255,255,255,0.12)', color: isSel ? '#12233A' : '#fff' }}
-                >
-                  {lv.id} · {lv.label} ({doneLessons}/{totalLessons})
-                </button>
-              );
-            })}
+          <div style={{ padding: '0 20px 6px' }}>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {LEVELS.map((lv) => {
+                const unlocked = isLevelUnlocked(lv.id);
+                const complete = isLevelComplete(lv);
+                const isSel = selectedLevel === lv.id;
+                return (
+                  <button
+                    key={lv.id}
+                    className="level-tab"
+                    onClick={() => setSelectedLevel(lv.id)}
+                    style={{
+                      flex: 1,
+                      aspectRatio: '1',
+                      minWidth: 0,
+                      borderRadius: 12,
+                      border: isSel ? '2px solid #E3B23C' : '2px solid transparent',
+                      background: complete ? '#E3B23C' : isSel ? 'rgba(227,178,60,0.18)' : 'rgba(255,255,255,0.1)',
+                      color: complete ? '#12233A' : unlocked ? '#fff' : 'rgba(255,255,255,0.45)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      fontFamily: UZ_FONT,
+                      fontWeight: 800,
+                      fontSize: 13,
+                      position: 'relative',
+                    }}
+                  >
+                    {complete ? <Check size={16} strokeWidth={3} /> : lv.id}
+                    {!unlocked && (
+                      <div style={{ position: 'absolute', top: -4, right: -4, width: 15, height: 15, borderRadius: '50%', background: '#0E2A43', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Lock size={8} color="rgba(255,255,255,0.75)" />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ marginTop: 10, textAlign: 'center', fontFamily: UZ_FONT, fontSize: 12.5, color: 'rgba(255,255,255,0.65)' }}>
+              {currentLevel.label} · {currentLevel.units.reduce((s, u) => s + u.lessons.filter((ls) => completed.includes(ls.id)).length, 0)}/
+              {currentLevel.units.reduce((s, u) => s + u.lessons.length, 0)} dars tugatildi
+            </div>
           </div>
 
-          {isLevelComplete(currentLevel) && (
+          {isLevelComplete(currentLevel) && !examPassedLevels.includes(selectedLevel) && (
+            <div
+              onClick={() => startExam(selectedLevel)}
+              style={{ margin: '0 20px 16px', background: 'linear-gradient(90deg,#2FA89C,#4FC2B5)', borderRadius: 16, padding: '13px 16px', display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', boxShadow: '0 6px 0 #1F7A73' }}
+            >
+              <ClipboardList size={22} color="#fff" />
+              <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13.5, color: '#fff' }}>
+                Barcha darslar tugadi! Yakuniy imtihonni (30 savol) topshiring
+              </div>
+            </div>
+          )}
+          {isLevelComplete(currentLevel) && examPassedLevels.includes(selectedLevel) && (
             <div
               onClick={() => { setCertLevelId(selectedLevel); setScreen('certificate'); }}
               style={{ margin: '0 20px 16px', background: 'linear-gradient(90deg,#E3B23C,#F0C868)', borderRadius: 16, padding: '13px 16px', display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', boxShadow: '0 6px 0 #B8862A' }}
@@ -2510,14 +3273,29 @@ export default function App() {
 
       {screen === 'lesson' && activeLesson && activeQuestion && (
         <div style={{ background: '#EFF6F3', padding: '18px 22px 26px', minHeight: 560 }}>
+          {examMode && (
+            <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 11, color: '#2FA89C', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+              Yakuniy imtihon · {qIndex + 1}/{activeLesson.questions.length}
+            </div>
+          )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 26 }}>
             <X onClick={exitToPath} size={22} style={{ cursor: 'pointer', color: '#94A3A8', flexShrink: 0 }} />
             <div style={{ flex: 1, height: 12, background: '#DCEAE7', borderRadius: 999, overflow: 'hidden' }}>
               <div style={{ height: '100%', width: `${(qIndex / activeLesson.questions.length) * 100}%`, background: 'linear-gradient(90deg,#2FA89C,#E3B23C)', borderRadius: 999, transition: 'width .3s ease' }} />
             </div>
+            {hintEligible && (
+              <button
+                onClick={useHint}
+                disabled={hints <= 0}
+                style={{ display: 'flex', alignItems: 'center', gap: 3, border: 'none', background: hints > 0 ? '#FDF2DC' : '#F0F0EE', color: hints > 0 ? '#B8862A' : '#B7BEC2', borderRadius: 999, padding: '5px 9px', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 12.5, cursor: hints > 0 ? 'pointer' : 'default', flexShrink: 0 }}
+                title="Maslahat: 2 ta noto'g'ri javobni olib tashlaydi"
+              >
+                <Lightbulb size={15} /> {hints}
+              </button>
+            )}
             <div style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
-              {[0, 1, 2, 3, 4].map((i) => (
-                <Heart key={i} size={17} fill={i < hearts ? '#C1502E' : 'none'} stroke={i < hearts ? '#C1502E' : '#C7D2D9'} />
+              {Array.from({ length: examMode ? 10 : 5 }, (_, i) => (
+                <Heart key={i} size={examMode ? 13 : 17} fill={i < hearts ? '#C1502E' : 'none'} stroke={i < hearts ? '#C1502E' : '#C7D2D9'} />
               ))}
             </div>
           </div>
@@ -2738,6 +3516,234 @@ export default function App() {
             >
               <Printer size={18} /> Chop etish / Saqlash
             </button>
+
+            {MEDIA_BREAKS[certLevelId] && (
+              <div style={{ marginTop: 26 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                  <Gift size={17} color="#E3B23C" />
+                  <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13.5, color: '#fff' }}>Bonus: madaniy tanaffus</div>
+                </div>
+
+                <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>
+                  {MEDIA_BREAKS[certLevelId].songTitle}
+                </div>
+                <div style={{ borderRadius: 14, overflow: 'hidden', marginBottom: 18, background: '#000', aspectRatio: '16/9' }}>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${MEDIA_BREAKS[certLevelId].songId}`}
+                    title="Musiqiy tanaffus"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{ display: 'block' }}
+                  />
+                </div>
+
+                <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: 'rgba(255,255,255,0.6)', marginBottom: 6 }}>
+                  {MEDIA_BREAKS[certLevelId].cartoonTitle}
+                </div>
+                <div style={{ borderRadius: 14, overflow: 'hidden', background: '#000', aspectRatio: '16/9' }}>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${MEDIA_BREAKS[certLevelId].cartoonId}`}
+                    title="Multfilm"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{ display: 'block' }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {screen === 'placement-intro' && (
+        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px', textAlign: 'center' }}>
+          <Compass size={54} color="#E3B23C" style={{ marginBottom: 18 }} />
+          <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 20, color: '#fff', marginBottom: 10 }}>Darajangizni bilamizmi?</div>
+          <div style={{ fontFamily: UZ_FONT, fontSize: 13.5, color: 'rgba(255,255,255,0.65)', marginBottom: 26, maxWidth: 280, lineHeight: 1.6 }}>
+            Bir necha savolga javob bering — sizga mos darajadan darslarni ochib beramiz. Xohlasangiz, boshlang'ich darajadan ham boshlashingiz mumkin.
+          </div>
+          <button
+            onClick={() => { setPlacementIdx(0); setPlacementSelected(null); setPlacementChecked(false); setScreen('placement-test'); }}
+            className="primary-btn"
+            style={{ width: '100%', maxWidth: 300, border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 15, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer', marginBottom: 12 }}
+          >
+            Testni boshlash
+          </button>
+          <button
+            onClick={skipPlacement}
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', fontFamily: UZ_FONT, fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            O'tkazib yuborish, boshidan boshlayman
+          </button>
+        </div>
+      )}
+
+      {screen === 'placement-test' && (() => {
+        const qs = getPlacementQuestions();
+        const cur = qs[placementIdx];
+        if (!cur) return null;
+        return (
+          <div style={{ background: '#EFF6F3', padding: '24px 22px 30px', minHeight: 560 }}>
+            <div style={{ fontFamily: UZ_FONT, fontSize: 11, fontWeight: 700, color: '#5B807B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+              {cur.levelLabel} darajasi savoli · {placementIdx + 1}/{qs.length}
+            </div>
+            <div style={{ height: 8, background: '#DCEAE7', borderRadius: 999, overflow: 'hidden', marginBottom: 24 }}>
+              <div style={{ height: '100%', width: `${(placementIdx / qs.length) * 100}%`, background: 'linear-gradient(90deg,#2FA89C,#E3B23C)', borderRadius: 999, transition: 'width .3s ease' }} />
+            </div>
+            <div style={{ fontSize: 24, fontWeight: 700, color: '#12233A', fontFamily: RU_FONT, marginBottom: 26 }}>
+              {cur.q.prompt || cur.q.sentence || cur.q.question}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {cur.q.options.map((opt, i) => {
+                let borderColor = '#DCEAE7', bg = '#fff', color = '#12233A';
+                if (placementChecked) {
+                  if (opt === cur.q.answer) { borderColor = '#3F9142'; bg = '#E9F7EA'; color = '#256B29'; }
+                  else if (opt === placementSelected) { borderColor = '#C1502E'; bg = '#FBEAE4'; color = '#C1502E'; }
+                  else { color = '#9AA7AE'; }
+                }
+                return (
+                  <button
+                    key={i}
+                    onClick={() => answerPlacement(opt)}
+                    disabled={placementChecked}
+                    className="opt-btn"
+                    style={{ border: `2px solid ${borderColor}`, background: bg, color, borderRadius: 14, padding: '14px 16px', fontFamily: RU_FONT, fontSize: 16, fontWeight: 500, textAlign: 'left', cursor: placementChecked ? 'default' : 'pointer' }}
+                  >
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
+      {screen === 'shop' && (
+        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 40 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '18px 22px 6px' }}>
+            <ArrowLeft onClick={goHome} size={20} style={{ cursor: 'pointer', color: '#fff' }} />
+            <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 15, color: '#fff' }}>Olmoslar do'koni</div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 22px 20px', color: '#E3B23C', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 16 }}>
+            <Gem size={18} fill="#2FA89C" stroke="#2FA89C" /> {xp} olmos mavjud
+          </div>
+
+          <div style={{ padding: '0 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ background: '#fff', borderRadius: 18, padding: '18px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <Mascot variant={activeAvatar} accessories={equippedAccessories} size={96} />
+              <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#12233A' }}>{profile?.name}</div>
+            </div>
+
+            <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>Avatar tanlang</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 10 }}>
+              {AVATARS.map((av) => {
+                const owned = ownedAvatars.includes(av.id);
+                const isActive = activeAvatar === av.id;
+                const affordable = owned || xp >= av.cost;
+                return (
+                  <button
+                    key={av.id}
+                    onClick={() => (owned ? selectAvatar(av.id) : buyAvatar(av.id))}
+                    disabled={!affordable}
+                    style={{ background: '#fff', border: isActive ? '2px solid #E3B23C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55 }}
+                  >
+                    <Mascot variant={av.id} accessories={[]} size={50} />
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 10.5, color: '#12233A' }}>{av.name}</div>
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 10, color: owned ? '#2FA89C' : '#B8862A', display: 'flex', alignItems: 'center', gap: 2 }}>
+                      {owned ? (isActive ? 'Tanlangan' : "O'rnatish") : (<>{av.cost} <Gem size={10} /></>)}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>Aksessuarlar</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 10 }}>
+              {ACCESSORIES.map((ac) => {
+                const owned = ownedAccessories.includes(ac.id);
+                const equipped = equippedAccessories.includes(ac.id);
+                const affordable = owned || xp >= ac.cost;
+                return (
+                  <button
+                    key={ac.id}
+                    onClick={() => (owned ? toggleAccessory(ac.id) : buyAccessory(ac.id))}
+                    disabled={!affordable}
+                    style={{ background: '#fff', border: equipped ? '2px solid #2FA89C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55 }}
+                  >
+                    <Mascot variant="panda" accessories={[ac.id]} size={50} />
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 10.5, color: '#12233A' }}>{ac.name}</div>
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 10, color: owned ? (equipped ? '#2FA89C' : '#9AA7AE') : '#B8862A', display: 'flex', alignItems: 'center', gap: 2 }}>
+                      {owned ? (equipped ? 'Kiyilgan' : 'Kiyish') : (<>{ac.cost} <Gem size={10} /></>)}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>Foydali narsalar</div>
+            <div style={{ background: '#fff', borderRadius: 18, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 14, background: '#E6F1FB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Snowflake size={24} color="#378ADD" />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#12233A' }}>Seriya muzlatgichi</div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#5B807B', marginTop: 2 }}>Bir kun mashq qilmasangiz ham, seriyangiz saqlanadi ({streakFreezes}/2 bor)</div>
+              </div>
+              <button
+                onClick={buyStreakFreeze}
+                disabled={streakFreezes >= 2 || xp < 60}
+                style={{ border: 'none', borderRadius: 12, padding: '9px 12px', background: streakFreezes >= 2 || xp < 60 ? '#EEF1F0' : '#2FA89C', color: streakFreezes >= 2 || xp < 60 ? '#9AA7AE' : '#fff', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 12.5, cursor: streakFreezes >= 2 || xp < 60 ? 'default' : 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 3 }}
+              >
+                60 <Gem size={11} />
+              </button>
+            </div>
+
+            <div style={{ background: '#fff', borderRadius: 18, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 14, background: '#FAEEDA', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Lightbulb size={24} color="#B8862A" />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#12233A' }}>Maslahat (3 dona)</div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#5B807B', marginTop: 2 }}>Darsda qiynalsangiz, 2 ta noto'g'ri javobni olib tashlaydi ({hints} dona bor)</div>
+              </div>
+              <button
+                onClick={buyHints}
+                disabled={xp < 30}
+                style={{ border: 'none', borderRadius: 12, padding: '9px 12px', background: xp < 30 ? '#EEF1F0' : '#2FA89C', color: xp < 30 ? '#9AA7AE' : '#fff', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 12.5, cursor: xp < 30 ? 'default' : 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 3 }}
+              >
+                30 <Gem size={11} />
+              </button>
+            </div>
+
+            <div style={{ background: '#fff', borderRadius: 18, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 14, background: '#FBEAF0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Crown size={24} color="#D4537E" />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#12233A' }}>Oltin nishon</div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#5B807B', marginTop: 2 }}>Ismingiz yonida doimiy toj belgisi</div>
+              </div>
+              <button
+                onClick={buyBadge}
+                disabled={hasBadge || xp < 150}
+                style={{ border: 'none', borderRadius: 12, padding: '9px 12px', background: hasBadge || xp < 150 ? '#EEF1F0' : '#2FA89C', color: hasBadge || xp < 150 ? '#9AA7AE' : '#fff', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 12.5, cursor: hasBadge || xp < 150 ? 'default' : 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 3 }}
+              >
+                {hasBadge ? 'Sotib olindi' : (<>150 <Gem size={11} /></>)}
+              </button>
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 16, padding: '14px 16px', display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 6 }}>
+              <Heart size={16} color="#E39C8A" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div style={{ fontFamily: UZ_FONT, fontSize: 12, color: 'rgba(255,255,255,0.65)', lineHeight: 1.5 }}>
+                Eslatma: darsda yuraklaringiz tugab qolsa, 15 olmos evaziga davom etishingiz ham mumkin.
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -2749,6 +3755,14 @@ export default function App() {
               <Heart size={54} stroke="#6B8AA3" style={{ marginBottom: 18 }} />
               <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 22, color: '#fff', marginBottom: 8 }}>Yuraklar tugadi</div>
               <div style={{ fontFamily: UZ_FONT, fontSize: 14, color: 'rgba(255,255,255,0.6)', marginBottom: 30 }}>Xafa bo'lmang, yana urinib ko'ring!</div>
+              {xp >= 15 && (
+                <button
+                  onClick={reviveWithGems}
+                  style={{ width: '100%', border: '2px solid #E3B23C', borderRadius: 16, padding: 14, fontWeight: 800, fontSize: 15, color: '#E3B23C', background: 'rgba(227,178,60,0.1)', marginBottom: 10, cursor: 'pointer', fontFamily: UZ_FONT, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                >
+                  <Gem size={16} /> 15 olmos evaziga davom etish
+                </button>
+              )}
               <button className="primary-btn" onClick={retryLesson} style={{ width: '100%', border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 16, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer' }}>
                 Qayta urinish
               </button>
@@ -2768,7 +3782,7 @@ export default function App() {
                 Aniqlik: {summaryAccuracy}%
               </div>
               <div style={{ fontFamily: UZ_FONT, fontSize: 13, color: 'rgba(255,255,255,0.55)', marginBottom: 30, maxWidth: 260, lineHeight: 1.5 }}>
-                Keyingi darsni ochish uchun kamida 70% aniqlik kerak. Yana urinib ko'ring!
+                {examMode ? "Imtihondan o'tish uchun kamida 70% aniqlik kerak. Yana urinib ko'ring!" : "Keyingi darsni ochish uchun kamida 70% aniqlik kerak. Yana urinib ko'ring!"}
               </div>
               <button className="primary-btn" onClick={retryLesson} style={{ width: '100%', border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 16, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer' }}>
                 Qayta urinish
@@ -2790,29 +3804,117 @@ export default function App() {
                   ))}
                 </div>
                 <div className="panda-pop">
-                  <PandaMascot size={108} />
+                  <Mascot variant={activeAvatar} accessories={equippedAccessories} size={108} />
                 </div>
               </div>
-              <div className="summary-rise" style={{ display: 'flex', gap: 6, marginBottom: 20, animationDelay: '.25s' }}>
-                {[1, 2, 3].map((n) => (
-                  <Star key={n} size={42} fill={n <= (ratings[activeLesson.id] || 0) ? '#E3B23C' : 'none'} stroke="#E3B23C" />
-                ))}
+              {!examMode && (
+                <div className="summary-rise" style={{ display: 'flex', gap: 6, marginBottom: 20, animationDelay: '.25s' }}>
+                  {[1, 2, 3].map((n) => (
+                    <Star key={n} size={42} fill={n <= (ratings[activeLesson.id] || 0) ? '#E3B23C' : 'none'} stroke="#E3B23C" />
+                  ))}
+                </div>
+              )}
+              <div className="summary-rise" style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 22, color: '#fff', marginBottom: 10, animationDelay: '.32s' }}>
+                {examMode ? "Imtihon muvaffaqiyatli topshirildi!" : 'Ajoyib natija!'}
               </div>
-              <div className="summary-rise" style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 22, color: '#fff', marginBottom: 10, animationDelay: '.32s' }}>Ajoyib natija!</div>
               <div className="summary-rise" style={{ fontFamily: UZ_FONT, fontSize: 16, color: '#E3B23C', fontWeight: 800, marginBottom: 4, animationDelay: '.38s' }}>
                 +{sessionXp + (correctCount === activeLesson.questions.length ? 20 : 0)} XP
               </div>
               <div className="summary-rise" style={{ fontFamily: UZ_FONT, fontSize: 13, color: 'rgba(255,255,255,0.6)', marginBottom: 30, animationDelay: '.44s' }}>
                 Aniqlik: {summaryAccuracy}%
               </div>
-              <button className="primary-btn summary-rise" onClick={exitToPath} style={{ width: '100%', border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 16, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer', animationDelay: '.5s' }}>
-                Davom etish
-              </button>
+              {examMode ? (
+                <button
+                  className="primary-btn summary-rise"
+                  onClick={() => { setExamMode(false); setCertLevelId(examLevelId); setScreen('certificate'); }}
+                  style={{ width: '100%', border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 16, color: '#12233A', fontFamily: UZ_FONT, background: '#E3B23C', boxShadow: '0 5px 0 #B8862A', cursor: 'pointer', animationDelay: '.5s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                >
+                  <Award size={18} /> Sertifikatni olish
+                </button>
+              ) : (
+                <button className="primary-btn summary-rise" onClick={exitToPath} style={{ width: '100%', border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 16, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer', animationDelay: '.5s' }}>
+                  Davom etish
+                </button>
+              )}
             </>
           )}
         </div>
       )}
         </>
+      )}
+
+      {menuOpen && (
+        <div
+          onClick={() => setMenuOpen(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(6,18,30,0.55)', zIndex: 50, display: 'flex' }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{ width: '78%', maxWidth: 300, height: '100%', background: '#123A5C', boxShadow: '4px 0 24px rgba(0,0,0,0.3)', padding: '26px 20px', display: 'flex', flexDirection: 'column', gap: 4, overflowY: 'auto' }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+              <div style={{ width: 50, height: 50, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+                <Mascot variant={activeAvatar} accessories={equippedAccessories} size={50} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 15, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{profile?.name}</div>
+                  {hasBadge && <Crown size={15} color="#E3B23C" fill="#E3B23C" />}
+                </div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: 'rgba(255,255,255,0.5)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{profile?.email}</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+              <div style={{ flex: 1, background: 'rgba(255,255,255,0.08)', borderRadius: 14, padding: '10px 6px', textAlign: 'center' }}>
+                <Flame size={16} fill="#E3B23C" stroke="#E3B23C" style={{ marginBottom: 3 }} />
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#fff' }}>{streak}</div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 9.5, color: 'rgba(255,255,255,0.5)' }}>kunlik seriya</div>
+              </div>
+              <div style={{ flex: 1, background: 'rgba(255,255,255,0.08)', borderRadius: 14, padding: '10px 6px', textAlign: 'center' }}>
+                <Gem size={16} fill="#2FA89C" stroke="#2FA89C" style={{ marginBottom: 3 }} />
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#fff' }}>{xp}</div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 9.5, color: 'rgba(255,255,255,0.5)' }}>olmos</div>
+              </div>
+              <div style={{ flex: 1, background: 'rgba(255,255,255,0.08)', borderRadius: 14, padding: '10px 6px', textAlign: 'center' }}>
+                <Check size={16} color="#8FCFC7" style={{ marginBottom: 3 }} />
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#fff' }}>{completed.length}</div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 9.5, color: 'rgba(255,255,255,0.5)' }}>dars</div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => { setScreen('shop'); setMenuOpen(false); }}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, border: 'none', background: 'rgba(255,255,255,0.06)', borderRadius: 14, padding: '13px 14px', cursor: 'pointer', marginBottom: 8, textAlign: 'left' }}
+            >
+              <ShoppingBag size={19} color="#E3B23C" />
+              <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 14, color: '#fff' }}>Olmoslar do'koni</div>
+            </button>
+
+            <button
+              onClick={toggleSound}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: 'none', background: 'rgba(255,255,255,0.06)', borderRadius: 14, padding: '13px 14px', cursor: 'pointer', marginBottom: 8 }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                {soundOn ? <Volume2 size={19} color="#8FCFC7" /> : <VolumeX size={19} color="rgba(255,255,255,0.5)" />}
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 14, color: '#fff' }}>Ovoz effektlari</div>
+              </div>
+              <div style={{ width: 36, height: 20, borderRadius: 999, background: soundOn ? '#2FA89C' : 'rgba(255,255,255,0.2)', position: 'relative', flexShrink: 0 }}>
+                <div style={{ position: 'absolute', top: 2, left: soundOn ? 18 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left .15s' }} />
+              </div>
+            </button>
+
+            <div style={{ flex: 1 }} />
+
+            <button
+              onClick={signOut}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, border: 'none', background: 'rgba(193,80,46,0.15)', borderRadius: 14, padding: '13px 14px', cursor: 'pointer', marginTop: 14 }}
+            >
+              <LogOut size={19} color="#E39C8A" />
+              <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 14, color: '#E39C8A' }}>Chiqish</div>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
