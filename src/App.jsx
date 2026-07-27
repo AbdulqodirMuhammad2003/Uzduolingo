@@ -1674,6 +1674,25 @@ function supaConfigured() {
   return !SUPABASE_URL.includes('YOUR-PROJECT') && !SUPABASE_ANON_KEY.includes('YOUR-ANON-KEY');
 }
 
+// Sessiyani saqlash uchun yordamchi obyekt.
+// Eslatma: window.storage faqat Claude Artifacts muhitida mavjud bo'ladi,
+// haqiqiy saytda (masalan, Vercel'da) u mavjud emas — shuning uchun
+// bu yerda oddiy brauzer localStorage ishlatiladi.
+const localSession = {
+  async get(key) {
+    const v = localStorage.getItem(key);
+    return v ? { value: v } : null;
+  },
+  async set(key, value) {
+    localStorage.setItem(key, value);
+    return { key, value };
+  },
+  async delete(key) {
+    localStorage.removeItem(key);
+    return { key, deleted: true };
+  },
+};
+
 async function supaSignUp(email, password, name) {
   const res = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
     method: 'POST',
@@ -1885,7 +1904,7 @@ export default function App() {
         return;
       }
       try {
-        const s = await window.storage.get('session', false);
+        const s = await localSession.get('session', false);
         if (s && s.value) {
           const saved = JSON.parse(s.value);
           let accessToken = saved.access_token;
@@ -1900,7 +1919,7 @@ export default function App() {
             try {
               const refreshed = await supaRefreshSession(saved.refresh_token);
               accessToken = refreshed.access_token;
-              await window.storage.set('session', JSON.stringify({ access_token: refreshed.access_token, refresh_token: refreshed.refresh_token, user_id: refreshed.user.id }), false);
+              await localSession.set('session', JSON.stringify({ access_token: refreshed.access_token, refresh_token: refreshed.refresh_token, user_id: refreshed.user.id }), false);
               prof = await supaGetProfile(accessToken, refreshed.user.id);
             } catch (e) {
               prof = null;
@@ -1916,7 +1935,7 @@ export default function App() {
               if (typeof prog.xp === 'number') setXp(prog.xp);
             }
           } else {
-            await window.storage.delete('session', false).catch(() => {});
+            await localSession.delete('session', false).catch(() => {});
           }
         }
       } catch (e) {
@@ -1946,7 +1965,7 @@ export default function App() {
       if (authMode === 'signup') {
         const data = await supaSignUp(email, password, name);
         if (data.access_token) {
-          await window.storage.set('session', JSON.stringify({ access_token: data.access_token, refresh_token: data.refresh_token, user_id: data.user.id }), false);
+          await localSession.set('session', JSON.stringify({ access_token: data.access_token, refresh_token: data.refresh_token, user_id: data.user.id }), false);
           setSession({ access_token: data.access_token, user_id: data.user.id });
           setProfile({ name, email });
         } else {
@@ -1954,7 +1973,7 @@ export default function App() {
         }
       } else {
         const data = await supaSignIn(email, password);
-        await window.storage.set('session', JSON.stringify({ access_token: data.access_token, refresh_token: data.refresh_token, user_id: data.user.id }), false);
+        await localSession.set('session', JSON.stringify({ access_token: data.access_token, refresh_token: data.refresh_token, user_id: data.user.id }), false);
         setSession({ access_token: data.access_token, user_id: data.user.id });
         const prof = await supaGetProfile(data.access_token, data.user.id);
         setProfile(prof || { name: '', email });
@@ -1972,7 +1991,7 @@ export default function App() {
   }
 
   function signOut() {
-    window.storage.delete('session', false).catch(() => {});
+    localSession.delete('session', false).catch(() => {});
     setSession(null);
     setProfile(null);
     setCompleted([]);
