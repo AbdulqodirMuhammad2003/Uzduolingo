@@ -1930,14 +1930,27 @@ function saveLocalProgress(userId, data) {
 
 // ---- Daraja aniqlash (placement) uchun tezkor test savollari ----
 // Har bir darajadan (A1..C1) bittadan 'choice' turidagi savol tanlanadi.
+const PLACEMENT_BLOCK_SIZE = 4;
+
 function getPlacementQuestions() {
-  return LEVELS.filter((lvl) => lvl.id !== 'LG').map((lvl, i) => {
-    const lesson = lvl.units?.[0]?.lessons?.[0];
-    if (!lesson) return null;
-    const q = lesson.questions.find((qq) => qq.type === 'choice') || lesson.questions[0];
-    if (!q) return null;
-    return { levelIdx: i, levelLabel: lvl.label, q };
-  }).filter(Boolean);
+  const out = [];
+  LEVELS.filter((lvl) => lvl.id !== 'LG').forEach((lvl, levelIdx) => {
+    const allLessons = [];
+    lvl.units.forEach((u) => u.lessons.forEach((ls) => allLessons.push(ls)));
+    const n = allLessons.length;
+    if (!n) return;
+    for (let k = 0; k < PLACEMENT_BLOCK_SIZE; k++) {
+      const pos = n <= PLACEMENT_BLOCK_SIZE ? k % n : Math.min(Math.floor((k * n) / PLACEMENT_BLOCK_SIZE), n - 1);
+      const lesson = allLessons[pos];
+      if (!lesson) continue;
+      const q = lesson.questions.find((qq) => qq.type === 'choice')
+        || lesson.questions.find((qq) => qq.options && qq.answer)
+        || null;
+      if (!q) continue;
+      out.push({ levelIdx, levelLabel: lvl.label, q });
+    }
+  });
+  return out;
 }
 
 function starPoints(cx, cy, points, outerR, innerR) {
@@ -2232,6 +2245,8 @@ const CONFETTI_CONFIG = [
 // ---- Ovozli signallar (Web Audio API orqali sintez qilingan, tashqi fayl kerak emas) ----
 let SOUND_ENABLED = true;
 let __audioCtx = null;
+let __reverbNode = null;
+let __reverbConnected = false;
 function getAudioCtx() {
   const AC = typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext);
   if (!AC) return null;
@@ -2239,50 +2254,106 @@ function getAudioCtx() {
   if (__audioCtx.state === 'suspended') __audioCtx.resume();
   return __audioCtx;
 }
-function beep(freq, delay, duration, type = 'sine', volume = 0.2) {
-  if (!SOUND_ENABLED) return;
-  const ctx = getAudioCtx();
-  if (!ctx) return;
-  const t = ctx.currentTime + delay;
-  const osc = ctx.createOscillator();
+// Sodda algoritmik reverb: qisqa "oq shovqin" buferini eksponensial pasaytirib,
+// tabiiy xona-aksi hissi beradi — tashqi audio fayl talab qilmaydi.
+function createReverbBuffer(ctx, duration = 1.4, decay = 2.6) {
+  const rate = ctx.sampleRate;
+  const length = Math.floor(rate * duration);
+  const buffer = ctx.createBuffer(2, length, rate);
+  for (let ch = 0; ch < 2; ch++) {
+    const data = buffer.getChannelData(ch);
+    for (let i = 0; i < length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+    }
+  }
+  return buffer;
+}
+function getReverb(ctx) {
+  if (!__reverbNode) {
+    __reverbNode = ctx.createConvolver();
+    __reverbNode.buffer = createReverbBuffer(ctx);
+  }
+  if (!__reverbConnected) {
+    __reverbNode.connect(ctx.destination);
+    __reverbConnected = true;
+  }
+  return __reverbNode;
+}
+// Ikkita bir-biridan sal chetlashtirilgan (detuned) oscillator + past chastotali filtr +
+// yumshoq ADSR konvert + ozgina reverb — bitta tekis ovoz o'rniga boyroq, "premium" tembr beradi.
+function richTone(ctx, { freq, start = 0, duration = 0.3, type = 'sine', peak = 0.18, filterFreq = 3200, q = 0.6, wet = 0.16 }) {
+  const t = ctx.currentTime + start;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(filterFreq, t);
+  filter.Q.setValueAtTime(q, t);
+
   const gain = ctx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, t);
   gain.gain.setValueAtTime(0, t);
-  gain.gain.linearRampToValueAtTime(volume, t + 0.012);
-  gain.gain.exponentialRampToValueAtTime(0.0008, t + duration);
-  osc.connect(gain);
+  gain.gain.linearRampToValueAtTime(peak, t + 0.02);
+  gain.gain.exponentialRampToValueAtTime(Math.max(peak * 0.32, 0.0006), t + duration * 0.55);
+  gain.gain.exponentialRampToValueAtTime(0.0004, t + duration);
+
+  filter.connect(gain);
   gain.connect(ctx.destination);
-  osc.start(t);
-  osc.stop(t + duration + 0.03);
+
+  [-5, 5].forEach((detune) => {
+    const osc = ctx.createOscillator();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, t);
+    osc.detune.setValueAtTime(detune, t);
+    osc.connect(filter);
+    osc.start(t);
+    osc.stop(t + duration + 0.06);
+  });
+
+  if (wet > 0) {
+    const wetGain = ctx.createGain();
+    wetGain.gain.setValueAtTime(wet, t);
+    filter.connect(wetGain);
+    wetGain.connect(getReverb(ctx));
+  }
 }
 function playCorrectSound() {
-  beep(783.99, 0, 0.13, 'sine', 0.22);
-  beep(1046.5, 0.09, 0.18, 'sine', 0.22);
+  const ctx = getAudioCtx();
+  if (!ctx || !SOUND_ENABLED) return;
+  richTone(ctx, { freq: 659.25, start: 0, duration: 0.42, type: 'sine', peak: 0.15, filterFreq: 3600, wet: 0.2 });
+  richTone(ctx, { freq: 987.77, start: 0.08, duration: 0.5, type: 'sine', peak: 0.13, filterFreq: 3400, wet: 0.24 });
 }
 function playWrongSound() {
-  beep(220, 0, 0.16, 'triangle', 0.16);
-  beep(174.61, 0.1, 0.24, 'triangle', 0.14);
+  const ctx = getAudioCtx();
+  if (!ctx || !SOUND_ENABLED) return;
+  richTone(ctx, { freq: 196.0, start: 0, duration: 0.24, type: 'sine', peak: 0.15, filterFreq: 850, q: 0.5, wet: 0.05 });
 }
 function playMatchTickSound() {
-  beep(880, 0, 0.09, 'sine', 0.15);
+  const ctx = getAudioCtx();
+  if (!ctx || !SOUND_ENABLED) return;
+  richTone(ctx, { freq: 880, start: 0, duration: 0.12, type: 'sine', peak: 0.11, filterFreq: 4200, wet: 0.08 });
 }
 function playMismatchSound() {
-  beep(196, 0, 0.14, 'triangle', 0.12);
+  const ctx = getAudioCtx();
+  if (!ctx || !SOUND_ENABLED) return;
+  richTone(ctx, { freq: 220, start: 0, duration: 0.16, type: 'sine', peak: 0.11, filterFreq: 1300, q: 0.5, wet: 0.05 });
 }
 function playLessonPassSound() {
-  beep(523.25, 0, 0.14, 'sine', 0.22);
-  beep(659.25, 0.11, 0.14, 'sine', 0.22);
-  beep(783.99, 0.22, 0.14, 'sine', 0.22);
-  beep(1046.5, 0.33, 0.3, 'sine', 0.25);
+  const ctx = getAudioCtx();
+  if (!ctx || !SOUND_ENABLED) return;
+  richTone(ctx, { freq: 523.25, start: 0, duration: 0.32, type: 'sine', peak: 0.13, filterFreq: 4000, wet: 0.18 });
+  richTone(ctx, { freq: 659.25, start: 0.1, duration: 0.32, type: 'sine', peak: 0.13, filterFreq: 4000, wet: 0.2 });
+  richTone(ctx, { freq: 783.99, start: 0.2, duration: 0.34, type: 'sine', peak: 0.14, filterFreq: 4200, wet: 0.22 });
+  richTone(ctx, { freq: 1046.5, start: 0.3, duration: 0.65, type: 'sine', peak: 0.16, filterFreq: 4600, wet: 0.32 });
 }
 function playLessonRetrySound() {
-  beep(392.0, 0, 0.14, 'triangle', 0.16);
-  beep(329.63, 0.12, 0.24, 'triangle', 0.16);
+  const ctx = getAudioCtx();
+  if (!ctx || !SOUND_ENABLED) return;
+  richTone(ctx, { freq: 349.23, start: 0, duration: 0.24, type: 'sine', peak: 0.12, filterFreq: 2200, wet: 0.1 });
+  richTone(ctx, { freq: 293.66, start: 0.12, duration: 0.34, type: 'sine', peak: 0.12, filterFreq: 2000, wet: 0.12 });
 }
 function playHeartsOutSound() {
-  beep(293.66, 0, 0.15, 'triangle', 0.14);
-  beep(233.08, 0.12, 0.28, 'triangle', 0.14);
+  const ctx = getAudioCtx();
+  if (!ctx || !SOUND_ENABLED) return;
+  richTone(ctx, { freq: 246.94, start: 0, duration: 0.24, type: 'sine', peak: 0.14, filterFreq: 1100, q: 0.5, wet: 0.08 });
+  richTone(ctx, { freq: 185.0, start: 0.14, duration: 0.44, type: 'sine', peak: 0.15, filterFreq: 950, q: 0.5, wet: 0.1 });
 }
 
 export default function App() {
@@ -2302,6 +2373,7 @@ export default function App() {
   const [placementIdx, setPlacementIdx] = useState(0);
   const [placementSelected, setPlacementSelected] = useState(null);
   const [placementChecked, setPlacementChecked] = useState(false);
+  const [placementResults, setPlacementResults] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [ratings, setRatings] = useState({});
   const [activeLevelId, setActiveLevelId] = useState(null);
@@ -2808,14 +2880,24 @@ export default function App() {
     setPlacementChecked(true);
     if (correct) playCorrectSound();
     else playWrongSound();
+    const newResults = [...placementResults, correct];
+    setPlacementResults(newResults);
     setTimeout(() => {
-      if (!correct) {
-        finishPlacement(placementIdx - 1, qs);
-        return;
-      }
-      if (placementIdx + 1 >= qs.length) {
-        finishPlacement(placementIdx, qs);
-        return;
+      const atEnd = placementIdx + 1 >= qs.length;
+      const enteringNewLevel = !atEnd && qs[placementIdx + 1].levelIdx !== cur.levelIdx;
+      if (atEnd || enteringNewLevel) {
+        const blockSize = qs.filter((q) => q.levelIdx === cur.levelIdx).length;
+        const blockResults = newResults.slice(newResults.length - blockSize);
+        const rightCount = blockResults.filter(Boolean).length;
+        const passedBlock = rightCount / blockSize >= 0.7;
+        if (!passedBlock) {
+          finishPlacement(cur.levelIdx - 1);
+          return;
+        }
+        if (atEnd) {
+          finishPlacement(cur.levelIdx);
+          return;
+        }
       }
       setPlacementIdx(placementIdx + 1);
       setPlacementSelected(null);
@@ -2830,12 +2912,13 @@ export default function App() {
     setScreen('home');
   }
 
-  function finishPlacement(correctUpToIdx, qs) {
+  function finishPlacement(passedLevelIdx) {
     const userId = session ? session.user_id : 'guest';
-    if (correctUpToIdx >= 0) {
+    const cefrLevels = LEVELS.filter((lvl) => lvl.id !== 'LG');
+    if (passedLevelIdx >= 0) {
       const idsToComplete = [];
-      for (let i = 0; i <= correctUpToIdx; i++) {
-        const lvl = LEVELS[qs[i].levelIdx];
+      for (let i = 0; i <= passedLevelIdx; i++) {
+        const lvl = cefrLevels[i];
         lvl.units.forEach((u) => u.lessons.forEach((ls) => idsToComplete.push(ls.id)));
       }
       setCompleted((c) => Array.from(new Set([...c, ...idsToComplete])));
@@ -2846,11 +2929,11 @@ export default function App() {
         });
         return nr;
       });
-      const nextIdx = Math.min(qs[correctUpToIdx].levelIdx + 1, LEVELS.length - 1);
-      setSelectedLevel(LEVELS[nextIdx].id);
+      const nextIdx = Math.min(passedLevelIdx + 1, cefrLevels.length - 1);
+      setSelectedLevel(cefrLevels[nextIdx].id);
       setXp((x) => x + 30);
     } else {
-      setSelectedLevel(LEVELS[0].id);
+      setSelectedLevel(cefrLevels[0].id);
     }
     saveExtra(userId, { placementDone: true });
     setScreen('home');
@@ -2975,6 +3058,29 @@ export default function App() {
           100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1); opacity: 0; }
         }
         @keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes screenFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes staggerUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes numberPop { 0% { transform: scale(1); } 40% { transform: scale(1.32); } 100% { transform: scale(1); } }
+        @keyframes drawerSlide { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+        @keyframes scrimFade { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes tabPop { 0% { transform: scale(1); } 45% { transform: scale(1.14); } 100% { transform: scale(1); } }
+        @keyframes softBounceIn { 0% { opacity: 0; transform: scale(.85); } 60% { opacity: 1; transform: scale(1.04); } 100% { transform: scale(1); } }
+        @keyframes progressShine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .screen-fade { animation: screenFadeIn .4s cubic-bezier(.22,1,.36,1) both; }
+        .stagger-item { opacity: 0; animation: staggerUp .45s cubic-bezier(.22,1,.36,1) both; }
+        .number-pop { display: inline-block; animation: numberPop .38s cubic-bezier(.34,1.56,.64,1) both; }
+        .drawer-slide { animation: drawerSlide .32s cubic-bezier(.22,1,.36,1) both; }
+        .scrim-fade { animation: scrimFade .22s ease both; }
+        .tab-pop { animation: tabPop .32s cubic-bezier(.34,1.56,.64,1) both; }
+        .soft-bounce-in { animation: softBounceIn .4s cubic-bezier(.22,1,.36,1) both; }
+        .press-btn { transition: transform .12s ease, box-shadow .12s ease, filter .12s ease; }
+        .press-btn:active { transform: scale(0.96); filter: brightness(0.97); }
+        .lift-card { transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s ease, border-color .18s ease; }
+        .lift-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.14); }
+        .lift-card:active { transform: translateY(-1px) scale(0.985); }
+        .icon-hover { transition: transform .15s ease; }
+        .icon-hover:hover { transform: scale(1.12); }
+        .fade-swap { transition: opacity .25s ease; }
         .pulse-node { animation: pulseGlow 2.2s ease-in-out infinite; }
         .shake { animation: shakeX .35s ease; }
         .pop-in { animation: popIn .25s ease; }
@@ -2982,21 +3088,28 @@ export default function App() {
         .confetti-wrap { position: absolute; inset: 0; pointer-events: none; }
         .confetti-dot { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; border-radius: 3px; animation: confettiBurst .85s ease-out both; }
         .summary-rise { opacity: 0; animation: riseIn .5s ease both; }
-        .opt-btn:hover { border-color: #8FCFC7 !important; }
+        .opt-btn { transition: border-color .15s ease, background .15s ease, transform .12s ease; }
+        .opt-btn:hover { border-color: #8FCFC7 !important; transform: translateY(-1px); }
+        .opt-btn:active { transform: scale(0.98); }
+        .tile-btn { transition: border-color .15s ease, background .15s ease, transform .12s ease; }
         .tile-btn:hover { border-color: #8FCFC7 !important; }
+        .tile-btn:active { transform: scale(0.95); }
+        .primary-btn { transition: transform .1s ease, box-shadow .1s ease; }
         .primary-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #1F7A73 !important; }
-        .level-tab { transition: background .15s, color .15s; }
-        .unit-card:hover { border-color: #8FCFC7 !important; }
+        .level-tab { transition: background .2s ease, color .2s ease, transform .15s cubic-bezier(.34,1.56,.64,1), border-color .2s ease; }
+        .level-tab:active { transform: scale(0.94); }
+        .unit-card { transition: border-color .18s ease, transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s ease; }
+        .unit-card:hover { border-color: #8FCFC7 !important; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .spin-icon { animation: spin 1s linear infinite; }
       `}</style>
 
       {profileLoading ? (
-        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Loader2 className="spin-icon" size={32} color="rgba(255,255,255,0.6)" />
         </div>
       ) : !supaConfigured() ? (
-        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px', textAlign: 'center' }}>
+        <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px', textAlign: 'center' }}>
           <ShieldCheck size={48} color="#E3B23C" style={{ marginBottom: 16 }} />
           <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 18, color: '#fff', marginBottom: 10 }}>Backend hali ulanmagan</div>
           <div style={{ fontFamily: UZ_FONT, fontSize: 13, color: 'rgba(255,255,255,0.6)', maxWidth: 280, lineHeight: 1.6 }}>
@@ -3004,7 +3117,7 @@ export default function App() {
           </div>
         </div>
       ) : !profile ? (
-        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px', textAlign: 'center' }}>
+        <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px', textAlign: 'center' }}>
           <GraduationCap size={54} color="#E3B23C" style={{ marginBottom: 18 }} />
           {signupDone ? (
             <>
@@ -3034,6 +3147,7 @@ export default function App() {
               <button
                 onClick={supaSignInWithGoogle}
                 type="button"
+                className="press-btn"
                 style={{ width: '100%', maxWidth: 300, border: '2px solid rgba(255,255,255,0.2)', borderRadius: 16, padding: 14, fontWeight: 700, fontSize: 15, color: '#fff', fontFamily: UZ_FONT, background: 'rgba(255,255,255,0.06)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 18 }}
               >
                 <svg width="18" height="18" viewBox="0 0 48 48">
@@ -3098,11 +3212,12 @@ export default function App() {
         <>
 
       {screen === 'home' && (
-        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 30 }}>
+        <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 30 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 22px 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
               <button
                 onClick={() => setMenuOpen(true)}
+                className="press-btn"
                 style={{ border: 'none', background: 'rgba(255,255,255,0.12)', borderRadius: 12, width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
                 aria-label="Menyu"
               >
@@ -3119,13 +3234,14 @@ export default function App() {
             </div>
             <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
               <div style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 999, padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 5, color: '#fff', fontWeight: 700, fontSize: 14, fontFamily: UZ_FONT }}>
-                <Flame size={16} fill="#E3B23C" stroke="#E3B23C" /> {streak}
+                <Flame size={16} fill="#E3B23C" stroke="#E3B23C" /> <span key={streak} className="number-pop">{streak}</span>
               </div>
               <div
                 onClick={() => setScreen('shop')}
+                className="press-btn"
                 style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 999, padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 5, color: '#fff', fontWeight: 700, fontSize: 14, fontFamily: UZ_FONT, cursor: 'pointer' }}
               >
-                <Gem size={16} fill="#2FA89C" stroke="#2FA89C" /> {xp}
+                <Gem size={16} fill="#2FA89C" stroke="#2FA89C" /> <span key={xp} className="number-pop">{xp}</span>
               </div>
             </div>
           </div>
@@ -3139,7 +3255,7 @@ export default function App() {
                 return (
                   <button
                     key={lv.id}
-                    className="level-tab"
+                    className={`level-tab press-btn${isSel ? ' tab-pop' : ''}`}
                     onClick={() => setSelectedLevel(lv.id)}
                     style={{
                       flex: 1,
@@ -3178,6 +3294,7 @@ export default function App() {
           {isLevelComplete(currentLevel) && !examPassedLevels.includes(selectedLevel) && (
             <div
               onClick={() => startExam(selectedLevel)}
+              className="press-btn soft-bounce-in"
               style={{ margin: '0 20px 16px', background: 'linear-gradient(90deg,#2FA89C,#4FC2B5)', borderRadius: 16, padding: '13px 16px', display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', boxShadow: '0 6px 0 #1F7A73' }}
             >
               <ClipboardList size={22} color="#fff" />
@@ -3189,6 +3306,7 @@ export default function App() {
           {isLevelComplete(currentLevel) && examPassedLevels.includes(selectedLevel) && (
             <div
               onClick={() => { setCertLevelId(selectedLevel); setScreen('certificate'); }}
+              className="press-btn soft-bounce-in"
               style={{ margin: '0 20px 16px', background: 'linear-gradient(90deg,#E3B23C,#F0C868)', borderRadius: 16, padding: '13px 16px', display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', boxShadow: '0 6px 0 #B8862A' }}
             >
               <Award size={22} color="#12233A" />
@@ -3204,10 +3322,10 @@ export default function App() {
               const doneCount = unit.lessons.filter((ls) => completed.includes(ls.id)).length;
               return (
                 <div
-                  key={uIdx}
-                  className="unit-card"
+                  key={selectedLevel + '-' + uIdx}
+                  className="unit-card stagger-item"
                   onClick={() => openUnit(selectedLevel, uIdx)}
-                  style={{ background: status === 'locked' ? 'rgba(255,255,255,0.06)' : '#fff', borderRadius: 18, padding: '16px 18px', cursor: status === 'locked' ? 'default' : 'pointer', border: '2px solid transparent', opacity: status === 'locked' ? 0.75 : 1 }}
+                  style={{ background: status === 'locked' ? 'rgba(255,255,255,0.06)' : '#fff', borderRadius: 18, padding: '16px 18px', cursor: status === 'locked' ? 'default' : 'pointer', border: '2px solid transparent', opacity: status === 'locked' ? 0.75 : 1, animationDelay: `${uIdx * 0.06}s` }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                     <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 15, color: status === 'locked' ? 'rgba(255,255,255,0.65)' : '#12233A' }}>{unit.title}</div>
@@ -3227,10 +3345,12 @@ export default function App() {
                 </div>
               );
             })}
-            <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 18, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <Rocket size={20} color="rgba(255,255,255,0.5)" />
-              <div style={{ fontFamily: UZ_FONT, fontSize: 12.5, color: 'rgba(255,255,255,0.55)' }}>Ko'proq bo'limlar tez orada...</div>
-            </div>
+            {selectedLevel === 'C1' && (
+              <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 18, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <Rocket size={20} color="rgba(255,255,255,0.5)" />
+                <div style={{ fontFamily: UZ_FONT, fontSize: 12.5, color: 'rgba(255,255,255,0.55)' }}>Ko'proq bo'limlar tez orada...</div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -3281,7 +3401,7 @@ export default function App() {
                 <div key={lesson.id} style={{ position: 'absolute', left: x, top: y, transform: 'translate(-50%,-50%)' }}>
                   <div
                     onClick={() => handleNodeClick(idx)}
-                    className={lockMsg && lockMsg.id === lesson.id ? 'shake' : ''}
+                    className={`press-btn${lockMsg && lockMsg.id === lesson.id ? ' shake' : ''}`}
                     style={{ width: 74, height: 74, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: status === 'locked' ? '#8A99A8' : '#fff' }}
                   >
                     {status === 'locked' ? <Lock size={26} /> : status === 'completed' ? <Check size={30} strokeWidth={3} /> : <Icon size={28} />}
@@ -3309,7 +3429,7 @@ export default function App() {
       )}
 
       {screen === 'lesson' && activeLesson && activeQuestion && (
-        <div style={{ background: '#EFF6F3', padding: '18px 22px 26px', minHeight: 560 }}>
+        <div className="screen-fade" style={{ background: '#EFF6F3', padding: '18px 22px 26px', minHeight: 560 }}>
           {examMode && (
             <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 11, color: '#2FA89C', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
               Yakuniy imtihon · {qIndex + 1}/{activeLesson.questions.length}
@@ -3330,7 +3450,7 @@ export default function App() {
                 <Lightbulb size={15} /> {hints}
               </button>
             )}
-            <div style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
+            <div key={hearts} className="shake" style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
               {Array.from({ length: examMode ? 10 : 5 }, (_, i) => (
                 <Heart key={i} size={examMode ? 13 : 17} fill={i < hearts ? '#C1502E' : 'none'} stroke={i < hearts ? '#C1502E' : '#C7D2D9'} />
               ))}
@@ -3423,10 +3543,10 @@ export default function App() {
                 }
                 return (
                   <button
-                    key={i}
-                    className="opt-btn"
+                    key={qIndex + '-' + i}
+                    className="opt-btn stagger-item"
                     onClick={() => selectChoice(i)}
-                    style={{ textAlign: 'left', border: `2px solid ${borderColor}`, background: bg, color, borderRadius: 16, padding: '14px 18px', fontSize: 16, cursor: checked ? 'default' : 'pointer', fontFamily: optionsAreRussian ? RU_FONT : UZ_FONT, fontWeight: optionsAreRussian ? 500 : 700 }}
+                    style={{ textAlign: 'left', border: `2px solid ${borderColor}`, background: bg, color, borderRadius: 16, padding: '14px 18px', fontSize: 16, cursor: checked ? 'default' : 'pointer', fontFamily: optionsAreRussian ? RU_FONT : UZ_FONT, fontWeight: optionsAreRussian ? 500 : 700, animationDelay: `${i * 0.05}s` }}
                   >
                     {opt}
                   </button>
@@ -3524,7 +3644,7 @@ export default function App() {
       )}
 
       {screen === 'certificate' && certLevelId && (
-        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 40 }}>
+        <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 40 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '18px 22px 6px' }}>
             <ArrowLeft onClick={goHome} size={20} style={{ cursor: 'pointer', color: '#fff' }} />
             <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 15, color: '#fff' }}>Sertifikat</div>
@@ -3599,14 +3719,14 @@ export default function App() {
       )}
 
       {screen === 'placement-intro' && (
-        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px', textAlign: 'center' }}>
+        <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px', textAlign: 'center' }}>
           <Compass size={54} color="#E3B23C" style={{ marginBottom: 18 }} />
           <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 20, color: '#fff', marginBottom: 10 }}>Darajangizni bilamizmi?</div>
           <div style={{ fontFamily: UZ_FONT, fontSize: 13.5, color: 'rgba(255,255,255,0.65)', marginBottom: 26, maxWidth: 280, lineHeight: 1.6 }}>
             Bir necha savolga javob bering — sizga mos darajadan darslarni ochib beramiz. Xohlasangiz, boshlang'ich darajadan ham boshlashingiz mumkin.
           </div>
           <button
-            onClick={() => { setPlacementIdx(0); setPlacementSelected(null); setPlacementChecked(false); setScreen('placement-test'); }}
+            onClick={() => { setPlacementIdx(0); setPlacementSelected(null); setPlacementChecked(false); setPlacementResults([]); setScreen('placement-test'); }}
             className="primary-btn"
             style={{ width: '100%', maxWidth: 300, border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 15, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer', marginBottom: 12 }}
           >
@@ -3626,7 +3746,7 @@ export default function App() {
         const cur = qs[placementIdx];
         if (!cur) return null;
         return (
-          <div style={{ background: '#EFF6F3', padding: '24px 22px 30px', minHeight: 560 }}>
+          <div className="screen-fade" style={{ background: '#EFF6F3', padding: '24px 22px 30px', minHeight: 560 }}>
             <div style={{ fontFamily: UZ_FONT, fontSize: 11, fontWeight: 700, color: '#5B807B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
               {cur.levelLabel} darajasi savoli · {placementIdx + 1}/{qs.length}
             </div>
@@ -3662,7 +3782,7 @@ export default function App() {
       })()}
 
       {screen === 'shop' && (
-        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 40 }}>
+        <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 40 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '18px 22px 6px' }}>
             <ArrowLeft onClick={goHome} size={20} style={{ cursor: 'pointer', color: '#fff' }} />
             <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 15, color: '#fff' }}>Olmoslar do'koni</div>
@@ -3679,7 +3799,7 @@ export default function App() {
 
             <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>Avatar tanlang</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 10 }}>
-              {AVATARS.map((av) => {
+              {AVATARS.map((av, avIdx) => {
                 const owned = ownedAvatars.includes(av.id);
                 const isActive = activeAvatar === av.id;
                 const affordable = owned || xp >= av.cost;
@@ -3688,7 +3808,8 @@ export default function App() {
                     key={av.id}
                     onClick={() => (owned ? selectAvatar(av.id) : buyAvatar(av.id))}
                     disabled={!affordable}
-                    style={{ background: '#fff', border: isActive ? '2px solid #E3B23C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55 }}
+                    className={`lift-card press-btn stagger-item${isActive ? ' tab-pop' : ''}`}
+                    style={{ background: '#fff', border: isActive ? '2px solid #E3B23C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55, animationDelay: `${avIdx * 0.06}s` }}
                   >
                     <Mascot variant={av.id} accessories={[]} size={50} />
                     <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 10.5, color: '#12233A' }}>{av.name}</div>
@@ -3702,7 +3823,7 @@ export default function App() {
 
             <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>Aksessuarlar</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 10 }}>
-              {ACCESSORIES.map((ac) => {
+              {ACCESSORIES.map((ac, acIdx) => {
                 const owned = ownedAccessories.includes(ac.id);
                 const equipped = equippedAccessories.includes(ac.id);
                 const affordable = owned || xp >= ac.cost;
@@ -3711,7 +3832,8 @@ export default function App() {
                     key={ac.id}
                     onClick={() => (owned ? toggleAccessory(ac.id) : buyAccessory(ac.id))}
                     disabled={!affordable}
-                    style={{ background: '#fff', border: equipped ? '2px solid #2FA89C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55 }}
+                    className={`lift-card press-btn stagger-item${equipped ? ' tab-pop' : ''}`}
+                    style={{ background: '#fff', border: equipped ? '2px solid #2FA89C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55, animationDelay: `${acIdx * 0.06}s` }}
                   >
                     <Mascot variant="panda" accessories={[ac.id]} size={50} />
                     <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 10.5, color: '#12233A' }}>{ac.name}</div>
@@ -3883,10 +4005,12 @@ export default function App() {
       {menuOpen && (
         <div
           onClick={() => setMenuOpen(false)}
+          className="scrim-fade"
           style={{ position: 'fixed', inset: 0, background: 'rgba(6,18,30,0.55)', zIndex: 50, display: 'flex' }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
+            className="drawer-slide"
             style={{ width: '78%', maxWidth: 300, height: '100%', background: '#123A5C', boxShadow: '4px 0 24px rgba(0,0,0,0.3)', padding: '26px 20px', display: 'flex', flexDirection: 'column', gap: 4, overflowY: 'auto' }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
