@@ -2057,6 +2057,20 @@ async function supaSaveProgress(accessToken, userId, progressData) {
   });
 }
 
+async function supaGetUser(accessToken) {
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${accessToken}` },
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.msg || "Foydalanuvchi ma'lumotini olishda xatolik");
+  return data;
+}
+
+function supaSignInWithGoogle() {
+  const redirectTo = window.location.origin + window.location.pathname;
+  window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectTo)}`;
+}
+
 const AVATARS = [
   { id: 'panda', name: 'Panda', cost: 0 },
   { id: 'owl', name: "Boyo'g'li", cost: 600 },
@@ -2340,9 +2354,65 @@ export default function App() {
   const hintEligible = !!(activeQuestion && activeQuestion.type !== 'order' && activeQuestion.type !== 'match' && !checked);
 
   // Ilova ochilganda saqlangan sessiyani window.storage'dan tiklashga harakat qilish
+  async function applySessionData(accessToken, userId, profileFallback) {
+    let prof = null;
+    try {
+      prof = await supaGetProfile(accessToken, userId);
+    } catch (e) {
+      prof = null;
+    }
+    setProfile(prof || profileFallback);
+    setSession({ access_token: accessToken, user_id: userId });
+    const prog = await supaGetProgress(accessToken, userId);
+    const hasProgress = !!(prog && Array.isArray(prog.completed) && prog.completed.length > 0);
+    if (prog) {
+      if (Array.isArray(prog.completed)) setCompleted(prog.completed);
+      if (prog.ratings) setRatings(prog.ratings);
+      if (typeof prog.xp === 'number' && (prog.xp > 0 || hasProgress)) setXp(prog.xp);
+      else setXp(100);
+    } else {
+      setXp(100);
+    }
+    const extra = loadExtra(userId);
+    const sc = computeStreakOnLoad(extra);
+    setStreak(sc.streak);
+    setStreakFreezes(sc.freezes);
+    if (sc.freezeUsed) saveExtra(userId, { streakFreezes: sc.freezes });
+    setHasBadge(!!extra.hasBadge);
+    setHints(extra.hints || 0);
+    setOwnedAvatars(extra.ownedAvatars && extra.ownedAvatars.length ? extra.ownedAvatars : ['panda']);
+    setActiveAvatar(extra.activeAvatar || 'panda');
+    setOwnedAccessories(extra.ownedAccessories || []);
+    setEquippedAccessories(extra.equippedAccessories || []);
+    setExamPassedLevels(extra.examPassedLevels || []);
+    if (!extra.placementDone && !hasProgress) {
+      setScreen('placement-intro');
+    }
+  }
+
   useEffect(() => {
     (async () => {
       if (!supaConfigured()) {
+        setProfileLoading(false);
+        return;
+      }
+      // Google bilan kirishdan qaytgan bo'lsa, URL'dagi hash'da tokenlar keladi
+      const hash = window.location.hash;
+      if (hash && hash.includes('access_token')) {
+        try {
+          const params = new URLSearchParams(hash.slice(1));
+          const accessToken = params.get('access_token');
+          const refreshToken = params.get('refresh_token');
+          if (accessToken) {
+            const user = await supaGetUser(accessToken);
+            await localSession.set('session', JSON.stringify({ access_token: accessToken, refresh_token: refreshToken, user_id: user.id }), false);
+            const displayName = user.user_metadata?.full_name || user.user_metadata?.name || '';
+            await applySessionData(accessToken, user.id, { name: displayName, email: user.email || '' });
+          }
+        } catch (e) {
+          setAuthError("Google orqali kirishda xatolik yuz berdi");
+        }
+        window.history.replaceState({}, '', window.location.pathname + window.location.search);
         setProfileLoading(false);
         return;
       }
@@ -2369,33 +2439,7 @@ export default function App() {
             }
           }
           if (prof) {
-            setProfile(prof);
-            setSession({ access_token: accessToken, user_id: userId });
-            const prog = await supaGetProgress(accessToken, userId);
-            const hasProgress = !!(prog && Array.isArray(prog.completed) && prog.completed.length > 0);
-            if (prog) {
-              if (Array.isArray(prog.completed)) setCompleted(prog.completed);
-              if (prog.ratings) setRatings(prog.ratings);
-              if (typeof prog.xp === 'number' && (prog.xp > 0 || hasProgress)) setXp(prog.xp);
-              else setXp(100);
-            } else {
-              setXp(100);
-            }
-            const extra = loadExtra(userId);
-            const sc = computeStreakOnLoad(extra);
-            setStreak(sc.streak);
-            setStreakFreezes(sc.freezes);
-            if (sc.freezeUsed) saveExtra(userId, { streakFreezes: sc.freezes });
-            setHasBadge(!!extra.hasBadge);
-            setHints(extra.hints || 0);
-            setOwnedAvatars(extra.ownedAvatars && extra.ownedAvatars.length ? extra.ownedAvatars : ['panda']);
-            setActiveAvatar(extra.activeAvatar || 'panda');
-            setOwnedAccessories(extra.ownedAccessories || []);
-            setEquippedAccessories(extra.equippedAccessories || []);
-            setExamPassedLevels(extra.examPassedLevels || []);
-            if (!extra.placementDone && !hasProgress) {
-              setScreen('placement-intro');
-            }
+            await applySessionData(accessToken, userId, { name: '', email: '' });
           } else {
             await localSession.delete('session', false).catch(() => {});
           }
@@ -2444,34 +2488,7 @@ export default function App() {
       } else {
         const data = await supaSignIn(email, password);
         await localSession.set('session', JSON.stringify({ access_token: data.access_token, refresh_token: data.refresh_token, user_id: data.user.id }), false);
-        setSession({ access_token: data.access_token, user_id: data.user.id });
-        const prof = await supaGetProfile(data.access_token, data.user.id);
-        setProfile(prof || { name: '', email });
-        const prog = await supaGetProgress(data.access_token, data.user.id);
-        const hasProgress = !!(prog && Array.isArray(prog.completed) && prog.completed.length > 0);
-        if (prog) {
-          if (Array.isArray(prog.completed)) setCompleted(prog.completed);
-          if (prog.ratings) setRatings(prog.ratings);
-          if (typeof prog.xp === 'number' && (prog.xp > 0 || hasProgress)) setXp(prog.xp);
-          else setXp(100);
-        } else {
-          setXp(100);
-        }
-        const extra = loadExtra(data.user.id);
-        const sc = computeStreakOnLoad(extra);
-        setStreak(sc.streak);
-        setStreakFreezes(sc.freezes);
-        if (sc.freezeUsed) saveExtra(data.user.id, { streakFreezes: sc.freezes });
-        setHasBadge(!!extra.hasBadge);
-        setHints(extra.hints || 0);
-        setOwnedAvatars(extra.ownedAvatars && extra.ownedAvatars.length ? extra.ownedAvatars : ['panda']);
-        setActiveAvatar(extra.activeAvatar || 'panda');
-        setOwnedAccessories(extra.ownedAccessories || []);
-        setEquippedAccessories(extra.equippedAccessories || []);
-        setExamPassedLevels(extra.examPassedLevels || []);
-        if (!extra.placementDone && !hasProgress) {
-          setScreen('placement-intro');
-        }
+        await applySessionData(data.access_token, data.user.id, { name: '', email });
       }
     } catch (e) {
       setAuthError(e.message || "Noma'lum xatolik yuz berdi");
@@ -3012,6 +3029,26 @@ export default function App() {
                 {authMode === 'signup'
                   ? 'Progressingizni saqlab qolish va sertifikat olish uchun hisob yarating'
                   : 'Davom etish uchun hisobingizga kiring'}
+              </div>
+
+              <button
+                onClick={supaSignInWithGoogle}
+                type="button"
+                style={{ width: '100%', maxWidth: 300, border: '2px solid rgba(255,255,255,0.2)', borderRadius: 16, padding: 14, fontWeight: 700, fontSize: 15, color: '#fff', fontFamily: UZ_FONT, background: 'rgba(255,255,255,0.06)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 18 }}
+              >
+                <svg width="18" height="18" viewBox="0 0 48 48">
+                  <path fill="#FFC107" d="M43.6 20.5H42V20.5H24v7h11.3C33.7 32 29.3 35 24 35c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5-5C33.5 5.5 29 3.5 24 3.5 12.7 3.5 3.5 12.7 3.5 24S12.7 44.5 24 44.5 44.5 35.3 44.5 24c0-1.2-.1-2.4-.3-3.5z" />
+                  <path fill="#FF3D00" d="M6.3 14.7l5.7 4.2C13.5 15.3 18.4 12 24 12c3.1 0 5.8 1.1 8 3l5-5C33.5 5.5 29 3.5 24 3.5c-7.7 0-14.4 4.3-17.7 10.7z" />
+                  <path fill="#4CAF50" d="M24 44.5c5.2 0 9.9-1.9 13.5-5.1l-6.2-5.1c-2 1.4-4.5 2.2-7.3 2.2-5.3 0-9.7-3-11.3-7.4l-6 4.6C9.5 40 16.2 44.5 24 44.5z" />
+                  <path fill="#1976D2" d="M43.6 20.5H42V20.5H24v7h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.1C40.4 35.6 44.5 30.4 44.5 24c0-1.2-.1-2.4-.3-3.5z" />
+                </svg>
+                Google orqali kirish
+              </button>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', maxWidth: 300, marginBottom: 16 }}>
+                <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.15)' }} />
+                <div style={{ fontFamily: UZ_FONT, fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>yoki</div>
+                <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.15)' }} />
               </div>
 
               {authMode === 'signup' && (
