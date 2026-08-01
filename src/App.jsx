@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Hand, BookOpen, Users, Palette, Clock, Bus, Repeat, ChefHat, Key, Briefcase, MessageCircle,
   Home, Trophy, MapPin, Sun, Stethoscope, UtensilsCrossed, Plane, Landmark, Backpack, Syringe,
@@ -5456,6 +5456,38 @@ export default function App() {
 
   const pathD = activeUnit ? buildPathD(activeUnit.lessons.length) : '';
   const pathHeight = activeUnit ? nodeY(activeUnit.lessons.length - 1) + 90 : 0;
+  const pathContainerRef = useRef(null);
+  const [scrollTick, setScrollTick] = useState(0);
+
+  // Yo'l (path) ekranida pastga scroll qilinganda tugunlarga yengil 3D "coverflow" tilt effekti beradi:
+  // ekran markaziga yaqin tugun to'liq va tekis, undan uzoqlashgani sari biroz burilib/kichrayadi.
+  useEffect(() => {
+    if (screen !== 'path') return;
+    let rafId = null;
+    const onScroll = () => {
+      if (rafId != null) return;
+      rafId = requestAnimationFrame(() => {
+        setScrollTick((t) => t + 1);
+        rafId = null;
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId != null) cancelAnimationFrame(rafId);
+    };
+  }, [screen]);
+  const pathContainerTop = pathContainerRef.current ? pathContainerRef.current.getBoundingClientRect().top : 0;
+  const viewportCenterY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
+  void scrollTick; // scroll harakati re-render'ni majburlab, yuqoridagi qiymatni yangilab turadi
+  function nodeTiltStyle(y) {
+    const nodeViewportY = pathContainerTop + y;
+    const progress = viewportCenterY ? Math.max(-1, Math.min(1, (nodeViewportY - viewportCenterY) / viewportCenterY)) : 0;
+    const tilt = progress * -14;
+    const scaleF = 1 - Math.abs(progress) * 0.1;
+    return `translate(-50%,-50%) rotateX(${tilt}deg) scale(${scaleF})`;
+  }
 
   const optionsAreRussian = activeQuestion
     ? activeQuestion.type === 'fill_blank' || activeQuestion.type === 'gender' || activeQuestion.type === 'whowhat' || activeQuestion.type === 'plural'
@@ -5779,7 +5811,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ position: 'relative', width: 300, height: pathHeight, margin: '10px auto 0' }}>
+          <div ref={pathContainerRef} style={{ position: 'relative', width: 300, height: pathHeight, margin: '10px auto 0', perspective: 900 }}>
             <svg width={300} height={pathHeight} style={{ position: 'absolute', top: 0, left: 0 }}>
               <defs>
                 <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
@@ -5813,7 +5845,7 @@ export default function App() {
               const Icon = lesson.icon;
               const x = nodeX(idx), y = nodeY(idx);
               return (
-                <div key={lesson.id} style={{ position: 'absolute', left: x, top: y, transform: 'translate(-50%,-50%)' }}>
+                <div key={lesson.id} style={{ position: 'absolute', left: x, top: y, transform: nodeTiltStyle(y), transition: 'transform .12s ease-out' }}>
                   {status === 'active' && (
                     <div className="bounce-indicator" style={{ position: 'absolute', top: -46, left: '50%' }}>
                       <ChevronDown size={22} color="#4FC2B5" strokeWidth={3} />
