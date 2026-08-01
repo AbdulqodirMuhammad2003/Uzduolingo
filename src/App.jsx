@@ -4736,6 +4736,7 @@ export default function App() {
   // olishga tayyor bo'lgan darajani topadi (avtomatik keyingi darajaga o'tilganda ham yo'qolib qolmasligi uchun)
   const examNeededLevel = LEVELS.find((lv) => isLevelComplete(lv) && !examPassedLevels.includes(lv.id));
   const certReadyLevel = !examNeededLevel ? LEVELS.find((lv) => isLevelComplete(lv) && examPassedLevels.includes(lv.id)) : null;
+  const canSkipAhead = LEVELS.findIndex((l) => l.id === selectedLevel) < LEVELS.length - 1;
 
   function findLesson(id) {
     for (const lv of LEVELS) for (const u of lv.units) for (const ls of u.lessons) if (ls.id === id) return ls;
@@ -5342,6 +5343,7 @@ export default function App() {
   function finishPlacement(passedLevelIdx) {
     const userId = session ? session.user_id : 'guest';
     const cefrLevels = LEVELS;
+    const currentIdx = Math.max(0, cefrLevels.findIndex((l) => l.id === selectedLevel));
     if (passedLevelIdx >= 0) {
       const idsToComplete = [];
       for (let i = 0; i <= passedLevelIdx; i++) {
@@ -5357,13 +5359,25 @@ export default function App() {
         return nr;
       });
       const nextIdx = Math.min(passedLevelIdx + 1, cefrLevels.length - 1);
-      setSelectedLevel(cefrLevels[nextIdx].id);
-      setXp((x) => x + 30);
-    } else {
+      // Qayta sinovdan o'tilganda ham foydalanuvchini hech qachon ORQAGA surmaymiz —
+      // faqat oldinga (yoki joyida) siljitadi.
+      if (nextIdx > currentIdx) {
+        setSelectedLevel(cefrLevels[nextIdx].id);
+        setXp((x) => x + 30);
+      }
+    } else if (!session || currentIdx === 0) {
       setSelectedLevel(cefrLevels[0].id);
     }
     saveExtra(userId, { placementDone: true });
     setScreen('home');
+  }
+
+  function startPlacementTest() {
+    setPlacementIdx(0);
+    setPlacementSelected(null);
+    setPlacementChecked(false);
+    setPlacementResults([]);
+    setScreen('placement-test');
   }
 
   function checkAnswer() {
@@ -5737,6 +5751,23 @@ export default function App() {
               {currentLevel.units.reduce((s, u) => s + u.lessons.length, 0)} dars tugatildi
             </div>
           </div>
+
+          {canSkipAhead && (
+            <div
+              onClick={startPlacementTest}
+              className="press-btn lift-card"
+              style={{ margin: '0 20px 16px', background: 'rgba(255,255,255,0.07)', border: '1.5px dashed rgba(143,207,199,0.45)', borderRadius: 16, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}
+            >
+              <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(143,207,199,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Compass size={18} color="#8FCFC7" />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 12.5, color: '#fff' }}>Bilimingiz kuchliroqmi?</div>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 10.5, color: 'rgba(255,255,255,0.55)', marginTop: 1 }}>Tezkor sinovdan o'ting, agar bilsangiz — keyingi darajaga sakrab o'ting</div>
+              </div>
+              <ChevronRight size={18} color="rgba(255,255,255,0.4)" style={{ flexShrink: 0 }} />
+            </div>
+          )}
 
           {examNeededLevel && (
             <div
@@ -6197,7 +6228,7 @@ export default function App() {
             Bir necha savolga javob bering — sizga mos darajadan darslarni ochib beramiz. Xohlasangiz, boshlang'ich darajadan ham boshlashingiz mumkin.
           </div>
           <button
-            onClick={() => { setPlacementIdx(0); setPlacementSelected(null); setPlacementChecked(false); setPlacementResults([]); setScreen('placement-test'); }}
+            onClick={startPlacementTest}
             className="primary-btn"
             style={{ width: '100%', maxWidth: 300, border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 15, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer', marginBottom: 12 }}
           >
@@ -6218,8 +6249,13 @@ export default function App() {
         if (!cur) return null;
         return (
           <div className="screen-fade" style={{ background: '#EFF6F3', padding: '24px 22px 30px', minHeight: 560 }}>
-            <div style={{ fontFamily: UZ_FONT, fontSize: 11, fontWeight: 700, color: '#5B807B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-              {cur.levelLabel} darajasi savoli · {placementIdx + 1}/{qs.length}
+            <div className="soft-bounce-in" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#12233A', borderRadius: 999, padding: '7px 14px 7px 8px', marginBottom: 18 }}>
+              <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'linear-gradient(135deg,#4FC2B5,#1F7A73)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 10, color: '#fff', flexShrink: 0 }}>
+                {LEVELS[cur.levelIdx] ? LEVELS[cur.levelIdx].id : '?'}
+              </div>
+              <div style={{ fontFamily: UZ_FONT, fontSize: 12, fontWeight: 700, color: '#fff' }}>
+                {cur.levelLabel} darajasi savoli · {placementIdx + 1}/{qs.length}
+              </div>
             </div>
             <div style={{ height: 8, background: '#DCEAE7', borderRadius: 999, overflow: 'hidden', marginBottom: 24 }}>
               <div style={{ height: '100%', width: `${(placementIdx / qs.length) * 100}%`, background: 'linear-gradient(90deg,#2FA89C,#E3B23C)', borderRadius: 999, transition: 'width .3s ease' }} />
@@ -6535,6 +6571,43 @@ export default function App() {
         </div>
       )}
 
+      {screen === 'my-certificates' && (
+        <div className="screen-fade" style={{ background: '#EFF6F3', padding: '18px 22px 32px', minHeight: 560 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+            <ArrowLeft onClick={() => setScreen('home')} size={22} style={{ cursor: 'pointer', color: '#94A3A8', flexShrink: 0 }} />
+            <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 19, color: '#12233A' }}>Sertifikatlarim</div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {LEVELS.map((lv) => {
+              const earned = examPassedLevels.includes(lv.id);
+              const ready = !earned && isLevelComplete(lv);
+              return (
+                <div
+                  key={lv.id}
+                  onClick={() => {
+                    if (earned) { setCertLevelId(lv.id); setScreen('certificate'); }
+                    else if (ready) startExam(lv.id);
+                  }}
+                  className={earned || ready ? 'press-btn lift-card' : ''}
+                  style={{ background: '#fff', borderRadius: 16, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: earned || ready ? 'pointer' : 'default', opacity: earned || ready ? 1 : 0.55 }}
+                >
+                  <div style={{ width: 42, height: 42, borderRadius: 12, background: earned ? 'linear-gradient(135deg,#F3C862,#C68F1F)' : 'rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Award size={20} color={earned ? '#fff' : '#9AA7AE'} />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 14, color: '#12233A' }}>{lv.id} · {lv.label}</div>
+                    <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#94A3A8', marginTop: 1 }}>
+                      {earned ? "Sertifikat tayyor — ko'rish uchun bosing" : ready ? 'Imtihonga tayyor — boshlash uchun bosing' : 'Avval darslarni tugating'}
+                    </div>
+                  </div>
+                  {(earned || ready) && <ChevronRight size={18} color="#B7C2C8" style={{ flexShrink: 0 }} />}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {screen === 'summary' && activeLesson && (
         <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C)', padding: '70px 26px', minHeight: 560, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
           {failedRun ? (
@@ -6702,6 +6775,14 @@ export default function App() {
             >
               <GraduationCap size={19} color="#E3B25C" />
               <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 14, color: '#fff' }}>Muallif haqida</div>
+            </button>
+
+            <button
+              onClick={() => { setScreen('my-certificates'); setMenuOpen(false); }}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, border: 'none', background: 'rgba(255,255,255,0.06)', borderRadius: 14, padding: '13px 14px', cursor: 'pointer', marginBottom: 8, textAlign: 'left' }}
+            >
+              <Award size={19} color="#E3B23C" />
+              <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 14, color: '#fff' }}>Sertifikatlarim</div>
             </button>
 
             <button
