@@ -5536,6 +5536,15 @@ export default function App() {
         .unit-card:hover { border-color: #8FCFC7 !important; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .spin-icon { animation: spin 1s linear infinite; }
+        @keyframes bounceY { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-7px); } }
+        .bounce-indicator { animation: bounceY 1.1s ease-in-out infinite; }
+        @keyframes notifPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: 0.6; } }
+        .notif-dot { animation: notifPulse 1.6s ease-in-out infinite; }
+        @keyframes coinFlip { 0% { transform: rotateY(180deg); opacity: 0; } 55% { opacity: 1; } 100% { transform: rotateY(0deg); opacity: 1; } }
+        .star-flip { display: inline-block; backface-visibility: hidden; animation: coinFlip .55s cubic-bezier(.34,1.56,.64,1) both; }
+        .avatar-flip-wrap { perspective: 800px; }
+        .avatar-flip-wrap .lift-card { backface-visibility: hidden; transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .18s ease, box-shadow .18s ease; }
+        .avatar-flip-wrap:hover .lift-card { transform: rotateY(8deg) translateY(-3px); }
       `}</style>
 
       {profileLoading ? (
@@ -5649,14 +5658,21 @@ export default function App() {
         <div className="screen-fade" style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C 55%,#1C4A6E)', minHeight: 600, paddingBottom: 30 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 22px 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-              <button
-                onClick={() => setMenuOpen(true)}
-                className="press-btn"
-                style={{ border: 'none', background: 'rgba(255,255,255,0.12)', borderRadius: 12, width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
-                aria-label="Menyu"
-              >
-                <Menu size={19} color="#fff" />
-              </button>
+              <div style={{ position: 'relative', flexShrink: 0 }}>
+                <button
+                  onClick={() => setMenuOpen(true)}
+                  className="press-btn"
+                  style={{ border: 'none', background: 'rgba(255,255,255,0.12)', borderRadius: 12, width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                  aria-label="Menyu"
+                >
+                  <Menu size={19} color="#fff" />
+                </button>
+                {(examNeededLevel || certReadyLevel) && (
+                  <svg width="12" height="12" viewBox="0 0 12 12" className="notif-dot" style={{ position: 'absolute', top: -3, right: -3, pointerEvents: 'none' }}>
+                    <circle cx="6" cy="6" r="5" fill="#3B82F6" stroke="#123A5C" strokeWidth="1.5" />
+                  </svg>
+                )}
+              </div>
               <div style={{ minWidth: 0 }}>
                 <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 18, color: '#fff', display: 'flex', alignItems: 'center', gap: 5 }}>
                   Rus tili {hasBadge && <Crown size={14} color="#E3B23C" fill="#E3B23C" />}
@@ -5798,6 +5814,11 @@ export default function App() {
               const x = nodeX(idx), y = nodeY(idx);
               return (
                 <div key={lesson.id} style={{ position: 'absolute', left: x, top: y, transform: 'translate(-50%,-50%)' }}>
+                  {status === 'active' && (
+                    <div className="bounce-indicator" style={{ position: 'absolute', top: -46, left: '50%' }}>
+                      <ChevronDown size={22} color="#4FC2B5" strokeWidth={3} />
+                    </div>
+                  )}
                   <div
                     onClick={() => handleNodeClick(idx)}
                     className={`press-btn${lockMsg && lockMsg.id === lesson.id ? ' shake' : ''}`}
@@ -6222,19 +6243,20 @@ export default function App() {
                 const isActive = activeAvatar === av.id;
                 const affordable = owned || xp >= av.cost;
                 return (
-                  <button
-                    key={av.id}
-                    onClick={() => (owned ? selectAvatar(av.id) : buyAvatar(av.id))}
-                    disabled={!affordable}
-                    className={`lift-card press-btn stagger-item${isActive ? ' tab-pop' : ''}`}
-                    style={{ background: '#fff', border: isActive ? '2px solid #E3B23C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55, animationDelay: `${avIdx * 0.06}s` }}
-                  >
-                    <Mascot variant={av.id} accessories={[]} size={50} />
-                    <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 10.5, color: '#12233A' }}>{av.name}</div>
-                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 10, color: owned ? '#2FA89C' : '#B8862A', display: 'flex', alignItems: 'center', gap: 2 }}>
-                      {owned ? (isActive ? 'Tanlangan' : "O'rnatish") : (<>{av.cost} <Gem size={10} /></>)}
-                    </div>
-                  </button>
+                  <div key={av.id} className="avatar-flip-wrap">
+                    <button
+                      onClick={() => (owned ? selectAvatar(av.id) : buyAvatar(av.id))}
+                      disabled={!affordable}
+                      className={`lift-card press-btn stagger-item${isActive ? ' tab-pop' : ''}`}
+                      style={{ background: '#fff', border: isActive ? '2px solid #E3B23C' : '2px solid transparent', borderRadius: 16, padding: '10px 4px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, cursor: affordable ? 'pointer' : 'default', opacity: affordable ? 1 : 0.55, animationDelay: `${avIdx * 0.06}s` }}
+                    >
+                      <Mascot variant={av.id} accessories={[]} size={50} />
+                      <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 10.5, color: '#12233A' }}>{av.name}</div>
+                      <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 10, color: owned ? '#2FA89C' : '#B8862A', display: 'flex', alignItems: 'center', gap: 2 }}>
+                        {owned ? (isActive ? 'Tanlangan' : "O'rnatish") : (<>{av.cost} <Gem size={10} /></>)}
+                      </div>
+                    </button>
+                  </div>
                 );
               })}
             </div>
@@ -6541,9 +6563,11 @@ export default function App() {
                 </div>
               </div>
               {!examMode && (
-                <div className="summary-rise" style={{ display: 'flex', gap: 6, marginBottom: 20, animationDelay: '.25s' }}>
+                <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
                   {[1, 2, 3].map((n) => (
-                    <Star key={n} size={42} fill={n <= (ratings[activeLesson.id] || 0) ? '#E3B23C' : 'none'} stroke="#E3B23C" />
+                    <span key={n} className="star-flip" style={{ animationDelay: `${0.25 + n * 0.12}s` }}>
+                      <Star size={42} fill={n <= (ratings[activeLesson.id] || 0) ? '#E3B23C' : 'none'} stroke="#E3B23C" />
+                    </span>
                   ))}
                 </div>
               )}
