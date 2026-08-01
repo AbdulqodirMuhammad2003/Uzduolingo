@@ -4144,6 +4144,29 @@ function saveLocalProgress(userId, data) {
   }
 }
 
+// ---- Yuraklarni tiklash (har 3 daqiqada bittadan) ----
+const MAX_HEARTS = 5;
+const HEART_REGEN_MS = 3 * 60 * 1000;
+// Ilovaga qayta kirilganda, oflayn o'tgan vaqtga qarab necha yurak tiklanganini hisoblaydi.
+function computeHeartsOnLoad(extra) {
+  const storedHearts = typeof extra.hearts === 'number' ? extra.hearts : MAX_HEARTS;
+  const storedAt = extra.heartsUpdatedAt || null;
+  if (storedHearts >= MAX_HEARTS || !storedAt) {
+    return { hearts: Math.min(MAX_HEARTS, storedHearts), heartsUpdatedAt: null };
+  }
+  const elapsed = Date.now() - storedAt;
+  const gained = Math.floor(elapsed / HEART_REGEN_MS);
+  if (gained <= 0) return { hearts: storedHearts, heartsUpdatedAt: storedAt };
+  const newHearts = Math.min(MAX_HEARTS, storedHearts + gained);
+  return { hearts: newHearts, heartsUpdatedAt: newHearts >= MAX_HEARTS ? null : storedAt + gained * HEART_REGEN_MS };
+}
+function formatHeartTimer(ms) {
+  const totalSec = Math.ceil(ms / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
 // ---- Daraja aniqlash (placement) uchun tezkor test savollari ----
 // Har bir darajadan (A1..C1) bittadan 'choice' turidagi savol tanlanadi.
 const PLACEMENT_BLOCK_SIZE = 4;
@@ -4666,6 +4689,9 @@ export default function App() {
   const [activeLessonId, setActiveLessonId] = useState(null);
   const [qIndex, setQIndex] = useState(0);
   const [hearts, setHearts] = useState(5);
+  const [heartsUpdatedAt, setHeartsUpdatedAt] = useState(null);
+  const [heartTimerOpen, setHeartTimerOpen] = useState(false);
+  const [nowTick, setNowTick] = useState(() => Date.now());
   const [selected, setSelected] = useState(null);
   const [options, setOptions] = useState([]);
   const [available, setAvailable] = useState([]);
@@ -4700,6 +4726,10 @@ export default function App() {
 
   const currentLevel = LEVELS.find((l) => l.id === selectedLevel);
   const activeUnit = activeLevelId != null && activeUnitIdx != null ? LEVELS.find((l) => l.id === activeLevelId).units[activeUnitIdx] : null;
+  // Joriy ko'rsatilayotgan darajadan qat'i nazar, imtihon kutayotgan yoki sertifikat
+  // olishga tayyor bo'lgan darajani topadi (avtomatik keyingi darajaga o'tilganda ham yo'qolib qolmasligi uchun)
+  const examNeededLevel = LEVELS.find((lv) => isLevelComplete(lv) && !examPassedLevels.includes(lv.id));
+  const certReadyLevel = !examNeededLevel ? LEVELS.find((lv) => isLevelComplete(lv) && examPassedLevels.includes(lv.id)) : null;
 
   function findLesson(id) {
     for (const lv of LEVELS) for (const u of lv.units) for (const ls of u.lessons) if (ls.id === id) return ls;
@@ -4764,6 +4794,12 @@ export default function App() {
     setOwnedAccessories(extra.ownedAccessories || []);
     setEquippedAccessories(extra.equippedAccessories || []);
     setExamPassedLevels(extra.examPassedLevels || []);
+    const hc = computeHeartsOnLoad(extra);
+    setHearts(hc.hearts);
+    setHeartsUpdatedAt(hc.heartsUpdatedAt);
+    if (hc.hearts !== extra.hearts || hc.heartsUpdatedAt !== extra.heartsUpdatedAt) {
+      saveExtra(userId, { hearts: hc.hearts, heartsUpdatedAt: hc.heartsUpdatedAt });
+    }
     if (!extra.placementDone && !hasProgress) {
       setScreen('placement-intro');
     }
@@ -4847,6 +4883,40 @@ export default function App() {
     if (xp === 0 && completed.length === 0) return;
     supaSaveProgress(session.access_token, session.user_id, { completed, ratings, xp }).catch(() => {});
   }, [completed, ratings, xp, session, progressLoaded]);
+
+  // Yuraklar holatini (soni va tiklanish vaqti) qurilmada saqlash — shu orqali darsdan
+  // chiqib qayta kirilganda ham yuraklar bekorga to'lib qolmaydi.
+  useEffect(() => {
+    if (!session || !progressLoaded) return;
+    saveExtra(session.user_id, { hearts, heartsUpdatedAt });
+  }, [hearts, heartsUpdatedAt, session, progressLoaded]);
+
+  // Har soniyada yuraklar tiklanishini tekshiradi (3 daqiqada bittadan, MAX_HEARTS gacha)
+  useEffect(() => {
+    setNowTick(Date.now());
+    if (hearts >= MAX_HEARTS || heartsUpdatedAt == null) return;
+    const id = setInterval(() => {
+      const now = Date.now();
+      setNowTick(now);
+      const gained = Math.floor((now - heartsUpdatedAt) / HEART_REGEN_MS);
+      if (gained > 0) {
+        const newHearts = Math.min(MAX_HEARTS, hearts + gained);
+        setHearts(newHearts);
+        setHeartsUpdatedAt(newHearts >= MAX_HEARTS ? null : heartsUpdatedAt + gained * HEART_REGEN_MS);
+      }
+    }, 1000);
+    return () => clearInterval(id);
+  }, [hearts, heartsUpdatedAt]);
+
+  // Joriy (tanlangan) daraja to'liq tugagach, agar keyingi daraja ochilgan bo'lsa,
+  // foydalanuvchini avtomatik ravishda o'sha darajaga o'tkazadi.
+  useEffect(() => {
+    const idx = LEVELS.findIndex((l) => l.id === selectedLevel);
+    if (idx === -1 || idx >= LEVELS.length - 1) return;
+    if (isLevelComplete(LEVELS[idx]) && isLevelUnlocked(LEVELS[idx + 1].id)) {
+      setSelectedLevel(LEVELS[idx + 1].id);
+    }
+  }, [completed, selectedLevel]);
 
   async function submitAuth() {
     setAuthError('');
@@ -4989,7 +5059,6 @@ export default function App() {
     const lesson = findLesson(id);
     setActiveLessonId(id);
     setQIndex(0);
-    setHearts(5);
     setCorrectCount(0);
     setSessionXp(0);
     setFailedRun(false);
@@ -5168,6 +5237,7 @@ export default function App() {
     if (xp < 15 || !activeLesson) return;
     setXp((x) => x - 15);
     setHearts(2);
+    setHeartsUpdatedAt((t) => (t == null ? Date.now() : t));
     setFailedRun(false);
     initQuestion(activeLesson, qIndex);
     setScreen('lesson');
@@ -5271,7 +5341,14 @@ export default function App() {
       setSessionXp((x) => x + 10);
       playCorrectSound();
     } else {
-      setHearts((h) => Math.max(0, h - 1));
+      if (!examMode) {
+        setHearts((h) => {
+          if (h >= MAX_HEARTS) setHeartsUpdatedAt(Date.now());
+          return Math.max(0, h - 1);
+        });
+      } else {
+        setHearts((h) => Math.max(0, h - 1));
+      }
       playWrongSound();
     }
   }
@@ -5570,27 +5647,27 @@ export default function App() {
             </div>
           </div>
 
-          {isLevelComplete(currentLevel) && !examPassedLevels.includes(selectedLevel) && (
+          {examNeededLevel && (
             <div
-              onClick={() => startExam(selectedLevel)}
+              onClick={() => startExam(examNeededLevel.id)}
               className="press-btn soft-bounce-in"
               style={{ margin: '0 20px 16px', background: 'linear-gradient(90deg,#2FA89C,#4FC2B5)', borderRadius: 16, padding: '13px 16px', display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', boxShadow: '0 6px 0 #1F7A73' }}
             >
               <ClipboardList size={22} color="#fff" />
               <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13.5, color: '#fff' }}>
-                Barcha darslar tugadi! Yakuniy imtihonni (30 savol) topshiring
+                {examNeededLevel.id} darajasining barcha darslari tugadi! Yakuniy imtihonni (30 savol) topshiring
               </div>
             </div>
           )}
-          {isLevelComplete(currentLevel) && examPassedLevels.includes(selectedLevel) && (
+          {certReadyLevel && (
             <div
-              onClick={() => { setCertLevelId(selectedLevel); setScreen('certificate'); }}
+              onClick={() => { setCertLevelId(certReadyLevel.id); setScreen('certificate'); }}
               className="press-btn soft-bounce-in"
               style={{ margin: '0 20px 16px', background: 'linear-gradient(90deg,#E3B23C,#F0C868)', borderRadius: 16, padding: '13px 16px', display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', boxShadow: '0 6px 0 #B8862A' }}
             >
               <Award size={22} color="#12233A" />
               <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13.5, color: '#12233A' }}>
-                Tabriklaymiz! {currentLevel.label} darajasi tugadi — sertifikatingizni oling
+                Tabriklaymiz! {certReadyLevel.label} darajasi tugadi — sertifikatingizni oling
               </div>
             </div>
           )}
@@ -5729,10 +5806,29 @@ export default function App() {
                 <Lightbulb size={15} /> {hints}
               </button>
             )}
-            <div key={hearts} className="shake" style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
-              {Array.from({ length: examMode ? 10 : 5 }, (_, i) => (
-                <Heart key={i} size={examMode ? 13 : 17} fill={i < hearts ? '#C1502E' : 'none'} stroke={i < hearts ? '#C1502E' : '#C7D2D9'} />
-              ))}
+            <div style={{ position: 'relative', flexShrink: 0 }}>
+              <div
+                key={hearts}
+                className="shake"
+                onClick={() => !examMode && setHeartTimerOpen((o) => !o)}
+                style={{ display: 'flex', gap: 2, cursor: examMode ? 'default' : 'pointer' }}
+              >
+                {Array.from({ length: examMode ? 10 : 5 }, (_, i) => (
+                  <Heart key={i} size={examMode ? 13 : 17} fill={i < hearts ? '#C1502E' : 'none'} stroke={i < hearts ? '#C1502E' : '#C7D2D9'} />
+                ))}
+              </div>
+              {!examMode && heartTimerOpen && (
+                <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 8, background: '#12233A', borderRadius: 12, padding: '9px 12px', whiteSpace: 'nowrap', boxShadow: '0 6px 16px rgba(0,0,0,0.2)', zIndex: 20 }}>
+                  {hearts >= MAX_HEARTS ? (
+                    <div style={{ fontFamily: UZ_FONT, fontSize: 12, color: '#fff', fontWeight: 700 }}>Yuraklar to'liq ❤️</div>
+                  ) : (
+                    <div style={{ fontFamily: UZ_FONT, fontSize: 12, color: '#fff', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Heart size={13} fill="#C1502E" stroke="#C1502E" />
+                      Keyingisi: {formatHeartTimer(Math.max(0, HEART_REGEN_MS - (nowTick - (heartsUpdatedAt || nowTick))))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
