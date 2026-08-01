@@ -690,6 +690,66 @@ const LEVELS = [
           },
         ],
       },
+      {
+        title: "4-bo'lim: Lug'at boyligi",
+        lessons: [
+          {
+            id: 1001, title: '1-qism', icon: Users,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'odam', options: ['младший брат', 'человек', 'пророк', 'начальник, руководитель'], answer: 'человек' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'люди', options: ['qo’shni', 'qaynopa', 'sovchi', 'odamlar'], answer: 'odamlar' },
+              { type: 'listening', audioText: 'родители', question: "Bu so'z qanday tarjima qilinadi?", options: ['ota-ona', 'tovlamachi', 'asir', 'payg’ambar'], answer: 'ota-ona' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'отец', options: ['pochcha, kuyov', 'yo’lboshchi', 'payg’ambar', 'ota'], answer: 'ota' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'ona', options: ['мать', 'младенец, малыш', 'гость', 'танцор, танцовщица'], answer: 'мать' },
+              { type: 'match', pairs: [{ ru: 'человек', uz: 'odam' }, { ru: 'люди', uz: 'odamlar' }, { ru: 'родители', uz: 'ota-ona' }, { ru: 'отец', uz: 'ota' }, { ru: 'мать', uz: 'ona' }, { ru: 'папа', uz: 'dada' }] },
+            ],
+          },
+          {
+            id: 1002, title: '2-qism', icon: UserCircle,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'oyi', options: ['представитель, агент', 'мама', 'жених', 'лжец, врун, лгун(ья)'], answer: 'мама' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'брат', options: ['aka, uka', 'qotil', 'shifokor', 'kelin (to’yda)'], answer: 'aka, uka' },
+              { type: 'listening', audioText: 'сестра', question: "Bu so'z qanday tarjima qilinadi?", options: ['ajdodlar', 'tovlamachi', 'opa, singil', 'qaynopa'], answer: 'opa, singil' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'старший брат', options: ['aka', 'qiz bola', 'buvi', 'ota-ona'], answer: 'aka' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'uka', options: ['шурин (брат жены)', 'младший брат', 'родители', 'наследник, наследница'], answer: 'младший брат' },
+              { type: 'match', pairs: [{ ru: 'мама', uz: 'oyi' }, { ru: 'брат', uz: 'aka, uka' }, { ru: 'сестра', uz: 'opa, singil' }, { ru: 'старший брат', uz: 'aka' }, { ru: 'младший брат', uz: 'uka' }, { ru: 'бабушка', uz: 'buvi' }] },
+            ],
+          },
+          {
+            id: 1003, title: '3-qism', icon: Contact,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'bobo', options: ['взрослый', 'предки', 'дедушка', 'хвастун'], answer: 'дедушка' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'сирота', options: ['kampir', 'ish', 'xotin', 'yetim'], answer: 'yetim' },
+              { type: 'listening', audioText: 'дядя', question: "Bu so'z qanday tarjima qilinadi?", options: ['amaki, tog’a', 'turmush o’rtog’', 'o’qish (tahsil)', 'murda'], answer: 'amaki, tog’a' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'тетя', options: ['maqtanchoq', 'egizaklar', 'amma, xola', 'bolalik'], answer: 'amma, xola' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'bola', options: ['ребенок', 'переводчик(ца)', 'целитель, лекарь', 'лжец, врун, лгун(ья)'], answer: 'ребенок' },
+              { type: 'match', pairs: [{ ru: 'дедушка', uz: 'bobo' }, { ru: 'сирота', uz: 'yetim' }, { ru: 'дядя', uz: 'amaki, tog’a' }, { ru: 'тетя', uz: 'amma, xola' }, { ru: 'ребенок', uz: 'bola' }, { ru: 'дети', uz: 'bolalar' }] },
+            ],
+          },
+          {
+            id: 1004, title: '4-qism', icon: SquareUser,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’g’il farzand', options: ['посол', 'брат', 'сирота', 'сын'], answer: 'сын' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'дочь', options: ['qiz bola', 'oyi', 'qiz farzand', 'maqtanchoq'], answer: 'qiz farzand' },
+              { type: 'listening', audioText: 'жена', question: "Bu so'z qanday tarjima qilinadi?", options: ['janob, xonim', 'xotin', 'xalq', 'fazogir'], answer: 'xotin' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'муж', options: ['o’yinchi', 'er', 'ona', 'navbatchi'], answer: 'er' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'turmush o’rtog’', options: ['враг', 'супруг(а)', 'деверь (брат мужа)', 'родители'], answer: 'супруг(а)' },
+              { type: 'match', pairs: [{ ru: 'сын', uz: 'o’g’il farzand' }, { ru: 'дочь', uz: 'qiz farzand' }, { ru: 'жена', uz: 'xotin' }, { ru: 'муж', uz: 'er' }, { ru: 'супруг(а)', uz: 'turmush o’rtog’' }, { ru: 'свекровь, теща', uz: 'qaynona' }] },
+            ],
+          },
+          {
+            id: 1005, title: '5-qism', icon: UsersRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'qaynota', options: ['игрок', 'виновник', 'старый человек', 'свекор, тесть'], answer: 'свекор, тесть' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'свояченица (сестра жены)', options: ['ayol kishi', 'xodim', 'qaynopa', 'taniqli'], answer: 'qaynopa' },
+              { type: 'listening', audioText: 'шурин (брат жены)', question: "Bu so'z qanday tarjima qilinadi?", options: ['qaynaka', 'egizaklar', 'ota', 'uchuvchi'], answer: 'qaynaka' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'золовка (сестра мужа)', options: ['qaynopa', 'chaqaloq, go\'dak', 'amma, xola', 'voyaga yetgan'], answer: 'qaynopa' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qaynaka', options: ['деверь (брат мужа)', 'целитель, лекарь', 'племянник', 'детство'], answer: 'деверь (брат мужа)' },
+              { type: 'match', pairs: [{ ru: 'свекор, тесть', uz: 'qaynota' }, { ru: 'свояченица (сестра жены)', uz: 'qaynopa' }, { ru: 'шурин (брат жены)', uz: 'qaynaka' }, { ru: 'зять', uz: 'pochcha, kuyov' }] },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -1742,6 +1802,77 @@ const LEVELS = [
               { type: 'choice', dir: 'ru2uz', prompt: 'Английский — международный язык бизнеса', options: ["Ingliz tili — xalqaro biznes tili", "Fransuz tili — san'at tili", 'Nemis tili — fan tili', 'Xitoy tili — savdo tili'], answer: "Ingliz tili — xalqaro biznes tili" },
               { type: 'match', pairs: [{ ru: 'Понимать', uz: 'Tushunmoq' }, { ru: 'Переводить', uz: 'Tarjima qilmoq' }, { ru: 'Произносить', uz: 'Talaffuz qilmoq' }, { ru: 'Запоминать', uz: "Yodda saqlamoq" }] },
               { type: 'fill_blank', sentence: 'Трудно ___ новые слова.', hint: "('yodda saqlamoq' fe'lining infinitivi)", options: ['запоминать', 'запоминаю', 'запоминаешь', 'запоминает'], answer: 'запоминать' },
+            ],
+          },
+        ],
+      },
+      {
+        title: "6-bo'lim: Lug'at boyligi",
+        lessons: [
+          {
+            id: 1006, title: '1-qism', icon: CircleUserRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’gayona', options: ['дядя', 'больной, пациент', 'наследник, наследница', 'мачеха'], answer: 'мачеха' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'отчим', options: ['tikuvchi', 'tish duxtur', 'ona', 'o’gayota'], answer: 'o’gayota' },
+              { type: 'listening', audioText: 'родственник', question: "Bu so'z qanday tarjima qilinadi?", options: ['jinoyatchi', 'qaynota', 'qarindosh', 'shifokor'], answer: 'qarindosh' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'племянник', options: ['o’g’il jiyan', 'janob, xonim', 'o’smir', 'elchi'], answer: 'o’g’il jiyan' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qiz jiyan', options: ['традиция', 'любовник', 'племянница', 'деверь (брат мужа)'], answer: 'племянница' },
+              { type: 'match', pairs: [{ ru: 'мачеха', uz: 'o’gayona' }, { ru: 'отчим', uz: 'o’gayota' }, { ru: 'родственник', uz: 'qarindosh' }, { ru: 'племянник', uz: 'o’g’il jiyan' }, { ru: 'племянница', uz: 'qiz jiyan' }, { ru: 'близнецы, двойняшки', uz: 'egizaklar' }] },
+            ],
+          },
+          {
+            id: 1007, title: '2-qism', icon: Fingerprint,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'mehmon', options: ['больной, пациент', 'гость', 'обычай', 'целитель, лекарь'], answer: 'гость' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'сосед(ка)', options: ['urf-odat', 'yordamchi', 'qo’shni', 'bemor'], answer: 'qo’shni' },
+              { type: 'listening', audioText: 'невестка', question: "Bu so'z qanday tarjima qilinadi?", options: ['urf-odat', 'kelin', 'opa, singil', 'egizaklar'], answer: 'kelin' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'невеста', options: ['kelin (to’yda)', 'asir', 'yarador', 'aka, uka'], answer: 'kelin (to’yda)' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'kuyov (to’yda)', options: ['художник', 'старший брат', 'жених', 'друг'], answer: 'жених' },
+              { type: 'match', pairs: [{ ru: 'гость', uz: 'mehmon' }, { ru: 'сосед(ка)', uz: 'qo’shni' }, { ru: 'невестка', uz: 'kelin' }, { ru: 'невеста', uz: 'kelin (to’yda)' }, { ru: 'жених', uz: 'kuyov (to’yda)' }, { ru: 'мужчина', uz: 'erkak kishi' }] },
+            ],
+          },
+          {
+            id: 1008, title: '3-qism', icon: UserCheck,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'ayol kishi', options: ['пилот, летчик', 'учник, ученица', 'господин, госпожа', 'женщина'], answer: 'женщина' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'мальчик', options: ['o’g’il bola', 'taniqli', 'aka', 'yolg’onchi'], answer: 'o’g’il bola' },
+              { type: 'listening', audioText: 'девушка', question: "Bu so'z qanday tarjima qilinadi?", options: ['sovchi', 'yoshlar', 'qiz bola', 'o’quvchi'], answer: 'qiz bola' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'младенец, малыш', options: ['chaqaloq, go\'dak', 'o’g’il jiyan', 'qo’shni', 'opa, singil'], answer: 'chaqaloq, go\'dak' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'insoniyat', options: ['работа, дело', 'человечество', 'моряк, матрос', 'спонсор'], answer: 'человечество' },
+              { type: 'match', pairs: [{ ru: 'женщина', uz: 'ayol kishi' }, { ru: 'мальчик', uz: 'o’g’il bola' }, { ru: 'девушка', uz: 'qiz bola' }, { ru: 'младенец, малыш', uz: 'chaqaloq, go\'dak' }, { ru: 'человечество', uz: 'insoniyat' }, { ru: 'народ', uz: 'xalq' }] },
+            ],
+          },
+          {
+            id: 1009, title: '4-qism', icon: Users,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'bolalik', options: ['старуха', 'мать', 'больной, пациент', 'детство'], answer: 'детство' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'молодость, юность', options: ['yo’lboshchi', 'yoshlik', 'o’qituvchi', 'qo’shiqchi'], answer: 'yoshlik' },
+              { type: 'listening', audioText: 'молодежь', question: "Bu so'z qanday tarjima qilinadi?", options: ['aka, uka', 'amma, xola', 'aybdor', 'yoshlar'], answer: 'yoshlar' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'старый человек', options: ['fazogir', 'ish', 'voyaga yetmagan', 'qari odam'], answer: 'qari odam' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'chol', options: ['мясник', 'старик', 'любовница', 'господин, госпожа'], answer: 'старик' },
+              { type: 'match', pairs: [{ ru: 'детство', uz: 'bolalik' }, { ru: 'молодость, юность', uz: 'yoshlik' }, { ru: 'молодежь', uz: 'yoshlar' }, { ru: 'старый человек', uz: 'qari odam' }, { ru: 'старик', uz: 'chol' }, { ru: 'старуха', uz: 'kampir' }] },
+            ],
+          },
+          {
+            id: 1010, title: '5-qism', icon: UserCircle,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’smir', options: ['учеба', 'подросток', 'лидер, вождь', 'убийца'], answer: 'подросток' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'взрослый', options: ['voyaga yetgan', 'jinoyatchi', 'opa, singil', 'odam'], answer: 'voyaga yetgan' },
+              { type: 'listening', audioText: 'несовершеннолетний', question: "Bu so'z qanday tarjima qilinadi?", options: ['qo’shiqchi', 'qo’shni', 'voyaga yetmagan', 'ish'], answer: 'voyaga yetmagan' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'друг', options: ['qaynaka', 'fazogir', 'maqtanchoq', 'do’st'], answer: 'do’st' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'dushman', options: ['молодежь', 'сын', 'продавец, продавщица', 'враг'], answer: 'враг' },
+              { type: 'match', pairs: [{ ru: 'подросток', uz: 'o’smir' }, { ru: 'взрослый', uz: 'voyaga yetgan' }, { ru: 'несовершеннолетний', uz: 'voyaga yetmagan' }, { ru: 'друг', uz: 'do’st' }, { ru: 'враг', uz: 'dushman' }, { ru: 'пол', uz: 'jins' }] },
+            ],
+          },
+          {
+            id: 1011, title: '6-qism', icon: Contact,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'til', options: ['обычай', 'старуха', 'язык', 'женщина'], answer: 'язык' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'обычай', options: ['xotin', 'urf-odat', 'qo’shni', 'yoshlik'], answer: 'urf-odat' },
+              { type: 'listening', audioText: 'традиция', question: "Bu so'z qanday tarjima qilinadi?", options: ['janob, xonim', 'o’g’il jiyan', 'qassob', 'an’ana'], answer: 'an’ana' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'работа, дело', options: ['o’qish (tahsil)', 'ish', 'amma, xola', 'janob, xonim'], answer: 'ish' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’qish (tahsil)', options: ['дедушка', 'сотрудник(ница)', 'учеба', 'старый человек'], answer: 'учеба' },
+              { type: 'match', pairs: [{ ru: 'язык', uz: 'til' }, { ru: 'обычай', uz: 'urf-odat' }, { ru: 'традиция', uz: 'an’ana' }, { ru: 'работа, дело', uz: 'ish' }, { ru: 'учеба', uz: 'o’qish (tahsil)' }, { ru: 'рабочий', uz: 'ishchi' }] },
             ],
           },
         ],
@@ -3751,6 +3882,66 @@ const LEVELS = [
           },
         ],
       },
+      {
+        title: "11-bo'lim: Lug'at boyligi",
+        lessons: [
+          {
+            id: 1012, title: '1-qism', icon: SquareUser,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'xodim', options: ['подросток', 'моряк, матрос', 'мошенник', 'сотрудник(ница)'], answer: 'сотрудник(ница)' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'водитель', options: ['qaynopa', 'odam', 'kampir', 'haydovchi'], answer: 'haydovchi' },
+              { type: 'listening', audioText: 'врач, доктор, лекарь', question: "Bu so'z qanday tarjima qilinadi?", options: ['o’g’il jiyan', 'shifokor', 'uka', 'ziyoratchi'], answer: 'shifokor' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'целитель, лекарь', options: ['erkak kishi', 'voyaga yetmagan', 'qaynopa', 'tabib'], answer: 'tabib' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'o’quvchi', options: ['отчим', 'портной', 'свояченица (сестра жены)', 'учник, ученица'], answer: 'учник, ученица' },
+              { type: 'match', pairs: [{ ru: 'сотрудник(ница)', uz: 'xodim' }, { ru: 'водитель', uz: 'haydovchi' }, { ru: 'врач, доктор, лекарь', uz: 'shifokor' }, { ru: 'целитель, лекарь', uz: 'tabib' }, { ru: 'учник, ученица', uz: 'o’quvchi' }, { ru: 'переводчик(ца)', uz: 'tarjimon' }] },
+            ],
+          },
+          {
+            id: 1013, title: '2-qism', icon: UsersRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'muhandis', options: ['раб, рабыня', 'сын', 'инженер', 'жених'], answer: 'инженер' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'учитель(ница)', options: ['o’qituvchi', 'asir', 'maqtanchoq', 'qari odam'], answer: 'o’qituvchi' },
+              { type: 'listening', audioText: 'строитель', question: "Bu so'z qanday tarjima qilinadi?", options: ['bemor', 'bobo', 'quruvchi', 'qaynona'], answer: 'quruvchi' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'бухгалтер', options: ['dushman', 'kelin', 'mehmon', 'hisobchi'], answer: 'hisobchi' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'uchuvchi', options: ['охотник', 'пилот, летчик', 'наследник, наследница', 'учник, ученица'], answer: 'пилот, летчик' },
+              { type: 'match', pairs: [{ ru: 'инженер', uz: 'muhandis' }, { ru: 'учитель(ница)', uz: 'o’qituvchi' }, { ru: 'строитель', uz: 'quruvchi' }, { ru: 'бухгалтер', uz: 'hisobchi' }, { ru: 'пилот, летчик', uz: 'uchuvchi' }, { ru: 'мясник', uz: 'qassob' }] },
+            ],
+          },
+          {
+            id: 1014, title: '3-qism', icon: CircleUserRound,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'sotuvchi', options: ['свекор, тесть', 'сирота', 'продавец, продавщица', 'брат'], answer: 'продавец, продавщица' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'торговец', options: ['savdogar', 'ayol kishi', 'chol', 'qiz farzand'], answer: 'savdogar' },
+              { type: 'listening', audioText: 'игрок', question: "Bu so'z qanday tarjima qilinadi?", options: ['dada', 'erkak kishi', 'bemor', 'o’yinchi'], answer: 'o’yinchi' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'танцор, танцовщица', options: ['elchi', 'odam', 'buvi', 'raqqos(a)'], answer: 'raqqos(a)' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qo’shiqchi', options: ['певец', 'молодость, юность', 'сваха', 'человек'], answer: 'певец' },
+              { type: 'match', pairs: [{ ru: 'продавец, продавщица', uz: 'sotuvchi' }, { ru: 'торговец', uz: 'savdogar' }, { ru: 'игрок', uz: 'o’yinchi' }, { ru: 'танцор, танцовщица', uz: 'raqqos(a)' }, { ru: 'певец', uz: 'qo’shiqchi' }, { ru: 'художник', uz: 'rassom' }] },
+            ],
+          },
+          {
+            id: 1015, title: '4-qism', icon: Fingerprint,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'bemor', options: ['учеба', 'продавец, продавщица', 'больной, пациент', 'рабочий'], answer: 'больной, пациент' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'виновник', options: ['xodim', 'janob, xonim', 'aybdor', 'qul'], answer: 'aybdor' },
+              { type: 'listening', audioText: 'преступник', question: "Bu so'z qanday tarjima qilinadi?", options: ['tovlamachi', 'o’g’il bola', 'jinoyatchi', 'bola'], answer: 'jinoyatchi' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'грешник', options: ['gunohkor', 'ziyoratchi', 'opa, singil', 'o’gayona'], answer: 'gunohkor' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'dengizchi', options: ['жена', 'обманщик', 'ребенок', 'моряк, матрос'], answer: 'моряк, матрос' },
+              { type: 'match', pairs: [{ ru: 'больной, пациент', uz: 'bemor' }, { ru: 'виновник', uz: 'aybdor' }, { ru: 'преступник', uz: 'jinoyatchi' }, { ru: 'грешник', uz: 'gunohkor' }, { ru: 'моряк, матрос', uz: 'dengizchi' }, { ru: 'портной', uz: 'tikuvchi' }] },
+            ],
+          },
+          {
+            id: 1016, title: '5-qism', icon: UserCheck,
+            questions: [
+              { type: 'choice', dir: 'uz2ru', prompt: 'yo’lboshchi', options: ['пол', 'бабушка', 'хвастун', 'лидер, вождь'], answer: 'лидер, вождь' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'начальник, руководитель', options: ['sovchi', 'boshliq, rahbar', 'qari odam', 'ovchi'], answer: 'boshliq, rahbar' },
+              { type: 'listening', audioText: 'любовник', question: "Bu so'z qanday tarjima qilinadi?", options: ['oshiq', 'o’yinchi', 'voyaga yetgan', 'savdogar'], answer: 'oshiq' },
+              { type: 'choice', dir: 'ru2uz', prompt: 'любовница', options: ['murda', 'chaqaloq, go\'dak', 'aybdor', 'ma’shuqa'], answer: 'ma’shuqa' },
+              { type: 'choice', dir: 'uz2ru', prompt: 'qo’riqchi', options: ['охранник', 'мачеха', 'строитель', 'папа'], answer: 'охранник' },
+              { type: 'match', pairs: [{ ru: 'лидер, вождь', uz: 'yo’lboshchi' }, { ru: 'начальник, руководитель', uz: 'boshliq, rahbar' }, { ru: 'любовник', uz: 'oshiq' }, { ru: 'любовница', uz: 'ma’shuqa' }, { ru: 'охранник', uz: 'qo’riqchi' }, { ru: 'сторож', uz: 'qorovul' }] },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -3811,193 +4002,11 @@ const LEVELS = [
           },
         ],
       },
-    ],
-  },
-  {
-    id: 'LG',
-    label: "Lug'at boyligi",
-    units: [
       {
-        title: "1-bo'lim: Odamlar",
+        title: "2-bo'lim: Lug'at boyligi",
         lessons: [
           {
-            id: 1001, title: '1-qism', icon: Users,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'odam', options: ['младший брат', 'человек', 'пророк', 'начальник, руководитель'], answer: 'человек' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'люди', options: ['qo’shni', 'qaynopa', 'sovchi', 'odamlar'], answer: 'odamlar' },
-              { type: 'listening', audioText: 'родители', question: "Bu so'z qanday tarjima qilinadi?", options: ['ota-ona', 'tovlamachi', 'asir', 'payg’ambar'], answer: 'ota-ona' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'отец', options: ['pochcha, kuyov', 'yo’lboshchi', 'payg’ambar', 'ota'], answer: 'ota' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'ona', options: ['мать', 'младенец, малыш', 'гость', 'танцор, танцовщица'], answer: 'мать' },
-              { type: 'match', pairs: [{ ru: 'человек', uz: 'odam' }, { ru: 'люди', uz: 'odamlar' }, { ru: 'родители', uz: 'ota-ona' }, { ru: 'отец', uz: 'ota' }, { ru: 'мать', uz: 'ona' }, { ru: 'папа', uz: 'dada' }] },
-            ],
-          },
-          {
-            id: 1002, title: '2-qism', icon: UserCircle,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'oyi', options: ['представитель, агент', 'мама', 'жених', 'лжец, врун, лгун(ья)'], answer: 'мама' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'брат', options: ['aka, uka', 'qotil', 'shifokor', 'kelin (to’yda)'], answer: 'aka, uka' },
-              { type: 'listening', audioText: 'сестра', question: "Bu so'z qanday tarjima qilinadi?", options: ['ajdodlar', 'tovlamachi', 'opa, singil', 'qaynopa'], answer: 'opa, singil' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'старший брат', options: ['aka', 'qiz bola', 'buvi', 'ota-ona'], answer: 'aka' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'uka', options: ['шурин (брат жены)', 'младший брат', 'родители', 'наследник, наследница'], answer: 'младший брат' },
-              { type: 'match', pairs: [{ ru: 'мама', uz: 'oyi' }, { ru: 'брат', uz: 'aka, uka' }, { ru: 'сестра', uz: 'opa, singil' }, { ru: 'старший брат', uz: 'aka' }, { ru: 'младший брат', uz: 'uka' }, { ru: 'бабушка', uz: 'buvi' }] },
-            ],
-          },
-          {
-            id: 1003, title: '3-qism', icon: Contact,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'bobo', options: ['взрослый', 'предки', 'дедушка', 'хвастун'], answer: 'дедушка' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'сирота', options: ['kampir', 'ish', 'xotin', 'yetim'], answer: 'yetim' },
-              { type: 'listening', audioText: 'дядя', question: "Bu so'z qanday tarjima qilinadi?", options: ['amaki, tog’a', 'turmush o’rtog’', 'o’qish (tahsil)', 'murda'], answer: 'amaki, tog’a' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'тетя', options: ['maqtanchoq', 'egizaklar', 'amma, xola', 'bolalik'], answer: 'amma, xola' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'bola', options: ['ребенок', 'переводчик(ца)', 'целитель, лекарь', 'лжец, врун, лгун(ья)'], answer: 'ребенок' },
-              { type: 'match', pairs: [{ ru: 'дедушка', uz: 'bobo' }, { ru: 'сирота', uz: 'yetim' }, { ru: 'дядя', uz: 'amaki, tog’a' }, { ru: 'тетя', uz: 'amma, xola' }, { ru: 'ребенок', uz: 'bola' }, { ru: 'дети', uz: 'bolalar' }] },
-            ],
-          },
-          {
-            id: 1004, title: '4-qism', icon: SquareUser,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'o’g’il farzand', options: ['посол', 'брат', 'сирота', 'сын'], answer: 'сын' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'дочь', options: ['qiz bola', 'oyi', 'qiz farzand', 'maqtanchoq'], answer: 'qiz farzand' },
-              { type: 'listening', audioText: 'жена', question: "Bu so'z qanday tarjima qilinadi?", options: ['janob, xonim', 'xotin', 'xalq', 'fazogir'], answer: 'xotin' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'муж', options: ['o’yinchi', 'er', 'ona', 'navbatchi'], answer: 'er' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'turmush o’rtog’', options: ['враг', 'супруг(а)', 'деверь (брат мужа)', 'родители'], answer: 'супруг(а)' },
-              { type: 'match', pairs: [{ ru: 'сын', uz: 'o’g’il farzand' }, { ru: 'дочь', uz: 'qiz farzand' }, { ru: 'жена', uz: 'xotin' }, { ru: 'муж', uz: 'er' }, { ru: 'супруг(а)', uz: 'turmush o’rtog’' }, { ru: 'свекровь, теща', uz: 'qaynona' }] },
-            ],
-          },
-          {
-            id: 1005, title: '5-qism', icon: UsersRound,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'qaynota', options: ['игрок', 'виновник', 'старый человек', 'свекор, тесть'], answer: 'свекор, тесть' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'свояченица (сестра жены)', options: ['ayol kishi', 'xodim', 'qaynopa', 'taniqli'], answer: 'qaynopa' },
-              { type: 'listening', audioText: 'шурин (брат жены)', question: "Bu so'z qanday tarjima qilinadi?", options: ['qaynaka', 'egizaklar', 'ota', 'uchuvchi'], answer: 'qaynaka' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'золовка (сестра мужа)', options: ['qaynopa', 'chaqaloq, go\'dak', 'amma, xola', 'voyaga yetgan'], answer: 'qaynopa' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'qaynaka', options: ['деверь (брат мужа)', 'целитель, лекарь', 'племянник', 'детство'], answer: 'деверь (брат мужа)' },
-              { type: 'match', pairs: [{ ru: 'свекор, тесть', uz: 'qaynota' }, { ru: 'свояченица (сестра жены)', uz: 'qaynopa' }, { ru: 'шурин (брат жены)', uz: 'qaynaka' }, { ru: 'зять', uz: 'pochcha, kuyov' }] },
-            ],
-          },
-          {
-            id: 1006, title: '6-qism', icon: CircleUserRound,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'o’gayona', options: ['дядя', 'больной, пациент', 'наследник, наследница', 'мачеха'], answer: 'мачеха' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'отчим', options: ['tikuvchi', 'tish duxtur', 'ona', 'o’gayota'], answer: 'o’gayota' },
-              { type: 'listening', audioText: 'родственник', question: "Bu so'z qanday tarjima qilinadi?", options: ['jinoyatchi', 'qaynota', 'qarindosh', 'shifokor'], answer: 'qarindosh' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'племянник', options: ['o’g’il jiyan', 'janob, xonim', 'o’smir', 'elchi'], answer: 'o’g’il jiyan' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'qiz jiyan', options: ['традиция', 'любовник', 'племянница', 'деверь (брат мужа)'], answer: 'племянница' },
-              { type: 'match', pairs: [{ ru: 'мачеха', uz: 'o’gayona' }, { ru: 'отчим', uz: 'o’gayota' }, { ru: 'родственник', uz: 'qarindosh' }, { ru: 'племянник', uz: 'o’g’il jiyan' }, { ru: 'племянница', uz: 'qiz jiyan' }, { ru: 'близнецы, двойняшки', uz: 'egizaklar' }] },
-            ],
-          },
-          {
-            id: 1007, title: '7-qism', icon: Fingerprint,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'mehmon', options: ['больной, пациент', 'гость', 'обычай', 'целитель, лекарь'], answer: 'гость' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'сосед(ка)', options: ['urf-odat', 'yordamchi', 'qo’shni', 'bemor'], answer: 'qo’shni' },
-              { type: 'listening', audioText: 'невестка', question: "Bu so'z qanday tarjima qilinadi?", options: ['urf-odat', 'kelin', 'opa, singil', 'egizaklar'], answer: 'kelin' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'невеста', options: ['kelin (to’yda)', 'asir', 'yarador', 'aka, uka'], answer: 'kelin (to’yda)' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'kuyov (to’yda)', options: ['художник', 'старший брат', 'жених', 'друг'], answer: 'жених' },
-              { type: 'match', pairs: [{ ru: 'гость', uz: 'mehmon' }, { ru: 'сосед(ка)', uz: 'qo’shni' }, { ru: 'невестка', uz: 'kelin' }, { ru: 'невеста', uz: 'kelin (to’yda)' }, { ru: 'жених', uz: 'kuyov (to’yda)' }, { ru: 'мужчина', uz: 'erkak kishi' }] },
-            ],
-          },
-          {
-            id: 1008, title: '8-qism', icon: UserCheck,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'ayol kishi', options: ['пилот, летчик', 'учник, ученица', 'господин, госпожа', 'женщина'], answer: 'женщина' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'мальчик', options: ['o’g’il bola', 'taniqli', 'aka', 'yolg’onchi'], answer: 'o’g’il bola' },
-              { type: 'listening', audioText: 'девушка', question: "Bu so'z qanday tarjima qilinadi?", options: ['sovchi', 'yoshlar', 'qiz bola', 'o’quvchi'], answer: 'qiz bola' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'младенец, малыш', options: ['chaqaloq, go\'dak', 'o’g’il jiyan', 'qo’shni', 'opa, singil'], answer: 'chaqaloq, go\'dak' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'insoniyat', options: ['работа, дело', 'человечество', 'моряк, матрос', 'спонсор'], answer: 'человечество' },
-              { type: 'match', pairs: [{ ru: 'женщина', uz: 'ayol kishi' }, { ru: 'мальчик', uz: 'o’g’il bola' }, { ru: 'девушка', uz: 'qiz bola' }, { ru: 'младенец, малыш', uz: 'chaqaloq, go\'dak' }, { ru: 'человечество', uz: 'insoniyat' }, { ru: 'народ', uz: 'xalq' }] },
-            ],
-          },
-          {
-            id: 1009, title: '9-qism', icon: Users,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'bolalik', options: ['старуха', 'мать', 'больной, пациент', 'детство'], answer: 'детство' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'молодость, юность', options: ['yo’lboshchi', 'yoshlik', 'o’qituvchi', 'qo’shiqchi'], answer: 'yoshlik' },
-              { type: 'listening', audioText: 'молодежь', question: "Bu so'z qanday tarjima qilinadi?", options: ['aka, uka', 'amma, xola', 'aybdor', 'yoshlar'], answer: 'yoshlar' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'старый человек', options: ['fazogir', 'ish', 'voyaga yetmagan', 'qari odam'], answer: 'qari odam' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'chol', options: ['мясник', 'старик', 'любовница', 'господин, госпожа'], answer: 'старик' },
-              { type: 'match', pairs: [{ ru: 'детство', uz: 'bolalik' }, { ru: 'молодость, юность', uz: 'yoshlik' }, { ru: 'молодежь', uz: 'yoshlar' }, { ru: 'старый человек', uz: 'qari odam' }, { ru: 'старик', uz: 'chol' }, { ru: 'старуха', uz: 'kampir' }] },
-            ],
-          },
-          {
-            id: 1010, title: '10-qism', icon: UserCircle,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'o’smir', options: ['учеба', 'подросток', 'лидер, вождь', 'убийца'], answer: 'подросток' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'взрослый', options: ['voyaga yetgan', 'jinoyatchi', 'opa, singil', 'odam'], answer: 'voyaga yetgan' },
-              { type: 'listening', audioText: 'несовершеннолетний', question: "Bu so'z qanday tarjima qilinadi?", options: ['qo’shiqchi', 'qo’shni', 'voyaga yetmagan', 'ish'], answer: 'voyaga yetmagan' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'друг', options: ['qaynaka', 'fazogir', 'maqtanchoq', 'do’st'], answer: 'do’st' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'dushman', options: ['молодежь', 'сын', 'продавец, продавщица', 'враг'], answer: 'враг' },
-              { type: 'match', pairs: [{ ru: 'подросток', uz: 'o’smir' }, { ru: 'взрослый', uz: 'voyaga yetgan' }, { ru: 'несовершеннолетний', uz: 'voyaga yetmagan' }, { ru: 'друг', uz: 'do’st' }, { ru: 'враг', uz: 'dushman' }, { ru: 'пол', uz: 'jins' }] },
-            ],
-          },
-          {
-            id: 1011, title: '11-qism', icon: Contact,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'til', options: ['обычай', 'старуха', 'язык', 'женщина'], answer: 'язык' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'обычай', options: ['xotin', 'urf-odat', 'qo’shni', 'yoshlik'], answer: 'urf-odat' },
-              { type: 'listening', audioText: 'традиция', question: "Bu so'z qanday tarjima qilinadi?", options: ['janob, xonim', 'o’g’il jiyan', 'qassob', 'an’ana'], answer: 'an’ana' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'работа, дело', options: ['o’qish (tahsil)', 'ish', 'amma, xola', 'janob, xonim'], answer: 'ish' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'o’qish (tahsil)', options: ['дедушка', 'сотрудник(ница)', 'учеба', 'старый человек'], answer: 'учеба' },
-              { type: 'match', pairs: [{ ru: 'язык', uz: 'til' }, { ru: 'обычай', uz: 'urf-odat' }, { ru: 'традиция', uz: 'an’ana' }, { ru: 'работа, дело', uz: 'ish' }, { ru: 'учеба', uz: 'o’qish (tahsil)' }, { ru: 'рабочий', uz: 'ishchi' }] },
-            ],
-          },
-          {
-            id: 1012, title: '12-qism', icon: SquareUser,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'xodim', options: ['подросток', 'моряк, матрос', 'мошенник', 'сотрудник(ница)'], answer: 'сотрудник(ница)' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'водитель', options: ['qaynopa', 'odam', 'kampir', 'haydovchi'], answer: 'haydovchi' },
-              { type: 'listening', audioText: 'врач, доктор, лекарь', question: "Bu so'z qanday tarjima qilinadi?", options: ['o’g’il jiyan', 'shifokor', 'uka', 'ziyoratchi'], answer: 'shifokor' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'целитель, лекарь', options: ['erkak kishi', 'voyaga yetmagan', 'qaynopa', 'tabib'], answer: 'tabib' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'o’quvchi', options: ['отчим', 'портной', 'свояченица (сестра жены)', 'учник, ученица'], answer: 'учник, ученица' },
-              { type: 'match', pairs: [{ ru: 'сотрудник(ница)', uz: 'xodim' }, { ru: 'водитель', uz: 'haydovchi' }, { ru: 'врач, доктор, лекарь', uz: 'shifokor' }, { ru: 'целитель, лекарь', uz: 'tabib' }, { ru: 'учник, ученица', uz: 'o’quvchi' }, { ru: 'переводчик(ца)', uz: 'tarjimon' }] },
-            ],
-          },
-          {
-            id: 1013, title: '13-qism', icon: UsersRound,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'muhandis', options: ['раб, рабыня', 'сын', 'инженер', 'жених'], answer: 'инженер' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'учитель(ница)', options: ['o’qituvchi', 'asir', 'maqtanchoq', 'qari odam'], answer: 'o’qituvchi' },
-              { type: 'listening', audioText: 'строитель', question: "Bu so'z qanday tarjima qilinadi?", options: ['bemor', 'bobo', 'quruvchi', 'qaynona'], answer: 'quruvchi' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'бухгалтер', options: ['dushman', 'kelin', 'mehmon', 'hisobchi'], answer: 'hisobchi' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'uchuvchi', options: ['охотник', 'пилот, летчик', 'наследник, наследница', 'учник, ученица'], answer: 'пилот, летчик' },
-              { type: 'match', pairs: [{ ru: 'инженер', uz: 'muhandis' }, { ru: 'учитель(ница)', uz: 'o’qituvchi' }, { ru: 'строитель', uz: 'quruvchi' }, { ru: 'бухгалтер', uz: 'hisobchi' }, { ru: 'пилот, летчик', uz: 'uchuvchi' }, { ru: 'мясник', uz: 'qassob' }] },
-            ],
-          },
-          {
-            id: 1014, title: '14-qism', icon: CircleUserRound,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'sotuvchi', options: ['свекор, тесть', 'сирота', 'продавец, продавщица', 'брат'], answer: 'продавец, продавщица' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'торговец', options: ['savdogar', 'ayol kishi', 'chol', 'qiz farzand'], answer: 'savdogar' },
-              { type: 'listening', audioText: 'игрок', question: "Bu so'z qanday tarjima qilinadi?", options: ['dada', 'erkak kishi', 'bemor', 'o’yinchi'], answer: 'o’yinchi' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'танцор, танцовщица', options: ['elchi', 'odam', 'buvi', 'raqqos(a)'], answer: 'raqqos(a)' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'qo’shiqchi', options: ['певец', 'молодость, юность', 'сваха', 'человек'], answer: 'певец' },
-              { type: 'match', pairs: [{ ru: 'продавец, продавщица', uz: 'sotuvchi' }, { ru: 'торговец', uz: 'savdogar' }, { ru: 'игрок', uz: 'o’yinchi' }, { ru: 'танцор, танцовщица', uz: 'raqqos(a)' }, { ru: 'певец', uz: 'qo’shiqchi' }, { ru: 'художник', uz: 'rassom' }] },
-            ],
-          },
-          {
-            id: 1015, title: '15-qism', icon: Fingerprint,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'bemor', options: ['учеба', 'продавец, продавщица', 'больной, пациент', 'рабочий'], answer: 'больной, пациент' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'виновник', options: ['xodim', 'janob, xonim', 'aybdor', 'qul'], answer: 'aybdor' },
-              { type: 'listening', audioText: 'преступник', question: "Bu so'z qanday tarjima qilinadi?", options: ['tovlamachi', 'o’g’il bola', 'jinoyatchi', 'bola'], answer: 'jinoyatchi' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'грешник', options: ['gunohkor', 'ziyoratchi', 'opa, singil', 'o’gayona'], answer: 'gunohkor' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'dengizchi', options: ['жена', 'обманщик', 'ребенок', 'моряк, матрос'], answer: 'моряк, матрос' },
-              { type: 'match', pairs: [{ ru: 'больной, пациент', uz: 'bemor' }, { ru: 'виновник', uz: 'aybdor' }, { ru: 'преступник', uz: 'jinoyatchi' }, { ru: 'грешник', uz: 'gunohkor' }, { ru: 'моряк, матрос', uz: 'dengizchi' }, { ru: 'портной', uz: 'tikuvchi' }] },
-            ],
-          },
-          {
-            id: 1016, title: '16-qism', icon: UserCheck,
-            questions: [
-              { type: 'choice', dir: 'uz2ru', prompt: 'yo’lboshchi', options: ['пол', 'бабушка', 'хвастун', 'лидер, вождь'], answer: 'лидер, вождь' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'начальник, руководитель', options: ['sovchi', 'boshliq, rahbar', 'qari odam', 'ovchi'], answer: 'boshliq, rahbar' },
-              { type: 'listening', audioText: 'любовник', question: "Bu so'z qanday tarjima qilinadi?", options: ['oshiq', 'o’yinchi', 'voyaga yetgan', 'savdogar'], answer: 'oshiq' },
-              { type: 'choice', dir: 'ru2uz', prompt: 'любовница', options: ['murda', 'chaqaloq, go\'dak', 'aybdor', 'ma’shuqa'], answer: 'ma’shuqa' },
-              { type: 'choice', dir: 'uz2ru', prompt: 'qo’riqchi', options: ['охранник', 'мачеха', 'строитель', 'папа'], answer: 'охранник' },
-              { type: 'match', pairs: [{ ru: 'лидер, вождь', uz: 'yo’lboshchi' }, { ru: 'начальник, руководитель', uz: 'boshliq, rahbar' }, { ru: 'любовник', uz: 'oshiq' }, { ru: 'любовница', uz: 'ma’shuqa' }, { ru: 'охранник', uz: 'qo’riqchi' }, { ru: 'сторож', uz: 'qorovul' }] },
-            ],
-          },
-          {
-            id: 1017, title: '17-qism', icon: Users,
+            id: 1017, title: '1-qism', icon: Users,
             questions: [
               { type: 'choice', dir: 'uz2ru', prompt: 'elchi', options: ['посол', 'любовница', 'представитель, агент', 'заложник'], answer: 'посол' },
               { type: 'choice', dir: 'ru2uz', prompt: 'раб, рабыня', options: ['janob, xonim', 'qul', 'chol', 'xalq'], answer: 'qul' },
@@ -4008,7 +4017,7 @@ const LEVELS = [
             ],
           },
           {
-            id: 1018, title: '18-qism', icon: UserCircle,
+            id: 1018, title: '2-qism', icon: UserCircle,
             questions: [
               { type: 'choice', dir: 'uz2ru', prompt: 'ziyoratchi', options: ['человечество', 'дежурный', 'племянник', 'паломник'], answer: 'паломник' },
               { type: 'choice', dir: 'ru2uz', prompt: 'раненый', options: ['ota-ona', 'aldovchi', 'yarador', 'qul'], answer: 'yarador' },
@@ -4019,7 +4028,7 @@ const LEVELS = [
             ],
           },
           {
-            id: 1019, title: '19-qism', icon: Contact,
+            id: 1019, title: '3-qism', icon: Contact,
             questions: [
               { type: 'choice', dir: 'uz2ru', prompt: 'tovlamachi', options: ['пророк', 'раб, рабыня', 'мошенник', 'жених'], answer: 'мошенник' },
               { type: 'choice', dir: 'ru2uz', prompt: 'карлик, лилипут', options: ['oshiq', 'pakana', 'ayol kishi', 'pochcha, kuyov'], answer: 'pakana' },
@@ -4030,7 +4039,7 @@ const LEVELS = [
             ],
           },
           {
-            id: 1020, title: '20-qism', icon: SquareUser,
+            id: 1020, title: '4-qism', icon: SquareUser,
             questions: [
               { type: 'choice', dir: 'uz2ru', prompt: 'homiy', options: ['традиция', 'карлик, лилипут', 'спонсор', 'космонавт'], answer: 'спонсор' },
               { type: 'choice', dir: 'ru2uz', prompt: 'поручитель', options: ['ovchi', 'oshiq', 'kafil', 'odamlar'], answer: 'kafil' },
@@ -4041,7 +4050,7 @@ const LEVELS = [
             ],
           },
           {
-            id: 1021, title: '21-qism', icon: UsersRound,
+            id: 1021, title: '5-qism', icon: UsersRound,
             questions: [
               { type: 'choice', dir: 'uz2ru', prompt: 'yordamchi', options: ['молодость, юность', 'помощник(ца)', 'зять', 'свояченица (сестра жены)'], answer: 'помощник(ца)' },
               { type: 'choice', dir: 'ru2uz', prompt: 'дежурный', options: ['navbatchi', 'qaynona', 'sovchi', 'jins'], answer: 'navbatchi' },
@@ -4051,7 +4060,7 @@ const LEVELS = [
               { type: 'choice', dir: 'ru2uz', prompt: 'представитель, агент', options: ['yoshlar', 'vakil', 'ma’shuqa', 'qiz jiyan'], answer: 'vakil' },
               { type: 'match', pairs: [{ ru: 'помощник(ца)', uz: 'yordamchi' }, { ru: 'дежурный', uz: 'navbatchi' }, { ru: 'хвастун', uz: 'maqtanchoq' }, { ru: 'заложник', uz: 'asir' }, { ru: 'наследник, наследница', uz: 'merosxo’r' }, { ru: 'представитель, агент', uz: 'vakil' }, { ru: 'сваха', uz: 'sovchi' }] },
             ],
-          }
+          },
         ],
       },
     ],
@@ -4141,7 +4150,7 @@ const PLACEMENT_BLOCK_SIZE = 4;
 
 function getPlacementQuestions() {
   const out = [];
-  LEVELS.filter((lvl) => lvl.id !== 'LG').forEach((lvl, levelIdx) => {
+  LEVELS.forEach((lvl, levelIdx) => {
     const allLessons = [];
     lvl.units.forEach((u) => u.lessons.forEach((ls) => allLessons.push(ls)));
     const n = allLessons.length;
@@ -4306,74 +4315,142 @@ const ACCESSORIES = [
 ];
 
 const AVATAR_STYLES = {
-  panda: { face: '#FFFFFF', ear: '#16181D', earShape: 'round' },
-  owl: { face: '#E7D8BE', ear: '#B99B6B', earShape: 'tuft' },
-  fox: { face: '#F7DFC0', ear: '#D2803D', earShape: 'pointy' },
-  lion: { face: '#F3C25E', ear: '#D69A2D', earShape: 'mane' },
-  leopard: { face: '#E9C687', ear: '#C99A52', earShape: 'round', spots: true },
+  panda: { face: '#FFFFFF', ear: '#16181D' },
+  owl: { face: '#E7D8BE', ear: '#6B4A2E' },
+  fox: { face: '#E8813A', ear: '#D2803D' },
+  lion: { face: '#F3C25E', ear: '#D69A2D' },
+  leopard: { face: '#EFCB8E', ear: '#3B2A1E' },
+};
+
+// Har bir hayvon uchun ko'z markazlari — ko'zoynak aksessuari shu koordinatalarga moslashadi
+const EYE_ANCHORS = {
+  panda: { lx: 40, ly: 63, rx: 80, ry: 63, r: 12 },
+  owl: { lx: 42, ly: 58, rx: 78, ry: 58, r: 15 },
+  fox: { lx: 40, ly: 57, rx: 80, ry: 57, r: 11 },
+  lion: { lx: 42, ly: 60, rx: 78, ry: 60, r: 10 },
+  leopard: { lx: 40, ly: 62, rx: 80, ry: 62, r: 11 },
 };
 
 function Mascot({ variant = 'panda', accessories = [], size = 96 }) {
   const st = AVATAR_STYLES[variant] || AVATAR_STYLES.panda;
+  const eye = EYE_ANCHORS[variant] || EYE_ANCHORS.panda;
   return (
     <svg width={size} height={size} viewBox="0 0 120 120" style={{ display: 'block' }}>
-      {st.earShape === 'mane' && (
-        <g>
-          {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => {
-            const rad = (a * Math.PI) / 180;
-            const cx = 60 + 50 * Math.cos(rad);
-            const cy = 64 + 50 * Math.sin(rad);
-            return <circle key={a} cx={cx} cy={cy} r={20} fill={st.ear} />;
-          })}
-        </g>
-      )}
-      {st.earShape === 'round' && (
+      {variant === 'panda' && (
         <>
           <circle cx="28" cy="26" r="17" fill={st.ear} />
           <circle cx="92" cy="26" r="17" fill={st.ear} />
-        </>
-      )}
-      {st.earShape === 'pointy' && (
-        <>
-          <polygon points="14,38 34,4 46,34" fill={st.ear} />
-          <polygon points="106,38 86,4 74,34" fill={st.ear} />
-          <polygon points="20,34 34,14 40,32" fill="#FFF6EC" />
-          <polygon points="100,34 86,14 80,32" fill="#FFF6EC" />
-        </>
-      )}
-      {st.earShape === 'tuft' && (
-        <>
-          <polygon points="24,20 34,2 40,26" fill={st.ear} />
-          <polygon points="96,20 86,2 80,26" fill={st.ear} />
-        </>
-      )}
-
-      <circle cx="60" cy="64" r="46" fill={st.face} stroke="#16181D" strokeWidth="3" />
-
-      {st.spots && (
-        <>
-          <ellipse cx="34" cy="40" rx="4.5" ry="3.5" fill="#8A5A26" />
-          <ellipse cx="52" cy="28" rx="4" ry="3" fill="#8A5A26" />
-          <ellipse cx="86" cy="40" rx="4.5" ry="3.5" fill="#8A5A26" />
-          <ellipse cx="68" cy="26" rx="4" ry="3" fill="#8A5A26" />
-          <ellipse cx="24" cy="70" rx="4" ry="3" fill="#8A5A26" />
-          <ellipse cx="96" cy="70" rx="4" ry="3" fill="#8A5A26" />
-          <ellipse cx="38" cy="98" rx="3.5" ry="2.8" fill="#8A5A26" />
-          <ellipse cx="82" cy="98" rx="3.5" ry="2.8" fill="#8A5A26" />
+          <circle cx="60" cy="64" r="46" fill={st.face} stroke="#16181D" strokeWidth="3" />
+          <ellipse cx="39" cy="62" rx="13" ry="17" fill="#16181D" transform="rotate(-14 39 62)" />
+          <ellipse cx="81" cy="62" rx="13" ry="17" fill="#16181D" transform="rotate(14 81 62)" />
+          <circle cx="40" cy="63" r="5" fill="#fff" />
+          <circle cx="80" cy="63" r="5" fill="#fff" />
+          <circle cx="41.5" cy="64.5" r="2.6" fill="#16181D" />
+          <circle cx="78.5" cy="64.5" r="2.6" fill="#16181D" />
+          <ellipse cx="60" cy="80" rx="8" ry="6" fill="#16181D" />
+          <path d="M60 85 L60 90" stroke="#16181D" strokeWidth="2" strokeLinecap="round" />
+          <path d="M50 92 Q60 99 70 92" stroke="#16181D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <circle cx="32" cy="82" r="6.5" fill="#F6B4A0" opacity="0.65" />
+          <circle cx="88" cy="82" r="6.5" fill="#F6B4A0" opacity="0.65" />
         </>
       )}
 
-      <ellipse cx="39" cy="62" rx="13" ry="17" fill="#16181D" transform="rotate(-14 39 62)" />
-      <ellipse cx="81" cy="62" rx="13" ry="17" fill="#16181D" transform="rotate(14 81 62)" />
-      <circle cx="40" cy="63" r="5" fill="#fff" />
-      <circle cx="80" cy="63" r="5" fill="#fff" />
-      <circle cx="41.5" cy="64.5" r="2.6" fill="#16181D" />
-      <circle cx="78.5" cy="64.5" r="2.6" fill="#16181D" />
-      <ellipse cx="60" cy="80" rx="8" ry="6" fill="#16181D" />
-      <path d="M60 85 L60 90" stroke="#16181D" strokeWidth="2" strokeLinecap="round" />
-      <path d="M50 92 Q60 99 70 92" stroke="#16181D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <circle cx="32" cy="82" r="6.5" fill="#F6B4A0" opacity="0.65" />
-      <circle cx="88" cy="82" r="6.5" fill="#F6B4A0" opacity="0.65" />
+      {variant === 'owl' && (
+        <>
+          <polygon points="24,22 34,2 42,26" fill={st.ear} />
+          <polygon points="96,22 86,2 78,26" fill={st.ear} />
+          <circle cx="60" cy="66" r="46" fill={st.face} stroke="#16181D" strokeWidth="3" />
+          <circle cx="60" cy="66" r="38" fill="none" stroke="#B99B6B" strokeWidth="2" opacity="0.55" />
+          <circle cx="42" cy="58" r="17" fill="#3B2A1E" />
+          <circle cx="78" cy="58" r="17" fill="#3B2A1E" />
+          <circle cx="42" cy="58" r="12.5" fill="#E8A93C" />
+          <circle cx="78" cy="58" r="12.5" fill="#E8A93C" />
+          <circle cx="42" cy="58" r="5.5" fill="#16181D" />
+          <circle cx="78" cy="58" r="5.5" fill="#16181D" />
+          <circle cx="45" cy="54" r="2.2" fill="#fff" />
+          <circle cx="81" cy="54" r="2.2" fill="#fff" />
+          <polygon points="53,76 67,76 60,92" fill="#D9862E" stroke="#16181D" strokeWidth="1.5" />
+          <path d="M42 96 L48 102 L54 96" stroke="#B99B6B" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <path d="M66 96 L72 102 L78 96" stroke="#B99B6B" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        </>
+      )}
+
+      {variant === 'fox' && (
+        <>
+          <polygon points="14,38 34,4 46,34" fill="#2A1A12" />
+          <polygon points="106,38 86,4 74,34" fill="#2A1A12" />
+          <polygon points="18,33 33,10 41,31" fill={st.ear} />
+          <polygon points="102,33 87,10 79,31" fill={st.ear} />
+          <path d="M14,64 A46,46 0 1,1 106,64 Q98,104 60,112 Q22,104 14,64 Z" fill={st.face} stroke="#16181D" strokeWidth="3" />
+          <path d="M34,80 Q60,68 86,80 Q84,104 60,110 Q36,104 34,80 Z" fill="#FFF6EC" />
+          <path d="M34 58 Q40 49 48 58 Q40 65 34 58 Z" fill="#16181D" />
+          <path d="M86 58 Q80 49 72 58 Q80 65 86 58 Z" fill="#16181D" />
+          <circle cx="38.5" cy="55.5" r="1.6" fill="#fff" />
+          <circle cx="81.5" cy="55.5" r="1.6" fill="#fff" />
+          <polygon points="53,92 67,92 60,100" fill="#16181D" />
+          <path d="M50 101 Q60 107 70 101" stroke="#16181D" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+          <circle cx="26" cy="78" r="6" fill="#F6B4A0" opacity="0.6" />
+          <circle cx="94" cy="78" r="6" fill="#F6B4A0" opacity="0.6" />
+        </>
+      )}
+
+      {variant === 'lion' && (
+        <>
+          {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((a, i) => {
+            const rad = (a * Math.PI) / 180;
+            const spread = (11 * Math.PI) / 180;
+            const bx1 = 60 + 30 * Math.cos(rad - spread);
+            const by1 = 64 + 30 * Math.sin(rad - spread);
+            const bx2 = 60 + 30 * Math.cos(rad + spread);
+            const by2 = 64 + 30 * Math.sin(rad + spread);
+            const tx = 60 + 54 * Math.cos(rad);
+            const ty = 64 + 54 * Math.sin(rad);
+            return (
+              <polygon
+                key={a}
+                points={`${bx1},${by1} ${tx},${ty} ${bx2},${by2}`}
+                fill={i % 2 === 0 ? '#D69A2D' : '#C9862A'}
+              />
+            );
+          })}
+          <circle cx="60" cy="66" r="40" fill={st.face} stroke="#16181D" strokeWidth="3" />
+          <ellipse cx="60" cy="88" rx="22" ry="16" fill="#FBE7B8" />
+          <path d="M34 50 Q42 44 50 50" stroke="#8A5A26" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <path d="M70 50 Q78 44 86 50" stroke="#8A5A26" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <circle cx="42" cy="60" r="7.5" fill="#fff" stroke="#16181D" strokeWidth="2" />
+          <circle cx="78" cy="60" r="7.5" fill="#fff" stroke="#16181D" strokeWidth="2" />
+          <circle cx="42" cy="60" r="4" fill="#16181D" />
+          <circle cx="78" cy="60" r="4" fill="#16181D" />
+          <path d="M50,78 Q60,72 70,78 Q68,86 60,88 Q52,86 50,78 Z" fill="#16181D" />
+          <path d="M50 92 Q60 98 70 92" stroke="#16181D" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+          <circle cx="30" cy="82" r="6" fill="#F6B4A0" opacity="0.5" />
+          <circle cx="90" cy="82" r="6" fill="#F6B4A0" opacity="0.5" />
+        </>
+      )}
+
+      {variant === 'leopard' && (
+        <>
+          <circle cx="30" cy="28" r="14" fill={st.ear} />
+          <circle cx="90" cy="28" r="14" fill={st.ear} />
+          <circle cx="30" cy="30" r="7" fill={st.face} />
+          <circle cx="90" cy="30" r="7" fill={st.face} />
+          <circle cx="60" cy="64" r="46" fill={st.face} stroke="#16181D" strokeWidth="3" />
+          {[[34, 40], [52, 26], [86, 40], [68, 24], [22, 66], [98, 66], [38, 96], [82, 96]].map(([cx, cy], i) => (
+            <circle key={i} cx={cx} cy={cy} r="5" fill="none" stroke="#5C3A1E" strokeWidth="3" strokeDasharray="9 3" opacity="0.85" />
+          ))}
+          <ellipse cx="40" cy="62" rx="9" ry="11" fill="#D9B84A" stroke="#16181D" strokeWidth="2" />
+          <ellipse cx="80" cy="62" rx="9" ry="11" fill="#D9B84A" stroke="#16181D" strokeWidth="2" />
+          <ellipse cx="40" cy="62" rx="2.2" ry="7" fill="#16181D" />
+          <ellipse cx="80" cy="62" rx="2.2" ry="7" fill="#16181D" />
+          <circle cx="37" cy="58" r="1.4" fill="#fff" />
+          <circle cx="77" cy="58" r="1.4" fill="#fff" />
+          <polygon points="55,80 65,80 60,86" fill="#16181D" />
+          <path d="M60 86 L60 90" stroke="#16181D" strokeWidth="2" strokeLinecap="round" />
+          <path d="M50 92 Q60 97 70 92" stroke="#16181D" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+          <circle cx="32" cy="84" r="6" fill="#F6B4A0" opacity="0.6" />
+          <circle cx="88" cy="84" r="6" fill="#F6B4A0" opacity="0.6" />
+        </>
+      )}
 
       {accessories.includes('scarf') && (
         <g>
@@ -4383,9 +4460,9 @@ function Mascot({ variant = 'panda', accessories = [], size = 96 }) {
       )}
       {accessories.includes('glasses') && (
         <g stroke="#16181D" strokeWidth="3" fill="none">
-          <circle cx="40" cy="63" r="12" fill="rgba(255,255,255,0.15)" />
-          <circle cx="80" cy="63" r="12" fill="rgba(255,255,255,0.15)" />
-          <path d="M52 60 L68 60" />
+          <circle cx={eye.lx} cy={eye.ly} r={eye.r} fill="rgba(255,255,255,0.15)" />
+          <circle cx={eye.rx} cy={eye.ry} r={eye.r} fill="rgba(255,255,255,0.15)" />
+          <path d={`M${eye.lx + eye.r} ${eye.ly} L${eye.rx - eye.r} ${eye.ry}`} />
         </g>
       )}
       {accessories.includes('cap') && (
@@ -4834,7 +4911,6 @@ export default function App() {
   }
 
   function isLevelUnlocked(levelId) {
-    if (levelId === 'LG') return true;
     const idx = LEVELS.findIndex((l) => l.id === levelId);
     if (idx <= 0) return true;
     return isLevelComplete(LEVELS[idx - 1]);
@@ -5152,7 +5228,7 @@ export default function App() {
 
   function finishPlacement(passedLevelIdx) {
     const userId = session ? session.user_id : 'guest';
-    const cefrLevels = LEVELS.filter((lvl) => lvl.id !== 'LG');
+    const cefrLevels = LEVELS;
     if (passedLevelIdx >= 0) {
       const idsToComplete = [];
       for (let i = 0; i <= passedLevelIdx; i++) {
@@ -5485,46 +5561,11 @@ export default function App() {
           </div>
 
           <div style={{ padding: '0 20px 6px' }}>
-            <div style={{ display: 'flex', gap: 6 }}>
-              {LEVELS.filter((lv) => isLevelUnlocked(lv.id)).map((lv) => {
-                const unlocked = isLevelUnlocked(lv.id);
-                const complete = isLevelComplete(lv);
-                const isSel = selectedLevel === lv.id;
-                return (
-                  <button
-                    key={lv.id}
-                    className={`level-tab press-btn${isSel ? ' tab-pop' : ''}`}
-                    onClick={() => setSelectedLevel(lv.id)}
-                    style={{
-                      flex: 1,
-                      aspectRatio: '1',
-                      minWidth: 0,
-                      borderRadius: 12,
-                      border: isSel ? '2px solid #E3B23C' : '2px solid transparent',
-                      background: complete ? '#E3B23C' : isSel ? 'rgba(227,178,60,0.18)' : 'rgba(255,255,255,0.1)',
-                      color: complete ? '#12233A' : unlocked ? '#fff' : 'rgba(255,255,255,0.45)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      fontFamily: UZ_FONT,
-                      fontWeight: 800,
-                      fontSize: 13,
-                      position: 'relative',
-                    }}
-                  >
-                    {complete ? <Check size={16} strokeWidth={3} /> : lv.id}
-                    {!unlocked && (
-                      <div style={{ position: 'absolute', top: -4, right: -4, width: 15, height: 15, borderRadius: '50%', background: '#0E2A43', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Lock size={8} color="rgba(255,255,255,0.75)" />
-                      </div>
-                    )}
-                  </button>
-                );
-              })}
+            <div style={{ textAlign: 'center', fontFamily: UZ_FONT, fontSize: 13.5, fontWeight: 800, color: '#fff' }}>
+              {currentLevel.id} · {currentLevel.label}
             </div>
-            <div style={{ marginTop: 10, textAlign: 'center', fontFamily: UZ_FONT, fontSize: 12.5, color: 'rgba(255,255,255,0.65)' }}>
-              {currentLevel.label} · {currentLevel.units.reduce((s, u) => s + u.lessons.filter((ls) => completed.includes(ls.id)).length, 0)}/
+            <div style={{ marginTop: 4, textAlign: 'center', fontFamily: UZ_FONT, fontSize: 12.5, color: 'rgba(255,255,255,0.65)' }}>
+              {currentLevel.units.reduce((s, u) => s + u.lessons.filter((ls) => completed.includes(ls.id)).length, 0)}/
               {currentLevel.units.reduce((s, u) => s + u.lessons.length, 0)} dars tugatildi
             </div>
           </div>
