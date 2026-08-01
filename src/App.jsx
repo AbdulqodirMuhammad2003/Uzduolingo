@@ -4677,6 +4677,11 @@ export default function App() {
   const [ownedAccessories, setOwnedAccessories] = useState([]);
   const [equippedAccessories, setEquippedAccessories] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [adminUnlocked, setAdminUnlocked] = useState(false);
+  const [adminPasswordInput, setAdminPasswordInput] = useState('');
+  const [adminError, setAdminError] = useState('');
+  const [adminLoading, setAdminLoading] = useState(false);
+  const [adminStats, setAdminStats] = useState(null);
   const [soundOn, setSoundOn] = useState(true);
   const [placementIdx, setPlacementIdx] = useState(0);
   const [placementSelected, setPlacementSelected] = useState(null);
@@ -4972,6 +4977,43 @@ export default function App() {
     setExamMode(false);
     setMenuOpen(false);
     setScreen('home');
+  }
+
+  const ADMIN_PASSWORD = 'Zoxida2017';
+
+  function submitAdminPassword() {
+    if (adminPasswordInput === ADMIN_PASSWORD) {
+      setAdminUnlocked(true);
+      setAdminError('');
+      setAdminPasswordInput('');
+      setScreen('admin-stats');
+      fetchAdminStats();
+    } else {
+      setAdminError("Parol noto'g'ri");
+    }
+  }
+
+  async function fetchAdminStats() {
+    if (!session) return;
+    setAdminLoading(true);
+    setAdminError('');
+    try {
+      const headers = { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${session.access_token}` };
+      const [profRes, progRes] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/profiles?select=*`, { headers }),
+        fetch(`${SUPABASE_URL}/rest/v1/progress?select=*`, { headers }),
+      ]);
+      const profiles = profRes.ok ? await profRes.json() : [];
+      const progress = progRes.ok ? await progRes.json() : [];
+      setAdminStats({
+        profiles: Array.isArray(profiles) ? profiles : [],
+        progress: Array.isArray(progress) ? progress : [],
+      });
+    } catch (e) {
+      setAdminError("Ma'lumotlarni yuklab bo'lmadi. Internetni tekshiring.");
+    } finally {
+      setAdminLoading(false);
+    }
   }
 
   function isLevelComplete(level) {
@@ -6282,6 +6324,121 @@ export default function App() {
         </div>
       )}
 
+      {screen === 'admin-password' && (
+        <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C)', padding: '70px 26px', minHeight: 560, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 26, left: 22 }}>
+            <ArrowLeft onClick={() => setScreen('home')} size={22} style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.7)' }} />
+          </div>
+          <Lock size={44} color="#8FCFC7" style={{ marginBottom: 18 }} />
+          <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 20, color: '#fff', marginBottom: 8 }}>Statistika</div>
+          <div style={{ fontFamily: UZ_FONT, fontSize: 13.5, color: 'rgba(255,255,255,0.6)', marginBottom: 24 }}>Bu bo'lim faqat parol bilan ochiladi</div>
+          <input
+            type="password"
+            value={adminPasswordInput}
+            onChange={(e) => { setAdminPasswordInput(e.target.value); setAdminError(''); }}
+            onKeyDown={(e) => { if (e.key === 'Enter') submitAdminPassword(); }}
+            placeholder="Parolni kiriting"
+            autoFocus
+            style={{ width: '100%', border: adminError ? '2px solid #C1502E' : '2px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.06)', borderRadius: 14, padding: '13px 16px', fontFamily: UZ_FONT, fontSize: 15, color: '#fff', outline: 'none', textAlign: 'center', marginBottom: 10, boxSizing: 'border-box' }}
+          />
+          {adminError && (
+            <div style={{ fontFamily: UZ_FONT, fontSize: 12.5, color: '#E39C8A', marginBottom: 10 }}>{adminError}</div>
+          )}
+          <button
+            className="primary-btn"
+            onClick={submitAdminPassword}
+            style={{ width: '100%', border: 'none', borderRadius: 16, padding: 16, fontWeight: 800, fontSize: 16, color: '#fff', fontFamily: UZ_FONT, background: '#2FA89C', boxShadow: '0 5px 0 #1F7A73', cursor: 'pointer', marginTop: 6 }}
+          >
+            Kirish
+          </button>
+        </div>
+      )}
+
+      {screen === 'admin-stats' && adminUnlocked && (() => {
+        const profiles = adminStats?.profiles || [];
+        const progress = adminStats?.progress || [];
+        const profById = {};
+        profiles.forEach((p) => { profById[p.id] = p; });
+        const totalUsers = progress.length;
+        const totalXp = progress.reduce((s, p) => s + (p.xp || 0), 0);
+        const avgXp = totalUsers ? Math.round(totalXp / totalUsers) : 0;
+        const totalLessonsDone = progress.reduce((s, p) => s + (Array.isArray(p.completed) ? p.completed.length : 0), 0);
+        const weekAgo = Date.now() - 7 * 86400000;
+        const activeThisWeek = progress.filter((p) => p.updated_at && new Date(p.updated_at).getTime() >= weekAgo).length;
+        const sorted = [...progress].sort((a, b) => (b.xp || 0) - (a.xp || 0));
+        return (
+          <div className="screen-fade" style={{ background: '#EFF6F3', padding: '18px 22px 32px', minHeight: 560 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <ArrowLeft onClick={() => setScreen('home')} size={22} style={{ cursor: 'pointer', color: '#94A3A8', flexShrink: 0 }} />
+              <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 19, color: '#12233A' }}>Foydalanuvchilar statistikasi</div>
+            </div>
+
+            {adminLoading && (
+              <div style={{ textAlign: 'center', padding: '40px 0', fontFamily: UZ_FONT, color: '#5B807B' }}>Yuklanmoqda...</div>
+            )}
+
+            {!adminLoading && adminError && (
+              <div style={{ background: '#FBEAF0', borderRadius: 14, padding: '14px 16px', marginBottom: 16 }}>
+                <div style={{ fontFamily: UZ_FONT, fontSize: 13, color: '#B8433E', marginBottom: 10 }}>{adminError}</div>
+                <button onClick={fetchAdminStats} className="press-btn" style={{ border: 'none', borderRadius: 10, padding: '8px 12px', background: '#2FA89C', color: '#fff', fontFamily: UZ_FONT, fontWeight: 700, fontSize: 12.5, cursor: 'pointer' }}>Qayta urinish</button>
+              </div>
+            )}
+
+            {!adminLoading && !adminError && (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 18 }}>
+                  <div style={{ background: '#fff', borderRadius: 16, padding: '14px 16px' }}>
+                    <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#5B807B' }}>Jami foydalanuvchilar</div>
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 22, color: '#12233A', marginTop: 2 }}>{totalUsers}</div>
+                  </div>
+                  <div style={{ background: '#fff', borderRadius: 16, padding: '14px 16px' }}>
+                    <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#5B807B' }}>So'nggi 7 kunda faol</div>
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 22, color: '#12233A', marginTop: 2 }}>{activeThisWeek}</div>
+                  </div>
+                  <div style={{ background: '#fff', borderRadius: 16, padding: '14px 16px' }}>
+                    <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#5B807B' }}>Jami tugatilgan darslar</div>
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 22, color: '#12233A', marginTop: 2 }}>{totalLessonsDone}</div>
+                  </div>
+                  <div style={{ background: '#fff', borderRadius: 16, padding: '14px 16px' }}>
+                    <div style={{ fontFamily: UZ_FONT, fontSize: 11.5, color: '#5B807B' }}>O'rtacha olmos (XP)</div>
+                    <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 22, color: '#12233A', marginTop: 2 }}>{avgXp}</div>
+                  </div>
+                </div>
+
+                {totalUsers === 0 && (
+                  <div style={{ background: '#FDF2DC', borderRadius: 14, padding: '14px 16px', marginBottom: 16, fontFamily: UZ_FONT, fontSize: 12.5, color: '#8A6A1E', lineHeight: 1.5 }}>
+                    Hech qanday ma'lumot topilmadi. Buning sababi Supabase'dagi <b>progress</b> jadvalida "Row Level Security" har bir foydalanuvchiga faqat o'zining qatorini ko'rishga ruxsat berayotgani bo'lishi mumkin — shu bois boshqa foydalanuvchilar hozircha ko'rinmayapti.
+                  </div>
+                )}
+
+                <div style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13, color: '#12233A', marginBottom: 10 }}>Foydalanuvchilar ro'yxati (XP bo'yicha)</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {sorted.map((p, i) => {
+                    const prof = profById[p.user_id];
+                    const label = prof?.name || prof?.email || `Foydalanuvchi #${String(p.user_id || '').slice(0, 8)}`;
+                    return (
+                      <div key={p.user_id || i} style={{ background: '#fff', borderRadius: 14, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{ width: 26, textAlign: 'center', fontFamily: UZ_FONT, fontWeight: 800, fontSize: 12.5, color: '#5B807B', flexShrink: 0 }}>{i + 1}</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 13.5, color: '#12233A', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</div>
+                          <div style={{ fontFamily: UZ_FONT, fontSize: 11, color: '#94A3A8', marginTop: 1 }}>
+                            {Array.isArray(p.completed) ? p.completed.length : 0} dars · {p.updated_at ? String(p.updated_at).slice(0, 10) : '—'}
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                          <Gem size={13} color="#2FA89C" />
+                          <span style={{ fontFamily: UZ_FONT, fontWeight: 800, fontSize: 13, color: '#12233A' }}>{p.xp || 0}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+        );
+      })()}
+
       {screen === 'summary' && activeLesson && (
         <div style={{ background: 'linear-gradient(180deg,#0E2A43,#123A5C)', padding: '70px 26px', minHeight: 560, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
           {failedRun ? (
@@ -6425,6 +6582,20 @@ export default function App() {
             >
               <ShoppingBag size={19} color="#E3B23C" />
               <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 14, color: '#fff' }}>Olmoslar do'koni</div>
+            </button>
+
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                setAdminPasswordInput('');
+                setAdminError('');
+                setScreen(adminUnlocked ? 'admin-stats' : 'admin-password');
+                if (adminUnlocked) fetchAdminStats();
+              }}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, border: 'none', background: 'rgba(255,255,255,0.06)', borderRadius: 14, padding: '13px 14px', cursor: 'pointer', marginBottom: 8, textAlign: 'left' }}
+            >
+              <Lock size={19} color="#8FCFC7" />
+              <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 14, color: '#fff' }}>Statistika</div>
             </button>
 
             <button
