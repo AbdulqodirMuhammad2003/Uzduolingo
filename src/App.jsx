@@ -4084,7 +4084,15 @@ function shuffle(arr) {
 
 // ---- Sana/seriya (streak) yordamchilari ----
 function todayStr() {
-  return new Date().toISOString().slice(0, 10);
+  // MUHIM: mahalliy (foydalanuvchi qurilmasi) sanasidan foydalanamiz, UTC'dan emas!
+  // Agar UTC ishlatilsa, Toshkent kabi UTC+5 mintaqalarda foydalanuvchi tungi soat
+  // 00:00–05:00 oralig'ida ilovadan foydalansa, sana hali "kechagi kun" deb hisoblanib,
+  // seriya (streak) noto'g'ri uzilib qolishi mumkin edi.
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 function daysBetween(a, b) {
   return Math.round((new Date(`${b}T00:00:00Z`) - new Date(`${a}T00:00:00Z`)) / 86400000);
@@ -4559,6 +4567,7 @@ export default function App() {
   const [screen, setScreen] = useState('home');
   const [selectedLevel, setSelectedLevel] = useState('A1');
   const [xp, setXp] = useState(100);
+  const [progressLoaded, setProgressLoaded] = useState(false);
   const [streak, setStreak] = useState(0);
   const [streakFreezes, setStreakFreezes] = useState(0);
   const [hasBadge, setHasBadge] = useState(false);
@@ -4626,6 +4635,7 @@ export default function App() {
 
   // Ilova ochilganda saqlangan sessiyani window.storage'dan tiklashga harakat qilish
   async function applySessionData(accessToken, userId, profileFallback) {
+    setProgressLoaded(false);
     let prof = null;
     try {
       prof = await supaGetProfile(accessToken, userId);
@@ -4634,15 +4644,36 @@ export default function App() {
     }
     setProfile(prof || profileFallback);
     setSession({ access_token: accessToken, user_id: userId });
-    const prog = await supaGetProgress(accessToken, userId);
+    let prog = null;
+    let fetchOk = false;
+    try {
+      prog = await supaGetProgress(accessToken, userId);
+      fetchOk = true;
+    } catch (e) {
+      // Bitta marta qayta urinib ko'ramiz (vaqtinchalik tarmoq uzilishi bo'lishi mumkin)
+      try {
+        await new Promise((r) => setTimeout(r, 1200));
+        prog = await supaGetProgress(accessToken, userId);
+        fetchOk = true;
+      } catch (e2) {
+        fetchOk = false;
+      }
+    }
     const hasProgress = !!(prog && Array.isArray(prog.completed) && prog.completed.length > 0);
-    if (prog) {
-      if (Array.isArray(prog.completed)) setCompleted(prog.completed);
-      if (prog.ratings) setRatings(prog.ratings);
-      if (typeof prog.xp === 'number' && (prog.xp > 0 || hasProgress)) setXp(prog.xp);
-      else setXp(100);
-    } else {
-      setXp(100);
+    if (fetchOk) {
+      if (prog) {
+        if (Array.isArray(prog.completed)) setCompleted(prog.completed);
+        if (prog.ratings) setRatings(prog.ratings);
+        if (typeof prog.xp === 'number' && (prog.xp > 0 || hasProgress)) setXp(prog.xp);
+        else setXp(100);
+      } else {
+        setXp(100);
+      }
+      // progressLoaded'ni faqat so'rov chindan ham muvaffaqiyatli tugaganda 'true' qilamiz.
+      // Aks holda (fetchOk=false) uni 'false' holida qoldiramiz — shu orqali avtomatik
+      // saqlash effekti standart (hali yuklanmagan) qiymatlarni bazaga yozib, foydalanuvchining
+      // haqiqiy progressini bosib yozib qo'yishining oldini olamiz.
+      setProgressLoaded(true);
     }
     const extra = loadExtra(userId);
     const sc = computeStreakOnLoad(extra);
@@ -4693,24 +4724,25 @@ export default function App() {
           const saved = JSON.parse(s.value);
           let accessToken = saved.access_token;
           const userId = saved.user_id;
-          let prof = null;
+          let validUser = null;
           try {
-            prof = await supaGetProfile(accessToken, userId);
+            validUser = await supaGetUser(accessToken);
           } catch (e) {
-            prof = null;
+            validUser = null;
           }
-          if (!prof && saved.refresh_token) {
+          if (!validUser && saved.refresh_token) {
             try {
               const refreshed = await supaRefreshSession(saved.refresh_token);
               accessToken = refreshed.access_token;
               await localSession.set('session', JSON.stringify({ access_token: refreshed.access_token, refresh_token: refreshed.refresh_token, user_id: refreshed.user.id }), false);
-              prof = await supaGetProfile(accessToken, refreshed.user.id);
+              validUser = refreshed.user;
             } catch (e) {
-              prof = null;
+              validUser = null;
             }
           }
-          if (prof) {
-            await applySessionData(accessToken, userId, { name: '', email: '' });
+          if (validUser) {
+            const displayName = validUser.user_metadata?.full_name || validUser.user_metadata?.name || '';
+            await applySessionData(accessToken, validUser.id || userId, { name: displayName, email: validUser.email || '' });
           } else {
             await localSession.delete('session', false).catch(() => {});
           }
@@ -4729,10 +4761,15 @@ export default function App() {
   }, []);
 
   // Progress o'zgargan sayin Supabase'dagi progress jadvaliga saqlash
+  // (progressLoaded=true bo'lmasa hech qachon saqlamaymiz — aks holda hali yuklanmagan
+  // standart qiymatlar (bo'sh completed, 100 xp) haqiqiy saqlangan progressni bosib yozib qo'yishi mumkin edi.
+  // Qo'shimcha himoya: xp===0 faqat signOut() dan keyingi bir lahzalik holat, haqiqiy yuklangan
+  // sessiyada hech qachon bo'lmaydi — shuning uchun bunday holatni ham saqlamaymiz.)
   useEffect(() => {
-    if (!session) return;
+    if (!session || !progressLoaded) return;
+    if (xp === 0 && completed.length === 0) return;
     supaSaveProgress(session.access_token, session.user_id, { completed, ratings, xp }).catch(() => {});
-  }, [completed, ratings, xp, session]);
+  }, [completed, ratings, xp, session, progressLoaded]);
 
   async function submitAuth() {
     setAuthError('');
@@ -4752,6 +4789,7 @@ export default function App() {
           setSession({ access_token: data.access_token, user_id: data.user.id });
           setProfile({ name, email });
           setXp(100);
+          setProgressLoaded(true);
           setScreen('placement-intro');
         } else {
           setSignupDone(true);
@@ -4770,6 +4808,7 @@ export default function App() {
   function signOut() {
     localSession.delete('session', false).catch(() => {});
     setSession(null);
+    setProgressLoaded(false);
     setProfile(null);
     setCompleted([]);
     setRatings({});
@@ -5447,7 +5486,7 @@ export default function App() {
 
           <div style={{ padding: '0 20px 6px' }}>
             <div style={{ display: 'flex', gap: 6 }}>
-              {LEVELS.map((lv) => {
+              {LEVELS.filter((lv) => isLevelUnlocked(lv.id)).map((lv) => {
                 const unlocked = isLevelUnlocked(lv.id);
                 const complete = isLevelComplete(lv);
                 const isSel = selectedLevel === lv.id;
