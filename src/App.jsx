@@ -4688,6 +4688,7 @@ export default function App() {
   const [placementSelected, setPlacementSelected] = useState(null);
   const [placementChecked, setPlacementChecked] = useState(false);
   const [placementResults, setPlacementResults] = useState([]);
+  const [placementOptions, setPlacementOptions] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [ratings, setRatings] = useState({});
   const [activeLevelId, setActiveLevelId] = useState(null);
@@ -4924,6 +4925,17 @@ export default function App() {
       setSelectedLevel(LEVELS[idx + 1].id);
     }
   }, [completed, selectedLevel]);
+
+  // Daraja aniqlash testida har bir savol uchun variantlarni aralashtiradi
+  // (aks holda to'g'ri javob har doim ma'lumotlar tuzilishidagi asl o'rnida — ko'pincha birinchi bo'lib qolardi)
+  useEffect(() => {
+    if (screen !== 'placement-test') return;
+    const qs = getPlacementQuestions();
+    const cur = qs[placementIdx];
+    if (cur && cur.q && cur.q.options) {
+      setPlacementOptions(shuffle(cur.q.options));
+    }
+  }, [screen, placementIdx]);
 
   async function submitAuth() {
     setAuthError('');
@@ -5522,7 +5534,7 @@ export default function App() {
   return (
     <div style={{ maxWidth: 420, margin: '0 auto', borderRadius: 28, overflow: 'hidden', boxShadow: '0 25px 60px -20px rgba(11,32,54,0.45)' }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=Manrope:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=Manrope:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
         * { box-sizing: border-box; }
         @keyframes pulseGlow { 0%,100% { filter: drop-shadow(0 0 0px #E3B23C); } 50% { filter: drop-shadow(0 0 9px #E3B23C); } }
         @keyframes shakeX { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-5px); } 40%,80% { transform: translateX(5px); } }
@@ -5580,6 +5592,14 @@ export default function App() {
         .level-tab:active { transform: scale(0.94); }
         .unit-card { transition: border-color .18s ease, transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s ease; }
         .unit-card:hover { border-color: #8FCFC7 !important; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        @media print {
+          body * { visibility: hidden !important; }
+          .certificate-card, .certificate-card * { visibility: visible !important; }
+          .certificate-card {
+            position: absolute !important; top: 0 !important; left: 0 !important;
+            width: 100% !important; margin: 0 !important; box-shadow: none !important;
+          }
+        }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .spin-icon { animation: spin 1s linear infinite; }
         @keyframes bounceY { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-7px); } }
@@ -6154,18 +6174,71 @@ export default function App() {
           <div style={{ padding: '20px 22px' }}>
             <div
               className="certificate-card"
-              style={{ background: '#fff', borderRadius: 20, padding: '36px 26px', textAlign: 'center', border: '3px solid #E3B23C', position: 'relative' }}
+              style={{ position: 'relative', background: 'linear-gradient(160deg,#FFFDF7,#FBF2DC)', borderRadius: 20, padding: 4, boxShadow: '0 20px 50px rgba(0,0,0,0.35)' }}
             >
-              <Award size={44} color="#E3B23C" style={{ marginBottom: 14 }} />
-              <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#8FA0AE', marginBottom: 18 }}>Sertifikat</div>
-              <div style={{ fontFamily: UZ_FONT, fontSize: 13, color: '#5B807B', marginBottom: 6 }}>Ushbu sertifikat</div>
-              <div style={{ fontFamily: RU_FONT, fontWeight: 700, fontSize: 24, color: '#12233A', marginBottom: 16, wordBreak: 'break-word' }}>{profile?.name}</div>
-              <div style={{ fontFamily: UZ_FONT, fontSize: 13.5, color: '#5B807B', marginBottom: 22, lineHeight: 1.6 }}>
-                "Rus tili" ilovasida <b style={{ color: '#12233A' }}>{LEVELS.find((l) => l.id === certLevelId)?.label}</b> ({certLevelId}) darajasini muvaffaqiyatli tugatgani uchun beriladi
-              </div>
-              <div style={{ height: 2, background: '#EEF3F2', margin: '0 auto 18px', width: '60%' }} />
-              <div style={{ fontFamily: UZ_FONT, fontSize: 12, color: '#8FA0AE' }}>
-                {new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' })}
+              <div style={{ border: '1px solid #C9A227', borderRadius: 17, padding: 7 }}>
+                <div style={{ border: '2.5px solid #E3B23C', borderRadius: 13, padding: '34px 24px 26px', position: 'relative', textAlign: 'center', overflow: 'hidden' }}>
+                  {[
+                    { top: 8, left: 8, transform: 'none' },
+                    { top: 8, right: 8, transform: 'scaleX(-1)' },
+                    { bottom: 8, left: 8, transform: 'scaleY(-1)' },
+                    { bottom: 8, right: 8, transform: 'scale(-1,-1)' },
+                  ].map((pos, i) => (
+                    <svg key={i} width="24" height="24" viewBox="0 0 28 28" style={{ position: 'absolute', ...pos }}>
+                      <path d="M2 26 L2 8 Q2 2 8 2 L26 2" fill="none" stroke="#C9A227" strokeWidth="1.6" />
+                      <path d="M2 18 L2 14 Q2 10 6 10 L10 10" fill="none" stroke="#C9A227" strokeWidth="1" />
+                      <circle cx="2" cy="26" r="2" fill="#C9A227" />
+                    </svg>
+                  ))}
+
+                  <svg width="86" height="86" viewBox="0 0 200 200" style={{ margin: '0 auto 6px', display: 'block' }}>
+                    <defs>
+                      <linearGradient id="certGold1" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#F6D57A" />
+                        <stop offset="50%" stopColor="#D9A62E" />
+                        <stop offset="100%" stopColor="#B8841F" />
+                      </linearGradient>
+                      <linearGradient id="certGold2" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#FCE8B0" />
+                        <stop offset="100%" stopColor="#E8C264" />
+                      </linearGradient>
+                    </defs>
+                    <polygon points="88,90 88,180 100,168 112,180 112,90" fill="#C1502E" />
+                    <polygon points="91,94 91,166 100,157 109,166 109,94" fill="#A83F20" />
+                    <circle cx="100" cy="78" r="58" fill="url(#certGold1)" />
+                    {Array.from({ length: 24 }, (_, i) => {
+                      const a = (i * 360) / 24;
+                      const rad = (a * Math.PI) / 180;
+                      const x1 = 100 + 58 * Math.cos(rad), y1 = 78 + 58 * Math.sin(rad);
+                      const x2 = 100 + 66 * Math.cos(rad), y2 = 78 + 66 * Math.sin(rad);
+                      return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#D9A62E" strokeWidth="5" strokeLinecap="round" />;
+                    })}
+                    <circle cx="100" cy="78" r="58" fill="none" stroke="#8A6414" strokeWidth="1.5" opacity="0.4" />
+                    <circle cx="100" cy="78" r="46" fill="url(#certGold2)" stroke="#B8841F" strokeWidth="2" />
+                    <circle cx="100" cy="78" r="38" fill="none" stroke="#B8841F" strokeWidth="1" strokeDasharray="2 3" opacity="0.6" />
+                    <path d="M100 56 L106 72 L123 72 L109 82 L114 99 L100 89 L86 99 L91 82 L77 72 L94 72 Z" fill="#fff" stroke="#B8841F" strokeWidth="1" />
+                  </svg>
+
+                  <div style={{ fontFamily: UZ_FONT, fontWeight: 700, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#B8862A', marginBottom: 16 }}>Sertifikat</div>
+                  <div style={{ fontFamily: UZ_FONT, fontSize: 12.5, color: '#8A9490' }}>Ushbu sertifikat</div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 25, color: '#1A2C42', margin: '8px 0 14px', wordBreak: 'break-word' }}>{profile?.name}</div>
+                  <div style={{ fontFamily: UZ_FONT, fontSize: 13, color: '#6B7B78', lineHeight: 1.6, padding: '0 6px' }}>
+                    "Rus tili" ilovasida <b style={{ color: '#1A2C42' }}>{LEVELS.find((l) => l.id === certLevelId)?.label}</b> ({certLevelId}) darajasini muvaffaqiyatli tugatgani uchun beriladi
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '20px auto 14px', width: '70%' }}>
+                    <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg,transparent,#D9A62E)' }} />
+                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#D9A62E' }} />
+                    <div style={{ flex: 1, height: 1, background: 'linear-gradient(270deg,transparent,#D9A62E)' }} />
+                  </div>
+
+                  <div style={{ fontFamily: UZ_FONT, fontSize: 12, color: '#8A9490' }}>
+                    {new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </div>
+                  <div style={{ fontFamily: UZ_FONT, fontSize: 9, color: '#B7C2C0', marginTop: 10, letterSpacing: '0.05em' }}>
+                    SERTIFIKAT № UZD-{certLevelId}-{(session?.user_id || 'GUEST').slice(0, 6).toUpperCase()}
+                  </div>
+                </div>
               </div>
             </div>
             <button
@@ -6264,7 +6337,7 @@ export default function App() {
               {cur.q.prompt || cur.q.sentence || cur.q.question}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {cur.q.options.map((opt, i) => {
+              {placementOptions.map((opt, i) => {
                 let borderColor = '#DCEAE7', bg = '#fff', color = '#12233A';
                 if (placementChecked) {
                   if (opt === cur.q.answer) { borderColor = '#3F9142'; bg = '#E9F7EA'; color = '#256B29'; }
